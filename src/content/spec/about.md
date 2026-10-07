@@ -23,4 +23,4 @@
 
 - GitHub：[@cr1437](https://github.com/cr1437)
 - Bilibili：[空间主页](https://space.bilibili.com/2101448217)
-- 邮箱：<churan@outlook.com>
+- 邮箱：<churan1437@outlook.com>

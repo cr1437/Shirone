@@ -23,7 +23,7 @@ export const profileConfig: ProfileConfig = withUserConfig("profile", {
 		{
 			name: "Email",
 			icon: "material-symbols:mail-outline-rounded",
-			url: "mailto:churan@outlook.com",
+			url: "mailto:churan1437@outlook.com",
 		},
 	],
 });
