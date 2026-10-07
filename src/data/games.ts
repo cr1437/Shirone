@@ -51,7 +51,8 @@ export const gamesData: GameItem[] = [
 		year: "2023",
 		tags: ["RPG", "复古", "神秘学"],
 		description: "复古神秘学题材的卡牌 RPG：穿梭不同时代、收编神秘学家，美术与演出都很有味道。",
-		link: "https://store.steampowered.com/app/3092660/",
+		link: "https://re.bluepoch.com/home/",
+		featured: true,
 	},
 	{
 		id: "needy-streamer-overload",
