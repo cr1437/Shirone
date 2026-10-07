@@ -6,13 +6,13 @@ import { withUserConfig } from "../utils/config-overlay.ts";
  * 类型见 src/types/config.ts。
  */
 export const profileConfig: ProfileConfig = withUserConfig("profile", {
-	avatar: "/images/churan-avatar.gif", // public路径直出，保留 GIF动图
+	avatar: "/images/churan-avatar.gif",
 	name: "初然",
-	bio: "Android 开发者 · 资深二次元 · Vibe Coding",
+	bio: "悲观者永远正确 乐观者正在前行",
 	links: [
 		{
 			name: "GitHub",
-			icon: "fa7-brands:github", // Visit https://icones.js.org/ for icon codes
+			icon: "fa7-brands:github",
 			url: "https://github.com/cr1437",
 		},
 		{
