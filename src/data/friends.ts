@@ -14,8 +14,17 @@ export interface FriendItem {
 	tags: string[];
 }
 
-// 友情链接数据（暂未添加，后续在下方数组中追加即可）
-export const friendsData: FriendItem[] = [];
+// 友情链接数据
+export const friendsData: FriendItem[] = [
+	{
+		id: 1,
+		title: "番茄主理人",
+		imgurl: "https://blog.fqzlr.top/logo/icon.webp",
+		desc: "不因虚度年华而悔恨，不因碌碌无为而羞愧",
+		siteurl: "https://blog.fqzlr.top",
+		tags: ["Blog"],
+	},
+];
 
 // 获取所有友情链接数据（稳定顺序，测试可复现）
 export function getFriendsList(): FriendItem[] {
