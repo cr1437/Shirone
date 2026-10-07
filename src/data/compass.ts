@@ -35,5 +35,52 @@ export interface CompassShelf {
 	entries: CompassEntry[];
 }
 
-// 罗盘数据（暂未添加，后续在下方数组中追加即可）
-export const compassData: CompassShelf[] = [];
+// 罗盘数据
+export const compassData: CompassShelf[] = [
+	{
+		key: "ai",
+		name: "AI 服务",
+		icon: "material-symbols:smart-toy-rounded",
+		blurb: "常用 AI 服务与模型平台",
+		entries: [
+			{
+				label: "DeepSeek",
+				href: "https://www.deepseek.com/",
+				note: "深度求索 AI 官网",
+				icon: "simple-icons:deepseek",
+			},
+			{
+				label: "硅基流动",
+				href: "https://siliconflow.cn/",
+				note: "大模型 API 云服务平台",
+				icon: "material-symbols:cloud-outline-rounded",
+			},
+		],
+	},
+	{
+		key: "tools",
+		name: "实用工具",
+		icon: "material-symbols:handyman-rounded",
+		blurb: "日常好用的小工具",
+		entries: [
+			{
+				label: "临时邮箱",
+				href: "https://temp-mail.io/zh",
+				note: "一次性匿名收件箱",
+				icon: "material-symbols:mail-outline-rounded",
+			},
+			{
+				label: "菜鸟工具",
+				href: "https://www.jyshare.com/",
+				note: "在线编辑器与开发工具集",
+				icon: "material-symbols:code-rounded",
+			},
+			{
+				label: "格式转换",
+				href: "https://www.freeconvert.com/zh-CN",
+				note: "FreeConvert · 在线文件转换",
+				icon: "material-symbols:swap-horiz-rounded",
+			},
+		],
+	},
+];
