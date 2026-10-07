@@ -1,26 +1,26 @@
-# About Shirone
+# 关于我
 
-Welcome to the demo site of **Shirone** (白音) — an expressive, anime-inspired blog theme built on the **Material 3 Expressive (M3E)** design system.
+你好，我是 **初然（ChuRan）** 👋
 
-::github{repo="LyraVoid/Shirone"}
+一位 Android 应用开发者，目前还在读高中。
 
-## ✦ Design & Philosophy
+- 资深二次元，推し是 **初音未来**、**安和昴**、**糖糖**
+- 对 **Vibe Coding** 颇有兴趣
+- 音频发烧友
 
-Shirone aims to combine the warmth of expressive anime aesthetics with the rigor of modern web engineering:
+## ✦ 我正在做的事
 
-- **Dynamic Chromatic Spell**: Full dynamic HCT palette generation responding seamlessly to light/dark modes and user preferences with zero layout shifts.
-- **Seamless Shell Navigation**: Persistent application shell driven by Swup for continuous music playback, smooth page transitions, and preserved state.
-- **Rich Story Grimoire**: Markdown and MDX authoring with KaTeX math, Mermaid diagrams, interactive admonitions, expressive code blocks, and adaptive image galleries.
-- **Zero Extra Burden**: Optional integrations (comments, analytics, music widgets) load dynamically on demand — zero DOM footprint and zero bundle overhead when disabled.
+**Shizako** —— 猫耳看板娘的系统权限助手：免 Root 也能用特权 API，兼容 Shizuku-API 生态，官方 SDK 应用零改动直连。
 
-## ✦ Tech Stack
+::github{repo="cr1437/Shizako"}
 
-- **Framework**: [Astro 7](https://astro.build/) & [Svelte 5](https://svelte.dev/) (Runes-driven islands)
-- **Styling**: [Tailwind CSS 4](https://tailwindcss.com/) & [Stylus](https://stylus-lang.com/)
-- **Design Standard**: [Material 3 Expressive](https://m3.material.io/)
-- **Typography**: Outfit & Yozai (悠哉圆体) with automated build-time subsetting
-- **Search Engine**: [Pagefind](https://pagefind.app/) offline full-text search
+## ✦ 我喜欢的东西
 
-## ✦ Credits
+- 🎮 游戏：Minecraft、吉星派对、重返未来：1999、主播女孩重度依赖
+- 🎧 音乐：VOCALOID、ACG、Kpop、Jpop、R&B
 
-- **Font**: [Yozai Font (悠哉字体)](https://github.com/lxgw/yozai-font) by [lxgw](https://github.com/lxgw)
+## ✦ 联系我
+
+- GitHub：[@cr1437](https://github.com/cr1437)
+- Bilibili：[空间主页](https://space.bilibili.com/2101448217)
+- 邮箱：<churan@outlook.com>

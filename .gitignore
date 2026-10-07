@@ -52,7 +52,8 @@ src/generated/local-icon-collections.ts
 
 # anime snapshot data & downloaded covers
 src/data/anime-snapshots/*.json
-public/assets/anime/covers/*
+# covers committed to repo for this site (no auto-sync needed at deploy)
+# public/assets/anime/covers/*
 !public/assets/anime/covers/.gitkeep
 
 # generated responsive moment thumbnails

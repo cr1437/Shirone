@@ -1,5 +1,5 @@
 /**
- * 友情链接数据配置（结构与 Mizuki 同款，便于互相迁移）。
+ * 友情链接数据配置。
  * 用于管理友情链接页面的数据：src/pages/friends.astro → organisms/FriendSection。
  *
  * 添加友链：在 friendsData 中追加一项即可，页面 / 筛选标签自动生成。
@@ -14,33 +14,8 @@ export interface FriendItem {
 	tags: string[];
 }
 
-// 友情链接数据
-export const friendsData: FriendItem[] = [
-	{
-		id: 1,
-		title: "Mizuki",
-		imgurl: "https://avatars.githubusercontent.com/u/225602409?v=4&s=640",
-		desc: "Another Fuwari-based blog theme with docs",
-		siteurl: "https://mizuki.mysqil.com",
-		tags: ["Blog", "Theme"],
-	},
-	{
-		id: 2,
-		title: "Astro",
-		imgurl: "https://avatars.githubusercontent.com/u/44914786?v=4&s=640",
-		desc: "The web framework for content-driven websites",
-		siteurl: "https://astro.build",
-		tags: ["Framework"],
-	},
-	{
-		id: 3,
-		title: "Material 3",
-		imgurl: "https://avatars.githubusercontent.com/u/19478152?v=4&s=640",
-		desc: "Material Design 3 — the next generation of Material Design",
-		siteurl: "https://m3.material.io",
-		tags: ["Design"],
-	},
-];
+// 友情链接数据（暂未添加，后续在下方数组中追加即可）
+export const friendsData: FriendItem[] = [];
 
 // 获取所有友情链接数据（稳定顺序，测试可复现）
 export function getFriendsList(): FriendItem[] {
