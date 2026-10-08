@@ -173,6 +173,7 @@ export function resolveDisplaySettings(): {
 	layoutMode: boolean;
 	reduceMotion: boolean;
 	texture: boolean;
+	surfaceStyle: boolean;
 } {
 	const cfg = siteConfig.displaySettings;
 	const textureOpts = resolveTextureOptions(
@@ -186,5 +187,6 @@ export function resolveDisplaySettings(): {
 		layoutMode: cfg?.layoutMode ?? true,
 		reduceMotion: cfg?.reduceMotion ?? true,
 		texture: textureOpts.enable && (cfg?.texture ?? true),
+		surfaceStyle: cfg?.surfaceStyle ?? true,
 	};
 }

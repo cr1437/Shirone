@@ -268,7 +268,24 @@ const stylePreviews = $derived(
 
 <div id="display-setting" class="float-panel float-panel-closed absolute transition-all w-80 max-h-[calc(100dvh-5rem)] overflow-y-auto overscroll-contain m3-scroll-contain {className}">
     <PanelStack>
-        <!-- 段一：主题配色（色相 + 风格九宫格 + Color Spec） -->
+        <!-- 段一：界面风格（毛玻璃 / 经典 MD3） -->
+        {#if displayConfig.surfaceStyle}
+            <div class="p-4">
+                <div class="flex flex-col gap-1.5">
+                    <span class="display-settings__section-label">{i18n(I18nKey.surfaceStyle)}</span>
+                    <SegmentedButton
+                        options={[
+                            { value: "md3", label: i18n(I18nKey.surfaceStyleMd3) },
+                            { value: "glass", label: i18n(I18nKey.surfaceStyleGlass) },
+                        ]}
+                        bind:value={surfaceStyle}
+                        label={i18n(I18nKey.surfaceStyle)}
+                    />
+                </div>
+            </div>
+        {/if}
+
+        <!-- 段二：主题配色（色相 + 风格九宫格 + Color Spec） -->
         <div class="p-4 flex flex-col gap-3">
             <div class="flex flex-row gap-2 items-center justify-between">
                 <div class="flex gap-2 font-bold text-lg text-[var(--on-surface)] transition relative ml-3">
@@ -335,8 +352,8 @@ const stylePreviews = $derived(
             {/if}
         </div>
 
-        <!-- 段二：界面布局（页面背景 + 列表布局 + 背景纹理） -->
-        {#if displayConfig.wallpaperMode || displayConfig.layoutMode || displayConfig.texture || displayConfig.surfaceStyle}
+        <!-- 段三：界面布局（页面背景 + 列表布局 + 背景纹理） -->
+        {#if displayConfig.wallpaperMode || displayConfig.layoutMode || displayConfig.texture}
             <div class="p-4 flex flex-col gap-3">
                 {#if displayConfig.wallpaperMode}
                     <div class="flex flex-col gap-1.5">
@@ -379,19 +396,6 @@ const stylePreviews = $derived(
                         />
                     </div>
                 {/if}
-                {#if displayConfig.surfaceStyle}
-                    <div class="flex flex-col gap-1.5">
-                        <span class="display-settings__section-label">{i18n(I18nKey.surfaceStyle)}</span>
-                        <SegmentedButton
-                            options={[
-                                { value: "md3", label: i18n(I18nKey.surfaceStyleMd3) },
-                                { value: "glass", label: i18n(I18nKey.surfaceStyleGlass) },
-                            ]}
-                            bind:value={surfaceStyle}
-                            label={i18n(I18nKey.surfaceStyle)}
-                        />
-                    </div>
-                {/if}
 
                 {#if displayConfig.texture}
                     <div class="flex flex-col gap-2 pt-1">
@@ -418,7 +422,7 @@ const stylePreviews = $derived(
             </div>
         {/if}
 
-        <!-- 段三：动效与体验 -->
+        <!-- 段四：动效与体验 -->
         {#if displayConfig.reduceMotion}
             <div class="p-4 flex items-center justify-between">
                 <div class="flex items-center gap-2">
