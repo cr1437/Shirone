@@ -292,7 +292,7 @@ const hasMonoFont =
 <script>
 import { initLastUpdatedNotices } from "../utils/last-updated-notice";
 import {getHue, getStoredTheme, setHue, setTheme} from "../utils/setting-utils";
-import { WALLPAPER_MODE_CHANGE_EVENT, BANNER_HEIGHT, BANNER_HEIGHT_EXTEND } from "../constants/constants";
+import { WALLPAPER_MODE_CHANGE_EVENT, BANNER_HEIGHT, BANNER_HEIGHT_EXTEND, BANNER_HEIGHT_HOME } from "../constants/constants";
 import { copyPageLink } from "../utils/copy-page-link";
 
 function setClickOutsideToClose(panel: string, ignores: string[]) {
@@ -365,9 +365,10 @@ function scrollFunction() {
 	backToTopBtn?.classList.toggle('hide', scrollTop <= backToTopThreshold);
 	const bannerVisible = document.body.dataset.bannerVisible === 'true';
 	const navbar = document.getElementById('navbar');
-	const bannerStage = document.getElementById('banner-wrapper');
-	const bannerBottom = bannerStage?.getBoundingClientRect().height ?? 0;
-	const overBanner = bannerVisible && scrollTop < Math.max(0, bannerBottom - 64);
+	//滚动驱动横幅：元素高度会随滚动扩展为全屏，这里以「初始预览高度」为稳定基准（65vh），
+	//避免导航栏透明状态随高度增长而永不结束
+	const bannerBase = window.innerHeight * (BANNER_HEIGHT_HOME / 100);
+	const overBanner = bannerVisible && scrollTop < Math.max(0, bannerBase - 64);
 	document.body.dataset.bannerScrolled = String(!overBanner);
 	navbar?.classList.toggle('top-app-bar--transparent', overBanner);
 	navbar?.classList.toggle('top-app-bar--scrolled', scrollTop > 16);

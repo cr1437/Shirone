@@ -995,6 +995,23 @@ const initialMobileBanner = page === "home";
 			&[hidden]
 				display: none
 
+		/*滚动驱动：横幅从顶部「预览」扩展为全屏，并固定为页面背景（滚动时间线驱动，无 JS）。
+		 Chromium / Gecko 支持；不支持或减弱动效的环境保持原行为 */
+		@supports (animation-timeline: scroll())
+			@media (prefers-reduced-motion: no-preference)
+				:global(html:not(.motion-reduced)) .banner-stage
+					position: fixed
+					z-index: 0
+					animation: banner-stage-fill linear both
+					animation-timeline: scroll()
+					animation-range: 0 60vh
+
+		@keyframes banner-stage-fill
+			from
+				height: var(--banner-stage-height)
+			to
+				height: 100vh
+
 		.banner-stage__media,
 		.banner-stage__scrim,
 		.banner-stage__copy
