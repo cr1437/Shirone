@@ -1017,19 +1017,33 @@ const initialMobileBanner = page === "home";
 			document.body.dataset.currentPage === "home"
 		);
 	}
+	function isHeroHomeLayout(): boolean {
+		const html = document.documentElement;
+		return (
+			html.dataset.wallpaperMode === "fullscreen" &&
+			html.dataset.fullscreenLayout === "hero" &&
+			document.body.dataset.currentPage === "home"
+		);
+	}
 	function updateClassicScrollState() {
 		classicScrollTicking = false;
 		const scrollDown = stage?.querySelector<HTMLElement>(
 			"[data-banner-scroll-down]",
 		);
-		if (!isClassicHomeLayout()) {
-			document.body.removeAttribute("data-banner-reveal");
-			scrollDown?.classList.remove("banner-stage__scroll-down--hide");
+		const scrolled = window.scrollY > CLASSIC_SCROLL_REVEAL_THRESHOLD;
+		if (isClassicHomeLayout()) {
+			document.body.toggleAttribute("data-banner-reveal", scrolled);
+			scrollDown?.classList.toggle("banner-stage__scroll-down--hide", scrolled);
 			return;
 		}
-		const scrolled = window.scrollY > CLASSIC_SCROLL_REVEAL_THRESHOLD;
-		document.body.toggleAttribute("data-banner-reveal", scrolled);
-		scrollDown?.classList.toggle("banner-stage__scroll-down--hide", scrolled);
+		// 全屏 hero 首页（移动端显示上滑提示）：滚动后提示淡出，不触碰 reveal
+		if (isHeroHomeLayout()) {
+			document.body.removeAttribute("data-banner-reveal");
+			scrollDown?.classList.toggle("banner-stage__scroll-down--hide", scrolled);
+			return;
+		}
+		document.body.removeAttribute("data-banner-reveal");
+		scrollDown?.classList.remove("banner-stage__scroll-down--hide");
 	}
 	function requestClassicScrollState() {
 		if (classicScrollTicking) return;
@@ -1371,6 +1385,16 @@ const initialMobileBanner = page === "home";
 		pointer-events: none
 	:global(html[data-wallpaper-mode="fullscreen"][data-fullscreen-layout="classic"]) body[data-current-page="home"] .banner-stage__scroll-down
 		display: inline-flex
+	/* 全屏 hero 首页（移动端）：底部上滑提示——箭头翻转朝上 + 向上浮动小动画 */
+	@media (max-width: 1023.98px)
+		:global(html[data-wallpaper-mode="fullscreen"][data-fullscreen-layout="hero"] body[data-current-page="home"]) .banner-stage__scroll-down
+			display: inline-flex
+			> :global(svg)
+				transform: rotate(180deg)
+				animation: none
+	@media (max-width: 1023.98px) and (prefers-reduced-motion: no-preference)
+		:global(html:not(.motion-reduced)[data-wallpaper-mode="fullscreen"][data-fullscreen-layout="hero"] body[data-current-page="home"]) .banner-stage__scroll-down > :global(svg)
+			animation: banner-scroll-up-hint 2.4s var(--m3e-easing-standard) infinite
 	/* 水波纹 / 渐变过渡是横幅底部的过渡装饰：全屏 hero 下无意义（classic 保留） */
 	:global(html[data-wallpaper-mode="fullscreen"][data-fullscreen-layout="hero"] .banner-waves),
 	:global(html[data-wallpaper-mode="fullscreen"][data-fullscreen-layout="hero"] .banner-stage__gradient)
@@ -1386,6 +1410,19 @@ const initialMobileBanner = page === "home";
 			transform: translateY(0)
 		50%
 			transform: translateY(0.5rem)
+	/* 上滑提示：从下方浮现 → 向上滑出并淡出（循环） */
+	@keyframes banner-scroll-up-hint
+		0%
+			transform: rotate(180deg) translateY(-0.35rem)
+			opacity: 0
+		25%
+			opacity: 1
+		60%
+			transform: rotate(180deg) translateY(0.6rem)
+			opacity: 1
+		100%
+			transform: rotate(180deg) translateY(0.6rem)
+			opacity: 0
 
 	@keyframes banner-subtitle-caret
 		0%,
