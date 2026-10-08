@@ -393,3 +393,47 @@ const setup = () => {
 if (window.swup) setup();
 else document.addEventListener("swup:enable", setup);
 </script>
+
+<script>
+// 左下角 Live2D 看板娘（l2d-widget 自托管；模型：大肥鱼 dafeiyu）
+// 懒加载：仅在桌面宽度、页面加载完成后的空闲时段拉取脚本，避免拖慢首屏。
+const LIVE2D_WIDGET_SRC = "/live2d/l2d-widget.min.js";
+const LIVE2D_MODEL_PATH = "/live2d/dafeiyu/c_0120.model3.json";
+const bootLive2D = () => {
+	if (window.__live2dBooted) return;
+	window.__live2dBooted = true;
+	if (window.matchMedia("(max-width: 767px)").matches) return;
+	const script = document.createElement("script");
+	script.src = LIVE2D_WIDGET_SRC;
+	script.async = true;
+	script.onload = () => {
+		const factory = window.L2D_WIDGET;
+		if (!factory || typeof factory.createWidget !== "function") return;
+		factory.createWidget({
+			model: {
+				path: LIVE2D_MODEL_PATH,
+				tips: {
+					welcomeMessage: ["欢迎来到初然的小站！", "嗨～今天过得怎么样？"],
+					messages: ["累了就休息一下吧～", "记得多喝水哦！", "也要记得好好吃饭！"],
+					duration: 4000,
+					interval: 8000,
+				},
+			},
+			position: "bottom-left",
+		});
+	};
+	document.body.appendChild(script);
+};
+const scheduleLive2D = () => {
+	if (typeof window.requestIdleCallback === "function") {
+		window.requestIdleCallback(bootLive2D, { timeout: 4000 });
+	} else {
+		window.setTimeout(bootLive2D, 2500);
+	}
+};
+if (document.readyState === "complete") {
+	scheduleLive2D();
+} else {
+	window.addEventListener("load", scheduleLive2D, { once: true });
+}
+</script>
