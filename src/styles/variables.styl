@@ -166,10 +166,13 @@ define({
   --page-bg: var(--surface-container-low)
   --card-bg: var(--surface-container-lowest)
   --float-panel-bg: var(--surface-container)
+  /* 半透明卡片底色：全屏 hero 模式下由 :root[data-card-transparent="true"] 切换使用 */
+  --card-bg-transparent: unquote("color-mix(in srgb, var(--surface-container-lowest) calc(var(--card-transparent-opacity, 0.6) * 100%), transparent)")
 :root.dark
   --page-bg: var(--surface)
   --card-bg: var(--surface-container-high)
   --float-panel-bg: var(--surface-container)
+  --card-bg-transparent: unquote("color-mix(in srgb, var(--surface-container-high) calc(var(--card-transparent-opacity, 0.6) * 100%), transparent)")
 
 /* ============================================================
    M3E 响应式 / 间距 / 密度令牌

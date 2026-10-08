@@ -83,6 +83,8 @@ const lightTheme =
 	expressiveCodeConfig.lightTheme ?? expressiveCodeConfig.theme;
 const darkTheme = expressiveCodeConfig.darkTheme ?? expressiveCodeConfig.theme;
 const defaultWallpaperMode = siteConfig.wallpaperMode.defaultMode;
+const defaultFullscreenLayout =
+	siteConfig.wallpaperMode.fullscreen?.layout === "hero" ? "hero" : "classic";
 const textureOptions = resolveTextureOptions();
 const defaultTexturePreset = textureOptions.defaultPreset;
 const defaultTextureOpacity = textureOptions.defaultOpacity;
@@ -162,7 +164,7 @@ const hasMonoFont =
 			/>
 		))}
 
-		<script is:inline define:vars={{DEFAULT_THEME, LIGHT_MODE, DARK_MODE, AUTO_MODE, BANNER_HEIGHT_EXTEND, configHue, lightTheme, darkTheme, defaultWallpaperMode, defaultTexturePreset, defaultTextureOpacity, textureEnabled}}>
+		<script is:inline define:vars={{DEFAULT_THEME, LIGHT_MODE, DARK_MODE, AUTO_MODE, BANNER_HEIGHT_EXTEND, configHue, lightTheme, darkTheme, defaultWallpaperMode, defaultFullscreenLayout, defaultTexturePreset, defaultTextureOpacity, textureEnabled}}>
 			const theme = localStorage.getItem('theme') || DEFAULT_THEME;
 			let isDark = false;
 			switch (theme) {
@@ -189,10 +191,19 @@ const hasMonoFont =
 				document.documentElement.classList.add('motion-reduced');
 			}
 			const storedWallpaperMode = localStorage.getItem('wallpaper-mode');
-			const wallpaperMode = storedWallpaperMode === 'banner' || storedWallpaperMode === 'none'
+			const wallpaperMode = ['banner', 'none', 'fullscreen'].includes(storedWallpaperMode)
 				? storedWallpaperMode
 				: defaultWallpaperMode;
 			document.documentElement.dataset.wallpaperMode = wallpaperMode;
+			// 全屏壁纸布局（classic / hero）与半透明卡片开关：首帧前同步，避免闪烁
+			const storedFullscreenLayout = localStorage.getItem('wallpaper-fullscreen-layout');
+			const fullscreenLayout = storedFullscreenLayout === 'hero' || storedFullscreenLayout === 'classic'
+				? storedFullscreenLayout
+				: defaultFullscreenLayout;
+			document.documentElement.dataset.fullscreenLayout = fullscreenLayout;
+			document.documentElement.dataset.cardTransparent = String(
+				wallpaperMode === 'fullscreen' && fullscreenLayout === 'hero',
+			);
 			const storedSurfaceStyle = localStorage.getItem('surface-style');
 			const surfaceStyle = storedSurfaceStyle === 'md3' || storedSurfaceStyle === 'glass'
 				? storedSurfaceStyle
@@ -252,6 +263,9 @@ const hasMonoFont =
 
 <style lang="stylus" is:global>
 @import "../styles/variables.styl"
+/* 全屏 hero 模式：卡片底色切换为半透明令牌（未分层样式，确保级联层优先） */
+:root[data-card-transparent="true"]
+	--card-bg: var(--card-bg-transparent)
 </style>
 
 <style is:global define:vars={{
@@ -271,11 +285,20 @@ const hasMonoFont =
 		}
 		body[data-banner-layout="banner"] #main-layout { top: var(--banner-content-top); }
 		body[data-banner-layout="banner"] #top-row { height: calc(var(--banner-stage-height) - 4.5rem); }
+		/* 全屏壁纸（hero / classic）：首页内容推到首屏之下，壁纸充当开场画面 */
+		html[data-wallpaper-mode="fullscreen"][data-fullscreen-layout="hero"] body[data-current-page="home"] #main-layout { top: 100vh; top: 100lvh; }
+		html[data-wallpaper-mode="fullscreen"][data-fullscreen-layout="classic"] body[data-current-page="home"] #main-layout { top: 100vh; top: 100lvh; }
 		.navbar-hidden { opacity: 0; transform: translateY(-4rem); }
 	}
 	@media (min-width: 1024px) {
 		html[data-wallpaper-mode="banner"] body[data-banner-has-desktop="true"] #main-layout { top: var(--banner-content-top); }
 		html[data-wallpaper-mode="banner"] body[data-banner-has-desktop="true"] #top-row { height: calc(var(--banner-stage-height) - 4.5rem); }
+		/* 全屏壁纸 classic 非首页：桌面端内容下移到横幅条带之下（45vh 档） */
+		html[data-wallpaper-mode="fullscreen"][data-fullscreen-layout="classic"] body:not([data-current-page="home"]) #main-layout { top: var(--banner-content-top); }
+		html[data-wallpaper-mode="fullscreen"][data-fullscreen-layout="classic"] body:not([data-current-page="home"]) {
+			--banner-stage-height: max(45vh, 380px);
+			--banner-content-top: calc(max(45vh, 380px) - var(--banner-panel-overlap));
+		}
 	}
 	@media (max-width: 1023.98px) {
 		:root { --banner-stage-height: max(70vh, 28rem); }
@@ -292,7 +315,7 @@ const hasMonoFont =
 <script>
 import { initLastUpdatedNotices } from "../utils/last-updated-notice";
 import {getHue, getStoredTheme, setHue, setTheme} from "../utils/setting-utils";
-import { WALLPAPER_MODE_CHANGE_EVENT, BANNER_HEIGHT, BANNER_HEIGHT_EXTEND, BANNER_HEIGHT_HOME } from "../constants/constants";
+import { WALLPAPER_MODE_CHANGE_EVENT, WALLPAPER_FULLSCREEN_LAYOUT_CHANGE_EVENT, BANNER_HEIGHT, BANNER_HEIGHT_EXTEND } from "../constants/constants";
 import { copyPageLink } from "../utils/copy-page-link";
 
 function setClickOutsideToClose(panel: string, ignores: string[]) {
@@ -359,19 +382,34 @@ if (window.swup?.hooks) setup();
 else document.addEventListener('swup:enable', setup, { once: true });
 
 const backToTopBtn = document.getElementById('back-to-top-btn');
+// 全屏 hero 首页：顶部壁纸清晰，滚向内容区渐进到背景模糊度。
+// 仅在 全屏+hero+首页 时写 --wallpaper-blur-progress，其余场景移除避免残留
+function updateWallpaperBlurProgress() {
+	const html = document.documentElement;
+	if (
+		html.dataset.wallpaperMode !== 'fullscreen' ||
+		html.dataset.fullscreenLayout !== 'hero' ||
+		document.body.dataset.currentPage !== 'home'
+	) {
+		html.style.removeProperty('--wallpaper-blur-progress');
+		return;
+	}
+	const progress = Math.min(1, Math.max(0, window.scrollY / (window.innerHeight * 0.8)));
+	html.style.setProperty('--wallpaper-blur-progress', progress.toFixed(3));
+}
 function scrollFunction() {
 	const scrollTop = Math.max(document.body.scrollTop, document.documentElement.scrollTop);
 	const backToTopThreshold = window.innerHeight * (BANNER_HEIGHT / 100);
 	backToTopBtn?.classList.toggle('hide', scrollTop <= backToTopThreshold);
 	const bannerVisible = document.body.dataset.bannerVisible === 'true';
 	const navbar = document.getElementById('navbar');
-	//滚动驱动横幅：元素高度会随滚动扩展为全屏，这里以「初始预览高度」为稳定基准（65vh），
-	//避免导航栏透明状态随高度增长而永不结束
-	const bannerBase = window.innerHeight * (BANNER_HEIGHT_HOME / 100);
-	const overBanner = bannerVisible && scrollTop < Math.max(0, bannerBase - 64);
+	const bannerStage = document.getElementById('banner-wrapper');
+	const bannerBottom = bannerStage?.getBoundingClientRect().height ?? 0;
+	const overBanner = bannerVisible && scrollTop < Math.max(0, bannerBottom - 64);
 	document.body.dataset.bannerScrolled = String(!overBanner);
 	navbar?.classList.toggle('top-app-bar--transparent', overBanner);
 	navbar?.classList.toggle('top-app-bar--scrolled', scrollTop > 16);
+	updateWallpaperBlurProgress();
 }
 window.addEventListener('scroll', scrollFunction, { passive: true });
 window.addEventListener('resize', () => {
@@ -382,6 +420,7 @@ window.addEventListener('resize', () => {
 });
 new MutationObserver(scrollFunction).observe(document.body, { attributes: true, attributeFilter: ['data-banner-visible', 'data-banner-layout'] });
 window.addEventListener(WALLPAPER_MODE_CHANGE_EVENT, () => requestAnimationFrame(scrollFunction));
+window.addEventListener(WALLPAPER_FULLSCREEN_LAYOUT_CHANGE_EVENT, () => requestAnimationFrame(scrollFunction));
 document.addEventListener('swup:page:view', scrollFunction);
 scrollFunction();
 </script>

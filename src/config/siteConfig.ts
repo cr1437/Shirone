@@ -34,8 +34,14 @@ export const siteConfig: SiteConfig = withUserConfig("site", {
 		style: "tonalSpot",
 		spec: "2025",
 	},
+	// 默认页面背景模式："fullscreen" 全屏壁纸 / "banner" 横幅 / "none" 纯色。
+	// 访客在「显示设置」中的选择会保存在浏览器中，并覆盖这里的默认值。
 	wallpaperMode: {
-		defaultMode: "banner",
+		defaultMode: "fullscreen",
+		// 全屏壁纸模式默认布局：classic（壁纸随页滚动）/ hero（壁纸固定整屏）
+		fullscreen: {
+			layout: "hero",
+		},
 	},
 	texture: {
 		enable: true,

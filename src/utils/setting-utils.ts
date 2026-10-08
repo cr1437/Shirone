@@ -9,12 +9,20 @@ import {
 	TEXTURE_PRESET_KEY,
 	TEXTURE_PRESETS,
 	THEME_CHANGE_EVENT,
+	WALLPAPER_FULLSCREEN_LAYOUT_CHANGE_EVENT,
+	WALLPAPER_FULLSCREEN_LAYOUT_KEY,
 	WALLPAPER_MODE_CHANGE_EVENT,
 	WALLPAPER_MODE_KEY,
 } from "@constants/constants.ts";
 import { applyCurrentScheme } from "@utils/theme-utils";
+import { prefersReducedMotion } from "@utils/motion";
 import { expressiveCodeConfig, siteConfig } from "@/config";
-import type { LIGHT_DARK_MODE, SurfaceStyle, WallpaperMode } from "@/types/config";
+import type {
+	FullscreenWallpaperLayout,
+	LIGHT_DARK_MODE,
+	SurfaceStyle,
+	WallpaperMode,
+} from "@/types/config";
 import type { TexturePreset } from "@/types/textureConfig";
 
 export function isTexturePreset(value: unknown): value is TexturePreset {
@@ -89,7 +97,11 @@ export function setTextureOpacity(opacity: number): void {
 }
 
 export function isWallpaperMode(value: unknown): value is WallpaperMode {
-	return value === "banner" || value === "none";
+	return (
+		value === "banner" ||
+		value === "none" ||
+		value === "fullscreen"
+	);
 }
 
 export function getDefaultWallpaperMode(): WallpaperMode {
@@ -103,12 +115,88 @@ export function getStoredWallpaperMode(): WallpaperMode {
 	return isWallpaperMode(value) ? value : getDefaultWallpaperMode();
 }
 
+/** 当前模式是否使用半透明卡片（fullscreen 仅 hero 布局） */
+function isTransparentCardMode(mode: WallpaperMode): boolean {
+	return (
+		mode === "fullscreen" &&
+		document.documentElement.dataset.fullscreenLayout === "hero"
+	);
+}
+
+/** 按当前模式与 fullscreen 布局同步 <html> 的半透明卡片开关（CSS 据此切换卡片底色） */
+function syncWallpaperTransparentClass(mode: WallpaperMode): void {
+	document.documentElement.dataset.cardTransparent = String(
+		isTransparentCardMode(mode),
+	);
+}
+
+// 壁纸模式 / 布局切换的几何平滑过渡窗口：切换期间舞台全程可见，
+// 仅窗口内启用高度 / 透明度与图片 scale-blur 过渡（避免闪白与尺寸跳变）。
+const WALLPAPER_SWITCH_TRANSITION_MS = 520;
+let wallpaperSwitchTimer: number | undefined;
+export function beginWallpaperSwitchWindow(): void {
+	document.documentElement.dataset.wallpaperSwitching = "true";
+	window.clearTimeout(wallpaperSwitchTimer);
+	if (prefersReducedMotion()) {
+		delete document.documentElement.dataset.wallpaperSwitching;
+		wallpaperSwitchTimer = undefined;
+		return;
+	}
+	wallpaperSwitchTimer = window.setTimeout(() => {
+		wallpaperSwitchTimer = undefined;
+		delete document.documentElement.dataset.wallpaperSwitching;
+	}, WALLPAPER_SWITCH_TRANSITION_MS);
+}
+function applyWallpaperChangeWithFade(apply: () => void): void {
+	beginWallpaperSwitchWindow();
+	apply();
+}
+export function applyWallpaperModeToDocument(mode: WallpaperMode): void {
+	applyWallpaperChangeWithFade(() => {
+		document.documentElement.dataset.wallpaperMode = mode;
+		syncWallpaperTransparentClass(mode);
+		window.dispatchEvent(
+			new CustomEvent(WALLPAPER_MODE_CHANGE_EVENT, { detail: { mode } }),
+		);
+	});
+}
 export function setWallpaperMode(mode: WallpaperMode): void {
 	localStorage.setItem(WALLPAPER_MODE_KEY, mode);
-	document.documentElement.dataset.wallpaperMode = mode;
-	window.dispatchEvent(
-		new CustomEvent(WALLPAPER_MODE_CHANGE_EVENT, { detail: { mode } }),
+	applyWallpaperModeToDocument(mode);
+}
+// 全屏壁纸布局（classic / hero）
+export function getDefaultFullscreenLayout(): FullscreenWallpaperLayout {
+	return siteConfig.wallpaperMode.fullscreen?.layout === "hero"
+		? "hero"
+		: "classic";
+}
+export function getStoredFullscreenLayout(): FullscreenWallpaperLayout {
+	const value = localStorage.getItem(WALLPAPER_FULLSCREEN_LAYOUT_KEY);
+	return value === "hero" || value === "classic"
+		? value
+		: getDefaultFullscreenLayout();
+}
+export function applyFullscreenLayoutToDocument(
+	layout: FullscreenWallpaperLayout,
+): void {
+	const safeLayout = layout === "hero" ? "hero" : "classic";
+	applyWallpaperChangeWithFade(() => {
+		document.documentElement.dataset.fullscreenLayout = safeLayout;
+		// hero 布局在 fullscreen 模式下使用半透明卡片，需重新同步
+		syncWallpaperTransparentClass(getStoredWallpaperMode());
+		window.dispatchEvent(
+			new CustomEvent(WALLPAPER_FULLSCREEN_LAYOUT_CHANGE_EVENT, {
+				detail: { layout: safeLayout },
+			}),
+		);
+	});
+}
+export function setFullscreenLayout(layout: FullscreenWallpaperLayout): void {
+	localStorage.setItem(
+		WALLPAPER_FULLSCREEN_LAYOUT_KEY,
+		layout === "hero" ? "hero" : "classic",
 	);
+	applyFullscreenLayoutToDocument(layout);
 }
 
 export function isSurfaceStyle(value: unknown): value is SurfaceStyle {

@@ -249,6 +249,17 @@ const initialMobileBanner = page === "home";
 		</div>
 	</div>
 	{siteConfig.banner.waves.enable && <BannerWaves />}
+	<div class="banner-stage__gradient" aria-hidden="true"></div>
+	{page === "home" && (
+		<button
+			type="button"
+			class="banner-stage__scroll-down"
+			data-banner-scroll-down
+			aria-label="向下滚动查看内容"
+		>
+			<Icon name="material-symbols:keyboard-arrow-down-rounded" aria-hidden="true" />
+		</button>
+	)}
 </section>
 
 <script>
@@ -263,8 +274,16 @@ const initialMobileBanner = page === "home";
 		EASING_DECELERATE,
 		prefersReducedMotion,
 	} from "@utils/motion";
-	import { getStoredWallpaperMode } from "@utils/setting-utils";
-	import { WALLPAPER_MODE_CHANGE_EVENT, THEME_CHANGE_EVENT } from "@constants/constants";
+	import {
+	beginWallpaperSwitchWindow,
+	getStoredFullscreenLayout,
+	getStoredWallpaperMode,
+} from "@utils/setting-utils";
+	import {
+	WALLPAPER_FULLSCREEN_LAYOUT_CHANGE_EVENT,
+	WALLPAPER_MODE_CHANGE_EVENT,
+	THEME_CHANGE_EVENT,
+} from "@constants/constants";
 	import type { SidebarPage } from "@/types/sidebarConfig";
 
 	interface BannerRuntime {
@@ -885,13 +904,16 @@ const initialMobileBanner = page === "home";
 		runtime.activeTheme = currentTheme;
 
 		const page = pageOverride ?? currentPage();
+		const context = contextOverride ?? readContext();
 		const state = resolveBannerState({
 			mode: getStoredWallpaperMode(),
+			fullscreenLayout: getStoredFullscreenLayout(),
 			page,
 			viewport,
 			imageCount: images.length,
 			carouselEnabled: stage.dataset.carouselEnabled === "true",
 			reducedMotion: prefersReducedMotion(),
+			contextTitle: context.title,
 		});
 
 		document.body.dataset.currentPage = page || "";
@@ -900,7 +922,7 @@ const initialMobileBanner = page === "home";
 		document.body.dataset.bannerTopAppBar = String(state.transparentTopAppBar);
 		stage.hidden = !state.visible;
 		const hasContext =
-			state.copyMode === "context" && syncContext(contextOverride ?? readContext());
+			state.copyMode === "context" && syncContext(context);
 		const copyMode = state.copyMode === "home" ? "home" : hasContext ? "context" : "none";
 		stage.dataset.copyMode = copyMode;
 		stage.setAttribute(
@@ -932,24 +954,130 @@ const initialMobileBanner = page === "home";
 		else stopRotation();
 	}
 
+	// ---------------------------------------------------------------------
+	// 全屏壁纸 hero 布局：横幅文案随滚动平滑上移并淡出（与上游实现一致）。
+	// 其余模式一律复位，交还 CSS 控制。
+	// ---------------------------------------------------------------------
+	const HERO_TITLE_FADE_RATIO = 0.5;
+	let heroParallaxTicking = false;
+	let lastHeroTransform = "";
+	let lastHeroOpacity = "";
+	function isHeroTitleParallaxActive(): boolean {
+		const html = document.documentElement;
+		return (
+			html.dataset.wallpaperMode === "fullscreen" &&
+			html.dataset.fullscreenLayout === "hero"
+		);
+	}
+	/** 记忆化写入：值未变化时跳过合成层属性的逐帧更新 */
+	function applyHeroTitleParallax(transform: string, opacity: string) {
+		if (transform === lastHeroTransform && opacity === lastHeroOpacity) return;
+		lastHeroTransform = transform;
+		lastHeroOpacity = opacity;
+		const homeCopy = stage?.querySelector<HTMLElement>("[data-banner-home-copy]");
+		if (homeCopy) {
+			homeCopy.style.transform = transform;
+			homeCopy.style.opacity = opacity;
+		}
+		const contextCopy = stage?.querySelector<HTMLElement>("[data-banner-context]");
+		if (contextCopy) {
+			contextCopy.style.transform = transform
+				? `translate(-50%, -50%) ${transform}`
+				: "";
+			contextCopy.style.opacity = opacity;
+		}
+	}
+	function updateHeroTitleParallax() {
+		heroParallaxTicking = false;
+		if (!isHeroTitleParallaxActive()) {
+			applyHeroTitleParallax("", "");
+			return;
+		}
+		const scrollY = window.scrollY;
+		const fadeScroll = Math.max(window.innerHeight * HERO_TITLE_FADE_RATIO, 1);
+		const ratio = Math.min(scrollY / fadeScroll, 1);
+		applyHeroTitleParallax(`translateY(${-scrollY}px)`, String(1 - ratio));
+	}
+	function requestHeroTitleParallax() {
+		if (heroParallaxTicking) return;
+		heroParallaxTicking = true;
+		window.requestAnimationFrame(updateHeroTitleParallax);
+	}
+	// ---------------------------------------------------------------------
+	// 全屏壁纸 classic 布局：滚过阈值后下滑箭头淡出，body[data-banner-reveal]
+	// 驱动波浪 / 渐变淡入；其余模式一律复位。
+	// ---------------------------------------------------------------------
+	const CLASSIC_SCROLL_REVEAL_THRESHOLD = 100;
+	let classicScrollTicking = false;
+	function isClassicHomeLayout(): boolean {
+		const html = document.documentElement;
+		return (
+			html.dataset.wallpaperMode === "fullscreen" &&
+			html.dataset.fullscreenLayout === "classic" &&
+			document.body.dataset.currentPage === "home"
+		);
+	}
+	function updateClassicScrollState() {
+		classicScrollTicking = false;
+		const scrollDown = stage?.querySelector<HTMLElement>(
+			"[data-banner-scroll-down]",
+		);
+		if (!isClassicHomeLayout()) {
+			document.body.removeAttribute("data-banner-reveal");
+			scrollDown?.classList.remove("banner-stage__scroll-down--hide");
+			return;
+		}
+		const scrolled = window.scrollY > CLASSIC_SCROLL_REVEAL_THRESHOLD;
+		document.body.toggleAttribute("data-banner-reveal", scrolled);
+		scrollDown?.classList.toggle("banner-stage__scroll-down--hide", scrolled);
+	}
+	function requestClassicScrollState() {
+		if (classicScrollTicking) return;
+		classicScrollTicking = true;
+		window.requestAnimationFrame(updateClassicScrollState);
+	}
 	function scheduleNavigationSync(animateIn = false) {
 		if (runtime.navigationSyncFrame !== null) {
 			window.cancelAnimationFrame(runtime.navigationSyncFrame);
 		}
 		runtime.navigationSyncFrame = window.requestAnimationFrame(() => {
 			runtime.navigationSyncFrame = null;
+			// Swup 切页时页面属性变化会重算 --banner-stage-height；先打开几何过渡窗口再落位
+			beginWallpaperSwitchWindow();
 			syncBanner();
+			updateHeroTitleParallax();
 			if (animateIn) animateContextIn();
 		});
 	}
 
 	if (stage) {
 		syncBanner();
+		updateHeroTitleParallax();
+		updateClassicScrollState();
 		if (!window.__shironeBannerBound) {
 			window.__shironeBannerBound = true;
 			window.addEventListener(WALLPAPER_MODE_CHANGE_EVENT, () => syncBanner());
+			window.addEventListener(WALLPAPER_FULLSCREEN_LAYOUT_CHANGE_EVENT, () => syncBanner());
 			window.addEventListener(THEME_CHANGE_EVENT, () => syncBanner());
+			window.addEventListener(
+				"scroll",
+				() => {
+					requestHeroTitleParallax();
+					requestClassicScrollState();
+				},
+				{ passive: true },
+			);
+			window.addEventListener(WALLPAPER_MODE_CHANGE_EVENT, () => {
+				requestHeroTitleParallax();
+				requestClassicScrollState();
+			});
+			window.addEventListener(WALLPAPER_FULLSCREEN_LAYOUT_CHANGE_EVENT, () => {
+				requestHeroTitleParallax();
+				requestClassicScrollState();
+			});
 			window.addEventListener("resize", () => {
+				requestHeroTitleParallax();
+				requestClassicScrollState();
 				if (currentViewport() === "desktop" && stage?.hidden === false) {
 					scheduleContextTitleFit();
 				}
@@ -978,6 +1106,19 @@ const initialMobileBanner = page === "home";
 			});
 			document.addEventListener("swup:page:view", () => {
 				scheduleNavigationSync(true);
+				requestClassicScrollState();
+			});
+			// 下滑箭头点击：平滑滚动到内容区（事件委托，箭头随页面 SSR 常驻）
+			stage.addEventListener("click", (event) => {
+				const target = event.target as Element | null;
+				if (!target?.closest("[data-banner-scroll-down]")) return;
+				const main = document.getElementById("main-layout");
+				if (!main) return;
+				const headerHeight =
+					document.querySelector(".top-app-bar")?.getBoundingClientRect().height ??
+					64;
+				const top = main.getBoundingClientRect().top + window.scrollY - headerHeight;
+				window.scrollTo({ top, behavior: "smooth" });
 			});
 			document.fonts?.ready.then(scheduleContextTitleFit);
 		}
@@ -990,27 +1131,12 @@ const initialMobileBanner = page === "home";
 			inset: 0 0 auto
 			height: var(--banner-stage-height)
 			overflow: hidden
-			background: var(--surface-container-lowest)
+			/* 底色对齐页面背景：模式切换期间舞台全程可见不闪白 */
+			background: var(--page-bg)
+			transition: opacity var(--m3e-duration-short) var(--m3e-easing-standard)
 
 			&[hidden]
 				display: none
-
-		/*滚动驱动：横幅从顶部「预览」扩展为全屏，并固定为页面背景（滚动时间线驱动，无 JS）。
-		 Chromium / Gecko 支持；不支持或减弱动效的环境保持原行为 */
-		@supports (animation-timeline: scroll())
-			@media (prefers-reduced-motion: no-preference)
-				:global(html:not(.motion-reduced)) .banner-stage
-					position: fixed
-					z-index: 0
-					animation: banner-stage-fill linear both
-					animation-timeline: scroll()
-					animation-range: 0 60vh
-
-		@keyframes banner-stage-fill
-			from
-				height: var(--banner-stage-height)
-			to
-				height: 100vh
 
 		.banner-stage__media,
 		.banner-stage__scrim,
@@ -1160,6 +1286,107 @@ const initialMobileBanner = page === "home";
 			&__copy p
 				font-size: 1.125rem
 
+	/* ============================================================
+	   全屏壁纸（fullscreen）：hero 固定整屏 / classic 随页滚动
+	   ============================================================ */
+	.banner-stage__gradient
+		position: absolute
+		z-index: 3
+		inset: auto 0 0
+		height: clamp(4rem, 12vh, 10rem)
+		background: linear-gradient(to bottom, transparent, var(--page-bg))
+		pointer-events: none
+	/* 全屏 hero 布局：壁纸固定整屏，内容滚动其上；非首页按背景模糊度虚化。
+	   z-index 必须为 0（不能为负）：负 z 会把舞台画到 body 文档流盒子之下，
+	   点击会先落在 body 上——壁纸里的链接永远收不到点击；置 0 后舞台仍在所有正 z
+	   内容（#top-row z-50 / #main-layout z-30 / FAB z-45）之下，层级不受影响 */
+	:global(html[data-wallpaper-mode="fullscreen"][data-fullscreen-layout="hero"]) .banner-stage
+		position: fixed
+		inset: 0
+		height: 100vh
+		height: 100lvh
+		z-index: 0
+		pointer-events: none
+	:global(html[data-wallpaper-mode="fullscreen"]) .banner-stage__image
+		transform: scale(1.05)
+	/* 全屏 hero：非首页保持整屏虚化；首页顶部清晰，滚动趋向内容区渐进模糊 */
+	:global(html[data-wallpaper-mode="fullscreen"][data-fullscreen-layout="hero"] body:not([data-current-page="home"])) .banner-stage__image
+		filter: blur(var(--overlay-blur, 10px))
+	:global(html[data-wallpaper-mode="fullscreen"][data-fullscreen-layout="hero"] body[data-current-page="home"]) .banner-stage__image
+		filter: blur(calc(var(--overlay-blur, 10px) * var(--wallpaper-blur-progress, 0)))
+	/* 全屏 classic 布局：壁纸随页滚动；首页整屏，非首页与横幅模式一致（桌面横幅条带） */
+	:global(html[data-wallpaper-mode="fullscreen"][data-fullscreen-layout="classic"]) .banner-stage
+		position: absolute
+		pointer-events: none
+	:global(html[data-wallpaper-mode="fullscreen"][data-fullscreen-layout="classic"] body[data-current-page="home"]) .banner-stage
+		height: 100vh
+		height: 100lvh
+	@media (max-width: 1023.98px)
+		:global(html[data-wallpaper-mode="fullscreen"][data-fullscreen-layout="classic"] body:not([data-current-page="home"])) .banner-stage
+			display: none
+	/* classic 首页：首屏底部只留下滑箭头，水波纹 / 渐变滚动后才淡入 */
+	:global(html[data-wallpaper-mode="fullscreen"][data-fullscreen-layout="classic"] body[data-current-page="home"] .banner-waves),
+	:global(html[data-wallpaper-mode="fullscreen"][data-fullscreen-layout="classic"] body[data-current-page="home"]) .banner-stage__gradient
+		opacity: 0
+		transition: opacity var(--m3e-duration-long) var(--m3e-easing-standard)
+	:global(html[data-wallpaper-mode="fullscreen"][data-fullscreen-layout="classic"] body[data-current-page="home"][data-banner-reveal] .banner-waves),
+	:global(html[data-wallpaper-mode="fullscreen"][data-fullscreen-layout="classic"] body[data-current-page="home"][data-banner-reveal]) .banner-stage__gradient
+		opacity: 1
+	/* 非首页横幅变矮（45vh 档）：标题字号对齐页面标题尺度（classic 布局） */
+	:global(html[data-wallpaper-mode="fullscreen"][data-fullscreen-layout="classic"] body:not([data-current-page="home"])) .banner-stage__context-title
+		font-size: clamp(2rem, 4vw, 3rem)
+	/* 下滑箭头：仅全屏 classic 首页显示；滚过阈值后由脚本加 --hide 淡出 */
+	.banner-stage__scroll-down
+		display: none
+		position: absolute
+		bottom: 3rem
+		left: 50%
+		z-index: 4
+		padding: 0.25rem
+		border: 0
+		background: transparent
+		color: rgba(255, 255, 255, 0.85)
+		cursor: pointer
+		pointer-events: auto
+		transform: translateX(-50%)
+		transition:
+			opacity var(--m3e-duration-medium) var(--m3e-easing-standard),
+			visibility var(--m3e-duration-medium) var(--m3e-easing-standard),
+			color var(--m3e-duration-short) var(--m3e-easing-standard)
+		> :global(svg)
+			display: block
+			width: 3.5rem
+			height: 3.5rem
+			filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.35))
+			animation: banner-scroll-down-bounce 2s var(--m3e-easing-standard) infinite
+		&:hover
+			color: #fff
+		&:focus-visible
+			border-radius: var(--shape-corner-full)
+			outline: 2px solid rgba(255, 255, 255, 0.9)
+			outline-offset: 2px
+	.banner-stage__scroll-down--hide
+		opacity: 0
+		visibility: hidden
+		pointer-events: none
+	:global(html[data-wallpaper-mode="fullscreen"][data-fullscreen-layout="classic"]) body[data-current-page="home"] .banner-stage__scroll-down
+		display: inline-flex
+	/* 水波纹 / 渐变过渡是横幅底部的过渡装饰：全屏 hero 下无意义（classic 保留） */
+	:global(html[data-wallpaper-mode="fullscreen"][data-fullscreen-layout="hero"] .banner-waves),
+	:global(html[data-wallpaper-mode="fullscreen"][data-fullscreen-layout="hero"] .banner-stage__gradient)
+		display: none !important
+	/* 壁纸模式 / 布局切换窗口：舞台平滑过渡高度 / 透明度与图片 scale-blur */
+	:global(html[data-wallpaper-switching]) .banner-stage
+		transition: height var(--m3e-duration-long) var(--m3e-easing-standard), opacity var(--m3e-duration-long) var(--m3e-easing-standard)
+	:global(html[data-wallpaper-switching]) .banner-stage__image
+		transition: transform var(--m3e-duration-long) var(--m3e-easing-standard), filter var(--m3e-duration-long) var(--m3e-easing-standard), opacity var(--banner-fade-duration, 1200ms) var(--m3e-easing-standard)
+	@keyframes banner-scroll-down-bounce
+		0%,
+		100%
+			transform: translateY(0)
+		50%
+			transform: translateY(0.5rem)
+
 	@keyframes banner-subtitle-caret
 		0%,
 		49%
@@ -1168,14 +1395,18 @@ const initialMobileBanner = page === "home";
 		100%
 			opacity: 0
 
+	:global(html.motion-reduced) .banner-stage,
 	:global(html.motion-reduced) .banner-stage__image,
-	:global(html.motion-reduced) .banner-stage__copy p[data-subtitle-state="typing"]::after
+	:global(html.motion-reduced) .banner-stage__copy p[data-subtitle-state="typing"]::after,
+	:global(html.motion-reduced) .banner-stage__scroll-down > :global(svg)
 		transition: none
 		animation: none
 
 	@media (prefers-reduced-motion: reduce)
+		.banner-stage,
 		.banner-stage__image,
-		.banner-stage__copy p[data-subtitle-state="typing"]::after
+		.banner-stage__copy p[data-subtitle-state="typing"]::after,
+		.banner-stage__scroll-down > :global(svg)
 			transition: none
 			animation: none
 </style>

@@ -262,6 +262,11 @@ enum I18nKey {
 	wallpaperMode = "wallpaperMode",
 	wallpaperModeBanner = "wallpaperModeBanner",
 	wallpaperModeNone = "wallpaperModeNone",
+	wallpaperModeFullscreen = "wallpaperModeFullscreen",
+	// 全屏壁纸布局
+	fullscreenLayout = "fullscreenLayout",
+	fullscreenLayoutClassic = "fullscreenLayoutClassic",
+	fullscreenLayoutHero = "fullscreenLayoutHero",
 
 	texturePreset = "texturePreset",
 	texturePresetNone = "texturePresetNone",

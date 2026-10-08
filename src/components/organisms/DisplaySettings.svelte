@@ -22,15 +22,18 @@ import {
 	resolveScheme,
 } from "@utils/mc-utils";
 import {
+	getDefaultFullscreenLayout,
 	getDefaultHue,
 	getDefaultTextureOpacity,
 	getDefaultTexturePreset,
 	getHue,
 	getMotionPreference,
+	getStoredFullscreenLayout,
 	getStoredSurfaceStyle,
 	getStoredTextureOpacity,
 	getStoredTexturePreset,
 	getStoredWallpaperMode,
+	setFullscreenLayout,
 	setHue,
 	setMotionPreference,
 	setSurfaceStyle,
@@ -46,7 +49,11 @@ import {
 	resolveDisplaySettings,
 	siteConfig,
 } from "@/config";
-import type { SurfaceStyle, WallpaperMode } from "@/types/config";
+import type {
+	FullscreenWallpaperLayout,
+	SurfaceStyle,
+	WallpaperMode,
+} from "@/types/config";
 import type { PostListMode } from "@/types/postListConfig";
 import type { TexturePreset } from "@/types/textureConfig";
 
@@ -74,6 +81,11 @@ let lastAppliedMode = postListMode;
 const defaultWallpaperMode = siteConfig.wallpaperMode.defaultMode;
 let wallpaperMode = $state<WallpaperMode>(getStoredWallpaperMode());
 let lastAppliedWallpaperMode = wallpaperMode;
+const defaultFullscreenLayout = getDefaultFullscreenLayout();
+let fullscreenLayout = $state<FullscreenWallpaperLayout>(
+	getStoredFullscreenLayout(),
+);
+let lastAppliedFullscreenLayout = fullscreenLayout;
 let surfaceStyle = $state<SurfaceStyle>(getStoredSurfaceStyle());
 let lastAppliedSurfaceStyle = surfaceStyle;
 
@@ -141,6 +153,7 @@ function confirmReset() {
 	spec = defaultSpec;
 	postListMode = defaultLayoutMode;
 	wallpaperMode = defaultWallpaperMode;
+	fullscreenLayout = defaultFullscreenLayout;
 	texturePreset = defaultTexturePreset;
 	textureOpacity = defaultTextureOpacity;
 }
@@ -152,6 +165,7 @@ const isDirty = $derived(
 		spec !== defaultSpec ||
 		postListMode !== defaultLayoutMode ||
 		wallpaperMode !== defaultWallpaperMode ||
+		fullscreenLayout !== defaultFullscreenLayout ||
 		texturePreset !== defaultTexturePreset ||
 		textureOpacity !== defaultTextureOpacity,
 );
@@ -172,6 +186,11 @@ $effect(() => {
 	if (wallpaperMode === lastAppliedWallpaperMode) return;
 	lastAppliedWallpaperMode = wallpaperMode;
 	setWallpaperMode(wallpaperMode);
+});
+$effect(() => {
+	if (fullscreenLayout === lastAppliedFullscreenLayout) return;
+	lastAppliedFullscreenLayout = fullscreenLayout;
+	setFullscreenLayout(fullscreenLayout);
 });
 $effect(() => {
 	if (surfaceStyle === lastAppliedSurfaceStyle) return;
@@ -326,11 +345,25 @@ const stylePreviews = $derived(
                             options={[
                                 { value: "none", label: i18n(I18nKey.wallpaperModeNone) },
                                 { value: "banner", label: i18n(I18nKey.wallpaperModeBanner) },
+                                { value: "fullscreen", label: i18n(I18nKey.wallpaperModeFullscreen) },
                             ]}
                             bind:value={wallpaperMode}
                             label={i18n(I18nKey.wallpaperMode)}
                         />
                     </div>
+                    {#if wallpaperMode === "fullscreen"}
+                        <div class="flex flex-col gap-1.5">
+                            <span class="display-settings__section-label">{i18n(I18nKey.fullscreenLayout)}</span>
+                            <SegmentedButton
+                                options={[
+                                    { value: "classic", label: i18n(I18nKey.fullscreenLayoutClassic) },
+                                    { value: "hero", label: i18n(I18nKey.fullscreenLayoutHero) },
+                                ]}
+                                bind:value={fullscreenLayout}
+                                label={i18n(I18nKey.fullscreenLayout)}
+                            />
+                        </div>
+                    {/if}
                 {/if}
 
                 {#if displayConfig.layoutMode}

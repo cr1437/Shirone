@@ -291,10 +291,45 @@
             {
               "type": "string",
               "enum": [
+                "fullscreen"
+              ]
+            },
+            {
+              "type": "string",
+              "enum": [
                 "none"
               ]
             }
           ]
+        },
+        "fullscreen": {
+          "anyOf": [
+            {},
+            {
+              "type": "object",
+              "properties": {
+                "layout": {
+                  "anyOf": [
+                    {},
+                    {
+                      "type": "string",
+                      "enum": [
+                        "classic"
+                      ]
+                    },
+                    {
+                      "type": "string",
+                      "enum": [
+                        "hero"
+                      ]
+                    }
+                  ]
+                }
+              },
+              "additionalProperties": false
+            }
+          ],
+          "description": "全屏壁纸模式默认布局（访客可在设置面板中切换并保存到浏览器）"
         }
       },
       "additionalProperties": false

@@ -3,7 +3,10 @@ export type { PermalinkConfig } from "./permalinkConfig.ts";
 import type { AUTO_MODE, DARK_MODE, LIGHT_MODE } from "@constants/constants";
 import type { TextureConfig } from "./textureConfig";
 
-export type WallpaperMode = "banner" | "none";
+export type WallpaperMode = "banner" | "fullscreen" | "none";
+
+/** 全屏壁纸模式的内容布局："classic" 壁纸随页滚动的揭幕式，"hero" 首页首屏整屏壁纸 */
+export type FullscreenWallpaperLayout = "classic" | "hero";
 
 /** 界面风格：md3（经典 MD3）/ glass（毛玻璃） */
 export type SurfaceStyle = "md3" | "glass";
@@ -118,6 +121,10 @@ export type SiteConfig = {
 	};
 	wallpaperMode: {
 		defaultMode: WallpaperMode;
+		/** 全屏壁纸模式默认布局（访客可在设置面板中切换并保存到浏览器） */
+		fullscreen?: {
+			layout?: FullscreenWallpaperLayout;
+		};
 	};
 	/** 页面背景纹理系统配置，支持布尔值直接开关或详细配置对象 */
 	texture?: boolean | TextureConfig;
