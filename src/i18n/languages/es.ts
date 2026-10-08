@@ -345,4 +345,7 @@ export const es: Translation = {
 	[Key.feedRecentPosts]: "Artículos recientes del canal",
 	[Key.aiSummaryTitle]: "Resumen de IA",
 	[Key.aiSummaryDisclaimer]: "Generado por IA. Solo como referencia.",
+	[Key.surfaceStyle]: "Estilo de interfaz",
+	[Key.surfaceStyleMd3]: "MD3 clásico",
+	[Key.surfaceStyleGlass]: "Vidrio esmerilado",
 };

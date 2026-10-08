@@ -1,0 +1,49 @@
+/* ============================================================
+   玻璃风格层（liquid glass / 毛玻璃）
+   ------------------------------------------------------------
+   由显示设置「界面风格」切换；也可直接用 localStorage:
+     surface-style = "glass" | "md3"
+   html[data-surface-style="glass"] 下，全站表面变为半透明 + 背景模糊。
+   配方参考：haloo-cod/Nebula 的 CSS 毛玻璃（半透明底 + backdrop-filter）。
+   ============================================================ */
+
+/* ---------- 1. 表面色令牌 → 半透明 ---------- */
+html[data-surface-style="glass"] {
+	--card-bg: rgba(255, 255, 255, 0.55);
+	--float-panel-bg: rgba(255, 255, 255, 0.62);
+	--glass-blur: 14px;
+}
+
+html[data-surface-style="glass"].dark {
+	--card-bg: rgba(30, 32, 40, 0.55);
+	--float-panel-bg: rgba(30, 32, 40, 0.62);
+}
+
+/* ---------- 2. 主要表面背景模糊 ---------- */
+html[data-surface-style="glass"] :is(
+	.m3-card,
+	.m3-blog-postcard,
+	.post-card,
+	.ai-summary-card,
+	.last-updated-notice,
+	.float-panel,
+	.context-menu
+) {
+	-webkit-backdrop-filter: blur(var(--glass-blur)) saturate(160%);
+	backdrop-filter: blur(var(--glass-blur)) saturate(160%);
+}
+
+/* ---------- 3. 上下文菜单 / 导航下拉：底色跟随玻璃面板 ---------- */
+html[data-surface-style="glass"] .context-menu-layer .context-menu {
+	background: var(--float-panel-bg);
+}
+
+html[data-surface-style="glass"] .top-app-bar__submenu {
+	background: var(--float-panel-bg);
+	-webkit-backdrop-filter: blur(var(--glass-blur)) saturate(160%);
+	backdrop-filter: blur(var(--glass-blur)) saturate(160%);
+}
+
+/* ---------- 4. 注释 ----------
+   切换回 MD3：界面风格选「经典 MD3」（或 localStorage surface-style=md3），
+   本文件全部规则自动失效，恢复原始 M3E 表面。 */

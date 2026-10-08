@@ -8,6 +8,9 @@ export const THEME_CHANGE_EVENT: string = "shirone:theme-change";
 
 export const WALLPAPER_MODE_KEY = "wallpaper-mode";
 export const WALLPAPER_MODE_CHANGE_EVENT = "wallpaper-mode:change";
+
+/** 界面风格 localStorage 键（md3 / glass） */
+export const SURFACE_STYLE_KEY = "surface-style";
 export const WALLPAPER_MODE_OPTIONS = ["none", "banner"] as const;
 
 export const TEXTURE_PRESET_KEY = "texture-preset";

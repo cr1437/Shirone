@@ -5,6 +5,9 @@ import type { TextureConfig } from "./textureConfig";
 
 export type WallpaperMode = "banner" | "none";
 
+/** 界面风格：md3（经典 MD3）/ glass（毛玻璃） */
+export type SurfaceStyle = "md3" | "glass";
+
 export type TopAppBarContentAlign = "left" | "center";
 
 export type DisplaySettingsConfig = {
@@ -20,6 +23,8 @@ export type DisplaySettingsConfig = {
 	reduceMotion?: boolean;
 	/** 是否在显示设置面板展示背景纹理选择器（默认 true，且受 texture.enable 控制） */
 	texture?: boolean;
+	/** 是否在显示设置面板展示界面风格（经典 MD3 / 毛玻璃）切换器（默认 true） */
+	surfaceStyle?: boolean;
 };
 
 export type BannerThemeSource = {

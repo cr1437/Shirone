@@ -331,4 +331,7 @@ export const zh_TW: Translation = {
 	[Key.feedRecentPosts]: "最新推送文章",
 	[Key.aiSummaryTitle]: "AI摘要",
 	[Key.aiSummaryDisclaimer]: "內容由 AI生成，僅供參考",
+	[Key.surfaceStyle]: "介面風格",
+	[Key.surfaceStyleMd3]: "經典 MD3",
+	[Key.surfaceStyleGlass]: "毛玻璃",
 };

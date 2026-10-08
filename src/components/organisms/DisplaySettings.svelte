@@ -27,11 +27,13 @@ import {
 	getDefaultTexturePreset,
 	getHue,
 	getMotionPreference,
+	getStoredSurfaceStyle,
 	getStoredTextureOpacity,
 	getStoredTexturePreset,
 	getStoredWallpaperMode,
 	setHue,
 	setMotionPreference,
+	setSurfaceStyle,
 	setTextureOpacity,
 	setTexturePreset,
 	setWallpaperMode,
@@ -44,7 +46,7 @@ import {
 	resolveDisplaySettings,
 	siteConfig,
 } from "@/config";
-import type { WallpaperMode } from "@/types/config";
+import type { SurfaceStyle, WallpaperMode } from "@/types/config";
 import type { PostListMode } from "@/types/postListConfig";
 import type { TexturePreset } from "@/types/textureConfig";
 
@@ -72,6 +74,8 @@ let lastAppliedMode = postListMode;
 const defaultWallpaperMode = siteConfig.wallpaperMode.defaultMode;
 let wallpaperMode = $state<WallpaperMode>(getStoredWallpaperMode());
 let lastAppliedWallpaperMode = wallpaperMode;
+let surfaceStyle = $state<SurfaceStyle>(getStoredSurfaceStyle());
+let lastAppliedSurfaceStyle = surfaceStyle;
 
 // 背景纹理预设与浓度
 const defaultTexturePreset = getDefaultTexturePreset();
@@ -168,6 +172,11 @@ $effect(() => {
 	if (wallpaperMode === lastAppliedWallpaperMode) return;
 	lastAppliedWallpaperMode = wallpaperMode;
 	setWallpaperMode(wallpaperMode);
+});
+$effect(() => {
+	if (surfaceStyle === lastAppliedSurfaceStyle) return;
+	lastAppliedSurfaceStyle = surfaceStyle;
+	setSurfaceStyle(surfaceStyle);
 });
 $effect(() => {
 	if (texturePreset === lastAppliedTexturePreset) return;
@@ -308,7 +317,7 @@ const stylePreviews = $derived(
         </div>
 
         <!-- 段二：界面布局（页面背景 + 列表布局 + 背景纹理） -->
-        {#if displayConfig.wallpaperMode || displayConfig.layoutMode || displayConfig.texture}
+        {#if displayConfig.wallpaperMode || displayConfig.layoutMode || displayConfig.texture || displayConfig.surfaceStyle}
             <div class="p-4 flex flex-col gap-3">
                 {#if displayConfig.wallpaperMode}
                     <div class="flex flex-col gap-1.5">
@@ -334,6 +343,19 @@ const stylePreviews = $derived(
                             ]}
                             bind:value={postListMode}
                             label={i18n(I18nKey.layoutMode)}
+                        />
+                    </div>
+                {/if}
+                {#if displayConfig.surfaceStyle}
+                    <div class="flex flex-col gap-1.5">
+                        <span class="display-settings__section-label">{i18n(I18nKey.surfaceStyle)}</span>
+                        <SegmentedButton
+                            options={[
+                                { value: "md3", label: i18n(I18nKey.surfaceStyleMd3) },
+                                { value: "glass", label: i18n(I18nKey.surfaceStyleGlass) },
+                            ]}
+                            bind:value={surfaceStyle}
+                            label={i18n(I18nKey.surfaceStyle)}
                         />
                     </div>
                 {/if}

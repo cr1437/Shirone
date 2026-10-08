@@ -3,6 +3,7 @@ import {
 	DARK_MODE,
 	DEFAULT_THEME,
 	LIGHT_MODE,
+	SURFACE_STYLE_KEY,
 	TEXTURE_CHANGE_EVENT,
 	TEXTURE_OPACITY_KEY,
 	TEXTURE_PRESET_KEY,
@@ -13,7 +14,7 @@ import {
 } from "@constants/constants.ts";
 import { applyCurrentScheme } from "@utils/theme-utils";
 import { expressiveCodeConfig, siteConfig } from "@/config";
-import type { LIGHT_DARK_MODE, WallpaperMode } from "@/types/config";
+import type { LIGHT_DARK_MODE, SurfaceStyle, WallpaperMode } from "@/types/config";
 import type { TexturePreset } from "@/types/textureConfig";
 
 export function isTexturePreset(value: unknown): value is TexturePreset {
@@ -108,6 +109,25 @@ export function setWallpaperMode(mode: WallpaperMode): void {
 	window.dispatchEvent(
 		new CustomEvent(WALLPAPER_MODE_CHANGE_EVENT, { detail: { mode } }),
 	);
+}
+
+export function isSurfaceStyle(value: unknown): value is SurfaceStyle {
+	return value === "md3" || value === "glass";
+}
+
+export function getDefaultSurfaceStyle(): SurfaceStyle {
+	const value = document.getElementById("config-carrier")?.dataset.surfaceStyle;
+	return isSurfaceStyle(value) ? value : "glass";
+}
+
+export function getStoredSurfaceStyle(): SurfaceStyle {
+	const value = localStorage.getItem(SURFACE_STYLE_KEY);
+	return isSurfaceStyle(value) ? value : getDefaultSurfaceStyle();
+}
+
+export function setSurfaceStyle(style: SurfaceStyle): void {
+	localStorage.setItem(SURFACE_STYLE_KEY, style);
+	document.documentElement.dataset.surfaceStyle = style;
 }
 
 export function getDefaultHue(): number {

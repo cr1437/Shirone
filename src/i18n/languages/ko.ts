@@ -342,4 +342,7 @@ export const ko: Translation = {
 	[Key.feedRecentPosts]: "피드 최신 글",
 	[Key.aiSummaryTitle]: "AI 요약",
 	[Key.aiSummaryDisclaimer]: "AI가 생성한 내용입니다. 참고용으로만 확인하세요.",
+	[Key.surfaceStyle]: "인터페이스 스타일",
+	[Key.surfaceStyleMd3]: "클래식 MD3",
+	[Key.surfaceStyleGlass]: "프로스트 글라스",
 };

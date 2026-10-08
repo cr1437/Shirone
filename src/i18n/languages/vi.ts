@@ -345,4 +345,7 @@ export const vi: Translation = {
 	[Key.feedRecentPosts]: "Bài viết mới nhất trong nguồn cấp",
 	[Key.aiSummaryTitle]: "Tóm tắt AI",
 	[Key.aiSummaryDisclaimer]: "Được tạo bởi AI, chỉ mang tính tham khảo.",
+	[Key.surfaceStyle]: "Kiểu giao diện",
+	[Key.surfaceStyleMd3]: "MD3 cổ điển",
+	[Key.surfaceStyleGlass]: "Kính mờ",
 };

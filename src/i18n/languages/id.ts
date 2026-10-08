@@ -348,4 +348,7 @@ export const id: Translation = {
 	[Key.feedRecentPosts]: "Artikel Terbaru di Umpan",
 	[Key.aiSummaryTitle]: "Ringkasan AI",
 	[Key.aiSummaryDisclaimer]: "Dibuat oleh AI. Hanya sebagai referensi.",
+	[Key.surfaceStyle]: "Gaya antarmuka",
+	[Key.surfaceStyleMd3]: "MD3 klasik",
+	[Key.surfaceStyleGlass]: "Kaca buram",
 };

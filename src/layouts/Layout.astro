@@ -30,6 +30,7 @@ import type { BannerSourceValue, Favicon } from "../types/config";
 import { createFontRoleStyle } from "../utils/font-options";
 import { resolvePageWidth } from "../utils/responsive-utils";
 import "../styles/main.css";
+import "../styles/glass.css";
 import "../styles/font-faces.css";
 import textureStyles from "../styles/textures.css?raw";
 
@@ -192,6 +193,11 @@ const hasMonoFont =
 				? storedWallpaperMode
 				: defaultWallpaperMode;
 			document.documentElement.dataset.wallpaperMode = wallpaperMode;
+			const storedSurfaceStyle = localStorage.getItem('surface-style');
+			const surfaceStyle = storedSurfaceStyle === 'md3' || storedSurfaceStyle === 'glass'
+				? storedSurfaceStyle
+				: 'glass';
+			document.documentElement.dataset.surfaceStyle = surfaceStyle;
 
 			if (textureEnabled) {
 				const storedTexturePreset = localStorage.getItem('texture-preset');

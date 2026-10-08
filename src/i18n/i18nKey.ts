@@ -334,5 +334,9 @@ enum I18nKey {
 	// Article AI summary card
 	aiSummaryTitle = "aiSummaryTitle",
 	aiSummaryDisclaimer = "aiSummaryDisclaimer",
+	// Surface style (MD3 / glass)
+	surfaceStyle = "surfaceStyle",
+	surfaceStyleMd3 = "surfaceStyleMd3",
+	surfaceStyleGlass = "surfaceStyleGlass",
 }
 export default I18nKey;

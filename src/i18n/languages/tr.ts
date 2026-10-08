@@ -347,4 +347,7 @@ export const tr: Translation = {
 	[Key.aiSummaryTitle]: "AI Özeti",
 	[Key.aiSummaryDisclaimer]:
 		"AI tarafından oluşturuldu. Yalnızca referans amaçlıdır.",
+	[Key.surfaceStyle]: "Arayüz stili",
+	[Key.surfaceStyleMd3]: "Klasik MD3",
+	[Key.surfaceStyleGlass]: "Buzlu cam",
 };

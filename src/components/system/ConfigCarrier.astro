@@ -8,6 +8,7 @@ const textureOptions = resolveTextureOptions();
 	id="config-carrier"
 	data-hue={siteConfig.themeColor.hue}
 	data-wallpaper-mode={siteConfig.wallpaperMode.defaultMode}
+	data-surface-style="glass"
 	{...(textureOptions.enable
 		? {
 				"data-texture-preset": textureOptions.defaultPreset,

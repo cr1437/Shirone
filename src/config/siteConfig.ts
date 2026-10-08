@@ -24,6 +24,7 @@ export const siteConfig: SiteConfig = withUserConfig("site", {
 		layoutMode: true,
 		reduceMotion: true,
 		texture: true,
+		surfaceStyle: true,
 	},
 	lang: "zh_CN",
 	timeZone: "Asia/Shanghai",

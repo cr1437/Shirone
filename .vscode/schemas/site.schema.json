@@ -166,6 +166,24 @@
                 }
               ],
               "description": "是否在显示设置面板展示背景纹理选择器（默认 true，且受 texture.enable 控制）"
+            },
+            "surfaceStyle": {
+              "anyOf": [
+                {},
+                {
+                  "type": "boolean",
+                  "enum": [
+                    false
+                  ]
+                },
+                {
+                  "type": "boolean",
+                  "enum": [
+                    true
+                  ]
+                }
+              ],
+              "description": "是否在显示设置面板展示界面风格（经典 MD3 / 毛玻璃）切换器（默认 true）"
             }
           },
           "additionalProperties": false

@@ -330,4 +330,7 @@ export const th: Translation = {
 	[Key.feedRecentPosts]: "บทความล่าสุดในฟีด",
 	[Key.aiSummaryTitle]: "สรุปโดย AI",
 	[Key.aiSummaryDisclaimer]: "สร้างโดย AI เพื่อใช้อ้างอิงเท่านั้น",
+	[Key.surfaceStyle]: "สไตล์อินเทอร์เฟซ",
+	[Key.surfaceStyleMd3]: "MD3 คลาสสิก",
+	[Key.surfaceStyleGlass]: "กระจกฝ้า",
 };

@@ -342,4 +342,7 @@ export const ja: Translation = {
 	[Key.feedRecentPosts]: "最新の配信記事",
 	[Key.aiSummaryTitle]: "AI要約",
 	[Key.aiSummaryDisclaimer]: "AIが生成した内容です。参考までに。",
+	[Key.surfaceStyle]: "表示スタイル",
+	[Key.surfaceStyleMd3]: "クラシック MD3",
+	[Key.surfaceStyleGlass]: "すりガラス",
 };
