@@ -5,21 +5,22 @@ import { IS_EN_BUILD } from "@utils/build-locale";
 import { url } from "@utils/url-utils";
 import mikuImg from "../assets/images/music/unknown-mother-goose.webp";
 import ninaImg from "../assets/images/characters/nina.gif";
+import subaruImg from "../assets/images/characters/subaru.gif";
 
 const pageTitle = IS_EN_BUILD ? "Characters" : "动漫人物";
 const pageDescription = IS_EN_BUILD
-	? "Character profiles: Hatsune Miku and Iseri Nina."
-	: "动漫人物档案：初音未来与井芹仁菜。";
+	? "Character profiles: Hatsune Miku, Iseri Nina and Awa Subaru."
+	: "动漫人物档案：初音未来、井芹仁菜与安和昴。";
 
 const labels = IS_EN_BUILD
 	? {
 			badge: "CHARACTERS",
-			subtitle: "Two character profiles: an eternally-sixteen songstress, and a rock vocalist from Kumamoto.",
+			subtitle: "Three character profiles: an eternally-sixteen songstress, and Togenashi Togeari's vocalist and drummer.",
 			cta: "Read more",
 		}
 	: {
 			badge: "动漫人物",
-			subtitle: "两位角色档案：一位是永远十六岁的歌姬，一位是从熊本出发的乐队主唱。",
+			subtitle: "三位角色档案：一位是永远十六岁的歌姬，两位是刺刺的主唱和鼓手。",
 			cta: "查看介绍",
 		};
 
@@ -42,6 +43,15 @@ const cards = [
 			? "Vocalist & lyricist of Togenashi Togeari"
 			: "刺刺（トゲナシトゲアリ）的主唱兼作词",
 	},
+	{
+		href: url("/subaru/"),
+		img: subaruImg.src,
+		zh: "安和昴",
+		en: "Awa Subaru",
+		desc: IS_EN_BUILD
+			? "Drummer of Togenashi Togeari · competitive gamer"
+			: "刺刺的鼓手 · 好胜的游戏宅大小姐",
+	},
 ];
 ---
 
@@ -62,7 +72,7 @@ const cards = [
 		</div>
 
 		<!-- 角色卡片 -->
-		<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+		<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
 			{cards.map((c) => (
 				<a href={c.href} class="block group">
 					<Card color="var(--card-bg)" radius="l" class="w-full overflow-hidden">

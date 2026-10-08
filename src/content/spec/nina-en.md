@@ -4,7 +4,7 @@
 
 ## ✦ Who is she
 
-Iseri Nina (井芹仁菜 / いせりにな) is the protagonist of **GIRLS BAND CRY**, the original anime by Toei Animation — vocalist and lyricist of the band **Togenashi Togeari**. Her image colour is red, **#D90E2C**.
+Iseri Nina (井芹仁菜 / いせりにな) is the protagonist of **GIRLS BAND CRY**, the original anime by Toei Animation — vocalist and lyricist of the band **Togenashi Togeari**. Her image colour is red, <span style="color:#D90E2C;font-weight:700">#D90E2C</span>.
 
 ## ✦ Her look
 
