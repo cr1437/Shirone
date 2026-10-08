@@ -331,6 +331,8 @@ enum I18nKey {
 	feedHowToUseDesc = "feedHowToUseDesc",
 	feedOpenXml = "feedOpenXml",
 	feedRecentPosts = "feedRecentPosts",
+	// Article AI summary card
+	aiSummaryTitle = "aiSummaryTitle",
+	aiSummaryDisclaimer = "aiSummaryDisclaimer",
 }
-
 export default I18nKey;

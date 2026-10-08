@@ -2,6 +2,7 @@
 title: "介绍一下我的开源项目：Shizako"
 published: 2026-10-07
 description: "Shizako 是我做的一个 Android 工具：不 Root 也能使用系统特权 API，兼容 Shizuku-API 生态。这篇简单介绍一下它。"
+aiSummary: "本文介绍了作者的开源 Android 工具 Shizako：无需 Root，即可通过无线调试、电脑 ADB、Root 或 Dhizuku 启动特权进程，把系统级能力安全地借给受信任的应用，并兼容 Shizuku-API 生态。"
 tags: [Shizako, Android, Shizuku, 开源]
 category: 开源项目
 draft: false

@@ -14,6 +14,8 @@ const postsCollection = defineCollection({
 		draft: z.boolean().optional().default(false),
 		comment: z.boolean().optional().default(true),
 		description: z.string().optional().default(""),
+		/** AI摘要卡片文案（渲染在文章顶部；空 = 不显示卡片） */
+		aiSummary: z.string().optional().default(""),
 		image: z.string().optional().default(""),
 		tags: z.array(z.string()).optional().default([]),
 		category: z.string().optional().nullable().default(""),

@@ -5,6 +5,7 @@ import IconButton from "@components/atoms/action/IconButton.svelte";
 import AccentBar from "@components/atoms/display/AccentBar.svelte";
 import Card from "@components/atoms/display/Card.svelte";
 import Markdown from "@components/content/Markdown.astro";
+import AISummaryCard from "@components/molecules/AISummaryCard.astro";
 import ImageWrapper from "@components/molecules/ImageWrapper.astro";
 import LastUpdatedNotice from "@components/molecules/LastUpdatedNotice.astro";
 import License from "@components/molecules/License.astro";
@@ -52,6 +53,7 @@ import {
 	commentConfig,
 	licenseConfig,
 	profileConfig,
+	resolveAiSummaryOptions,
 	resolveArticleDiscoveryOptions,
 	resolveArticleShareOptions,
 	resolveCommentOptions,
@@ -180,6 +182,7 @@ const postCommentEnabled =
 	entry.data.comment !== false && Boolean(resolveCommentOptions(commentConfig));
 const lastUpdatedNotice = resolveLastUpdatedNoticeOptions(articleConfig);
 const shareOptions = resolveArticleShareOptions(articleConfig);
+const aiSummaryOptions = resolveAiSummaryOptions(articleConfig);
 const umamiEnabled = resolveUmamiOptions(umamiConfig) !== null;
 const authorAvatarUrl = shareOptions
 	? await resolveAsset(profileConfig.avatar ?? "")
@@ -310,6 +313,10 @@ const jsonLd = {
 				/>
 			}
 
+
+			{aiSummaryOptions && entry.data.aiSummary && (
+				<AISummaryCard summary={entry.data.aiSummary} class="mb-6 onload-animation" />
+			)}
             {isEncrypted ? (
                 <EncryptedContent
                     password={entry.data.password!}

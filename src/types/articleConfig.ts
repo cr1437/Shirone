@@ -28,4 +28,8 @@ export interface ArticleConfig {
 		/** 分享海报是否默认包含文章封面（封面不可用时自动降级为无封面排版）。 */
 		includeCover: boolean;
 	};
+	aiSummary: {
+		/** 是否渲染文章顶部的 AI摘要卡片（文章需在 frontmatter 提供 aiSummary）。 */
+		enable: boolean;
+	};
 }

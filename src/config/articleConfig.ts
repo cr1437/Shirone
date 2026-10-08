@@ -31,6 +31,10 @@ export const articleConfig: ArticleConfig = withUserConfig("article", {
 		// 生成海报时是否默认包含文章封面（封面不可用时自动降级为无封面排版）。
 		includeCover: true,
 	},
+	aiSummary: {
+		// 关闭后文章不再渲染 AI摘要卡片（文章内已写好的摘要数据会保留）。
+		enable: true,
+	},
 });
 
 const MAX_DISCOVERY_COUNT = 6;
@@ -72,6 +76,12 @@ export function resolveArticleShareOptions(
 ): ArticleShareOptions | null {
 	if (!config.share.enable) return null;
 	return { includeCover: config.share.includeCover };
+}
+
+export function resolveAiSummaryOptions(
+	config: Pick<ArticleConfig, "aiSummary">,
+): ArticleConfig["aiSummary"] | null {
+	return config.aiSummary.enable ? config.aiSummary : null;
 }
 
 export function resolveLastUpdatedNoticeOptions(

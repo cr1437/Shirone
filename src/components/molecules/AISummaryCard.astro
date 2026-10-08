@@ -1,0 +1,72 @@
+---
+import { Icon } from "astro-icon/components";
+import I18nKey from "@i18n/i18nKey";
+import { i18n } from "@i18n/translation";
+interface Props {
+	/** 摘要正文（来自文章 frontmatter 的 aiSummary 字段）。 */
+	summary: string;
+	class?: string;
+}
+const { summary, class: className = "" } = Astro.props;
+---
+
+<div
+	class={`ai-summary-card${className ? ` ${className}` : ""}`}
+	role="note"
+	data-ai-summary
+>
+	<div class="ai-summary-card__header">
+		<span class="ai-summary-card__icon" aria-hidden="true">
+			<Icon name="material-symbols:auto-awesome-rounded" />
+		</span>
+		<span class="ai-summary-card__label">{i18n(I18nKey.aiSummaryTitle)}</span>
+	</div>
+	<p class="ai-summary-card__text">{summary}</p>
+	<p class="ai-summary-card__note">{i18n(I18nKey.aiSummaryDisclaimer)}</p>
+</div>
+
+<style lang="stylus">
+.ai-summary-card
+	display: flex
+	flex-direction: column
+	gap: 0.5rem
+	padding: 1.25rem 1.5rem
+	border-radius: var(--shape-corner-l)
+	background: var(--card-bg)
+	color: var(--on-surface-variant)
+	overflow: hidden
+	&__header
+		display: flex
+		align-items: center
+		gap: 0.5rem
+	&__icon
+		display: flex
+		align-items: center
+		justify-content: center
+		flex: none
+		width: 1.75rem
+		height: 1.75rem
+		border-radius: var(--shape-corner-m)
+		background: var(--btn-regular-bg)
+		color: var(--primary)
+		:global(svg)
+			width: 1.1rem
+			height: 1.1rem
+	&__label
+		color: var(--on-surface)
+		font: var(--m3e-type-title-small)
+	&__text
+		margin: 0
+		color: var(--on-surface-variant)
+		font: var(--m3e-type-body-large)
+		overflow-wrap: anywhere
+	&__note
+		margin: 0
+		color: var(--on-surface-variant)
+		font: var(--m3e-type-body-small)
+		opacity: 0.72
+
+@media (max-width: 30rem)
+	.ai-summary-card
+		padding: 1rem
+</style>
