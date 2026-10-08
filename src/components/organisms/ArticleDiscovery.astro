@@ -4,7 +4,7 @@ import I18nKey from "@i18n/i18nKey";
 import { i18n } from "@i18n/translation";
 import type { PostForList } from "@utils/content-utils";
 import { formatDateToYYYYMMDD } from "@utils/date-utils";
-import { getPostUrlBySlug } from "@utils/url-utils";
+import { getPostUrlBySlug, url } from "@utils/url-utils";
 import { Icon } from "astro-icon/components";
 
 interface Props {
@@ -14,6 +14,16 @@ interface Props {
 }
 
 const { related, random, class: className } = Astro.props;
+/** 链接解析：优先显式 url；有 permalink 的条目按 permalink 生成；否则退回 id 拼装 */
+function articleHref(article: PostForList): string {
+	if (article.url) return article.url;
+	const permalink = article.data?.permalink
+		?.split("/")
+		.filter(Boolean)
+		.join("/");
+	if (permalink) return url(`/${permalink}/`);
+	return getPostUrlBySlug(article.slug);
+}
 const hasRelated = related.length > 0;
 const hasRandom = random.length > 0;
 ---
@@ -41,7 +51,7 @@ const hasRandom = random.length > 0;
 					<ul class="article-discovery__list">
 						{related.map((article) => (
 							<ArticleDiscoveryItem
-								href={article.url ?? getPostUrlBySlug(article.slug)}
+								href={articleHref(article)}
 								title={article.data.title}
 								published={formatDateToYYYYMMDD(article.data.published)}
 								category={article.data.category}
@@ -64,7 +74,7 @@ const hasRandom = random.length > 0;
 					<ul class="article-discovery__list">
 						{random.map((article) => (
 							<ArticleDiscoveryItem
-								href={article.url ?? getPostUrlBySlug(article.slug)}
+								href={articleHref(article)}
 								title={article.data.title}
 								published={formatDateToYYYYMMDD(article.data.published)}
 								category={article.data.category}

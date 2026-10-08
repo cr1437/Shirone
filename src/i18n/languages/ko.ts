@@ -317,6 +317,7 @@ export const ko: Translation = {
 	[Key.fullscreenLayout]: "전체화면 레이아웃",
 	[Key.fullscreenLayoutClassic]: "클래식",
 	[Key.fullscreenLayoutHero]: "히어로",
+	[Key.languageSwitch]: "언어 전환",
 	[Key.texturePreset]: "배경 텍스처",
 	[Key.texturePresetNone]: "없음",
 	[Key.texturePresetStarlight]: "별빛・빛무리",

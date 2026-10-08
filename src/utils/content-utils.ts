@@ -14,6 +14,15 @@ import {
 	type SeriesEntity,
 } from "@utils/series-utils";
 import { getCategoryUrl, getPostUrl, url } from "@utils/url-utils";
+import { IS_EN_BUILD } from "@utils/build-locale";
+/** 内容分流：EN 站只显示 lang="en" 的内容；中文站隐藏 lang="en" 的内容；草稿规则保持原样 */
+function isContentVisible(data: { draft?: boolean; lang?: string }): boolean {
+	const lang = String(data.lang ?? "").trim().toLowerCase();
+	if (IS_EN_BUILD ? lang !== "en" : lang === "en") {
+		return false;
+	}
+	return import.meta.env.PROD ? data.draft !== true : true;
+}
 
 /**
  * 加载系列实体目录（Astro 内容层会缓存集合加载，多次调用成本可忽略）。
@@ -34,9 +43,7 @@ const warnedUnknownSeries = new Set<string>();
 
 // // Retrieve posts and sort them by publication date
 async function getRawSortedPosts(): Promise<CollectionEntry<"posts">[]> {
-	const allBlogPosts = await getCollection("posts", ({ data }) => {
-		return import.meta.env.PROD ? data.draft !== true : true;
-	});
+	const allBlogPosts = await getCollection("posts", ({ data }) => isContentVisible(data));
 
 	for (const post of allBlogPosts) validatePublicationMetadata(post);
 	const sorted = allBlogPosts.sort(comparePublicationEntries);
@@ -115,9 +122,7 @@ export type Tag = {
 };
 
 export async function getTagList(): Promise<Tag[]> {
-	const allBlogPosts = await getCollection<"posts">("posts", ({ data }) => {
-		return import.meta.env.PROD ? data.draft !== true : true;
-	});
+	const allBlogPosts = await getCollection<"posts">("posts", ({ data }) => isContentVisible(data));
 
 	const countMap: { [key: string]: number } = {};
 	allBlogPosts.forEach((post: { data: { tags: string[] } }) => {
@@ -142,9 +147,7 @@ export type Category = {
 };
 
 export async function getCategoryList(): Promise<Category[]> {
-	const allBlogPosts = await getCollection<"posts">("posts", ({ data }) => {
-		return import.meta.env.PROD ? data.draft !== true : true;
-	});
+	const allBlogPosts = await getCollection<"posts">("posts", ({ data }) => isContentVisible(data));
 	const seriesCatalog = await getSeriesCatalog();
 	const count: { [key: string]: number } = {};
 	allBlogPosts.forEach(
@@ -245,9 +248,7 @@ function withMomentThumbnails(image: MomentImage): MomentImage {
 }
 
 export async function getSortedMoments(): Promise<MomentItem[]> {
-	const entries = await getCollection("moments", ({ data }) => {
-		return import.meta.env.PROD ? data.draft !== true : true;
-	});
+	const entries = await getCollection("moments", ({ data }) => isContentVisible(data));
 
 	const sorted = entries.sort(comparePublicationEntries);
 

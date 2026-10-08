@@ -318,6 +318,7 @@ export const ja: Translation = {
 	[Key.fullscreenLayout]: "フルスクリーンレイアウト",
 	[Key.fullscreenLayoutClassic]: "クラシック",
 	[Key.fullscreenLayoutHero]: "ヒーロー",
+	[Key.languageSwitch]: "言語を切り替え",
 	[Key.texturePreset]: "背景テクスチャ",
 	[Key.texturePresetNone]: "なし",
 	[Key.texturePresetStarlight]: "星空・キラキラ",

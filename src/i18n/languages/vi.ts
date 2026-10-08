@@ -320,6 +320,7 @@ export const vi: Translation = {
 	[Key.fullscreenLayout]: "Bố cục toàn màn hình",
 	[Key.fullscreenLayoutClassic]: "Cổ điển",
 	[Key.fullscreenLayoutHero]: "Hero",
+	[Key.languageSwitch]: "Đổi ngôn ngữ",
 	[Key.texturePreset]: "Họa tiết nền",
 	[Key.texturePresetNone]: "Không có",
 	[Key.texturePresetStarlight]: "Ánh sao",

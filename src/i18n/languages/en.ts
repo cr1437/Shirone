@@ -318,6 +318,7 @@ export const en: Translation = {
 	[Key.fullscreenLayout]: "Fullscreen Layout",
 	[Key.fullscreenLayoutClassic]: "Classic",
 	[Key.fullscreenLayoutHero]: "Hero",
+	[Key.languageSwitch]: "Switch language",
 	[Key.texturePreset]: "Background Texture",
 	[Key.texturePresetNone]: "None",
 	[Key.texturePresetStarlight]: "Starlight",

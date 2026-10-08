@@ -267,6 +267,7 @@ enum I18nKey {
 	fullscreenLayout = "fullscreenLayout",
 	fullscreenLayoutClassic = "fullscreenLayoutClassic",
 	fullscreenLayoutHero = "fullscreenLayoutHero",
+	languageSwitch = "languageSwitch",
 
 	texturePreset = "texturePreset",
 	texturePresetNone = "texturePresetNone",

@@ -99,6 +99,8 @@ export async function getStaticPaths() {
 	}[] = [];
 
 	for (const entry of blogEntries) {
+		// permalink 文章由 [...permalink].astro 负责路由，这里跳过避免重复路径
+		if (entry.data.permalink) continue;
 		const defaultSlug = removeFileExtension(entry.id);
 		const current = discoveryCandidates.find(
 			(candidate) => candidate.slug === entry.id,

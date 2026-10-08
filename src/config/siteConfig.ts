@@ -4,6 +4,7 @@ import type {
 	TextureConfig,
 } from "@/types/textureConfig";
 import { withUserConfig } from "../utils/config-overlay.ts";
+import { BUILD_BASE, BUILD_LANG, IS_EN_BUILD } from "../utils/build-locale.ts";
 
 /**
  * 站点核心配置：标题 / 语言 / 主题色（HCT 动态配色）/ 横幅 / 目录 / 进度条 / favicon。
@@ -11,9 +12,9 @@ import { withUserConfig } from "../utils/config-overlay.ts";
  */
 export const siteConfig: SiteConfig = withUserConfig("site", {
 	site: "https://www.churan.online/",
-	base: "/",
-	title: "初然的博客",
-	subtitle: "欢迎来到初然的博客",
+	base: BUILD_BASE,
+	title: IS_EN_BUILD ? "Churan's Blog" : "初然的博客",
+	subtitle: IS_EN_BUILD ? "Welcome to Churan's blog" : "欢迎来到初然的博客",
 	topAppBar: {
 		contentAlign: "center",
 	},
@@ -26,7 +27,7 @@ export const siteConfig: SiteConfig = withUserConfig("site", {
 		texture: true,
 		surfaceStyle: true,
 	},
-	lang: "zh_CN",
+	lang: BUILD_LANG as SiteConfig["lang"],
 	timeZone: "Asia/Shanghai",
 	themeColor: {
 		hue: 176,
@@ -61,14 +62,22 @@ export const siteConfig: SiteConfig = withUserConfig("site", {
 		},
 		homeText: {
 			enable: true,
-			title: "初然的小站",
-			subtitle: [
-				"就算世界只剩最后一页，我也要在结局写上你的名字",
-				"混蛋，就算你夸我我也不会高兴的！",
-				"青春是谎言，是邪恶",
-				"欧尼酱，可乐和薯片！",
-				"这个世界是残酷的，但也很美丽",
-			],
+			title: IS_EN_BUILD ? "Churan's Blog" : "初然的小站",
+			subtitle: IS_EN_BUILD
+				? [
+						"Even if only the last page of the world remains, I'll write your name in the ending.",
+						"Idiot... it's not like I'd be happy just because you praised me!",
+						"Youth is a lie; it is evil.",
+						"Onii-chan, cola and chips!",
+						"This world is cruel, but it is also beautiful.",
+					]
+				: [
+						"就算世界只剩最后一页，我也要在结局写上你的名字",
+						"混蛋，就算你夸我我也不会高兴的！",
+						"青春是谎言，是邪恶",
+						"欧尼酱，可乐和薯片！",
+						"这个世界是残酷的，但也很美丽",
+					],
 			typewriter: {
 				enable: true,
 				speed: 100,

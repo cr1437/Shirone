@@ -323,6 +323,7 @@ export const id: Translation = {
 	[Key.fullscreenLayout]: "Tata letak layar penuh",
 	[Key.fullscreenLayoutClassic]: "Klasik",
 	[Key.fullscreenLayoutHero]: "Hero",
+	[Key.languageSwitch]: "Ganti bahasa",
 	[Key.layoutMode]: "Tata letak",
 	[Key.layoutList]: "Daftar",
 	[Key.layoutGrid]: "Kisi",

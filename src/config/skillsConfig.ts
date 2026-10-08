@@ -1,5 +1,6 @@
 import type { SkillsConfig } from "@/types/skillsConfig";
 import { withUserConfig } from "../utils/config-overlay.ts";
+import { IS_EN_BUILD } from "../utils/build-locale.ts";
 
 /**
  * 技能页行为与展示配置。
@@ -18,22 +19,22 @@ export const skillsConfig: SkillsConfig = withUserConfig("skills", {
 	categories: [
 		{
 			key: "app",
-			label: "App 开发",
+			label: IS_EN_BUILD ? "App Development" : "App 开发",
 			icon: "material-symbols:android-rounded",
 		},
 		{
 			key: "web",
-			label: "Web 开发",
+			label: IS_EN_BUILD ? "Web Development" : "Web 开发",
 			icon: "material-symbols:web-rounded",
 		},
 		{
 			key: "system",
-			label: "系统编程",
+			label: IS_EN_BUILD ? "System Programming" : "系统编程",
 			icon: "material-symbols:memory-rounded",
 		},
 		{
 			key: "data",
-			label: "数据与脚本",
+			label: IS_EN_BUILD ? "Data & Scripts" : "数据与脚本",
 			icon: "material-symbols:database-rounded",
 		},
 	],

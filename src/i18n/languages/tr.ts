@@ -321,6 +321,7 @@ export const tr: Translation = {
 	[Key.fullscreenLayout]: "Tam ekran düzeni",
 	[Key.fullscreenLayoutClassic]: "Klasik",
 	[Key.fullscreenLayoutHero]: "Kahraman",
+	[Key.languageSwitch]: "Dili değiştir",
 	[Key.texturePreset]: "Arka Plan Dokusu",
 	[Key.texturePresetNone]: "Yok",
 	[Key.texturePresetStarlight]: "Yıldız Işığı",

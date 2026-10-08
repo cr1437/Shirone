@@ -85,7 +85,7 @@ export const IMAGE_ENDPOINT_ROUTE = "/_image/";
  */
 export const swupOptions: NonNullable<Parameters<typeof swup>[0]> = {
 	theme: false as const,
-	ignore: ['a[href="#"]'],
+	ignore: ['a[href="#"]', '#language-switch'],
 	animationClass: "transition-swup-",
 	containers: ["main", "#toc"],
 	smoothScrolling: true,

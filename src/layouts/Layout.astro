@@ -5,6 +5,7 @@ import ConfigCarrier from "@components/system/ConfigCarrier.astro";
 import UmamiRuntime from "@components/system/UmamiRuntime.astro";
 import { resolveAsset } from "@utils/asset-utils";
 import { pathsEqual, toAbsoluteUrl, url } from "@utils/url-utils";
+import { isEnglishSite, languageSwitchHref } from "@utils/language-utils";
 import {
 	expressiveCodeConfig,
 	profileConfig,
@@ -57,6 +58,10 @@ const initialPage =
 const canonicalUrl = Astro.site
 	? new URL(Astro.url.pathname + Astro.url.search, Astro.site)
 	: Astro.url;
+/** 另一语言版本的同页 URL（hreflang 备用链接） */
+const alternateLanguageUrl = Astro.site
+	? new URL(languageSwitchHref(Astro.url.pathname) + Astro.url.search, Astro.site)
+	: languageSwitchHref(Astro.url.pathname);
 function getFirstBannerImage(source: BannerSourceValue | undefined): string {
 	if (!source) return "";
 	if (Array.isArray(source)) return source[0] || "";
@@ -234,6 +239,8 @@ const hasMonoFont =
 		}}></style>
 
 		<slot name="head"></slot>
+		<link rel="alternate" hreflang={isEnglishSite() ? "zh-CN" : "en"} href={alternateLanguageUrl}/>
+		<link rel="alternate" hreflang={isEnglishSite() ? "en" : "zh-CN"} href={canonicalUrl}/>
 		<link rel="alternate" type="application/rss+xml" title={profileConfig.name} href={`${Astro.site}rss.xml`}/>
 		<link rel="alternate" type="application/atom+xml" title={profileConfig.name} href={`${Astro.site}atom.xml`}/>
 	</head>

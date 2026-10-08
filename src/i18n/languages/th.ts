@@ -306,6 +306,7 @@ export const th: Translation = {
 	[Key.fullscreenLayout]: "เลย์เอาต์แบบเต็มหน้าจอ",
 	[Key.fullscreenLayoutClassic]: "คลาสสิก",
 	[Key.fullscreenLayoutHero]: "ฮีโร่",
+	[Key.languageSwitch]: "สลับภาษา",
 	[Key.texturePreset]: "พื้นผิวพื้นหลัง",
 	[Key.texturePresetNone]: "ไม่มี",
 	[Key.texturePresetStarlight]: "ประกายดาว",

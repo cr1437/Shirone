@@ -320,6 +320,7 @@ export const es: Translation = {
 	[Key.fullscreenLayout]: "Diseño de pantalla completa",
 	[Key.fullscreenLayoutClassic]: "Clásico",
 	[Key.fullscreenLayoutHero]: "Héroe",
+	[Key.languageSwitch]: "Cambiar idioma",
 	[Key.texturePreset]: "Textura de fondo",
 	[Key.texturePresetNone]: "Ninguno",
 	[Key.texturePresetStarlight]: "Luz estelar",

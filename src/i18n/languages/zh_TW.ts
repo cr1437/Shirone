@@ -307,6 +307,7 @@ export const zh_TW: Translation = {
 	[Key.fullscreenLayout]: "全螢幕佈局",
 	[Key.fullscreenLayoutClassic]: "經典模式",
 	[Key.fullscreenLayoutHero]: "Hero 模式",
+	[Key.languageSwitch]: "切換語言",
 	[Key.texturePreset]: "背景紋理",
 	[Key.texturePresetNone]: "無紋理",
 	[Key.texturePresetStarlight]: "星芒光斑",

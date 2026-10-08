@@ -6,6 +6,7 @@ import I18nKey from "@i18n/i18nKey";
 import MainGridLayout from "@layouts/MainGridLayout.astro";
 import { resolveI18nText } from "@utils/i18n-utils";
 import { getMarkdownStylesheetAssets } from "@utils/markdown-assets";
+import { IS_EN_BUILD } from "@utils/build-locale";
 import { aboutConfig } from "@/config/aboutConfig";
 
 if (!aboutConfig.enable) {
@@ -15,7 +16,8 @@ if (!aboutConfig.enable) {
 const pageTitle = resolveI18nText(aboutConfig.title, I18nKey.about);
 const pageDescription = resolveI18nText(aboutConfig.description, I18nKey.about);
 
-const aboutPost = await getEntry("spec", "about");
+const aboutEntryId = IS_EN_BUILD ? "about-en" : "about";
+const aboutPost = await getEntry("spec", aboutEntryId);
 
 if (!aboutPost) {
 	throw new Error("About page content not found");
