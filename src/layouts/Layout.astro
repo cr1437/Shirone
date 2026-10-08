@@ -420,6 +420,10 @@ const bootLive2D = () => {
 				},
 			],
 			tips: {
+				style: {
+					// 提示气泡置于模型上层（默认样式无 z-index，模型较大时会把气泡压住）
+					zIndex: "9999",
+				},
 				idleTips: {
 					interval: 8000,
 					message: ["累了就休息一下吧～", "记得多喝水哦！", "也要记得好好吃饭！"],
