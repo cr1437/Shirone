@@ -9,17 +9,17 @@
 
 /* ---------- 1. 表面色令牌 → 半透明 ---------- */
 html[data-surface-style="glass"] {
-	--card-bg: rgba(255, 255, 255, 0.55);
-	--float-panel-bg: rgba(255, 255, 255, 0.62);
-	--glass-blur: 14px;
-	--glass-soft: rgba(255, 255, 255, 0.5);
+	--card-bg: rgba(255, 255, 255, 0.72);
+	--float-panel-bg: rgba(255, 255, 255, 0.78);
+	--glass-blur: 22px;
+	--glass-soft: rgba(255, 255, 255, 0.66);
 
 	/* surface 容器层级：按钮 / 分段 / 开关 / 输入 / 菜单等控件统一玻璃化 */
-	--surface-container-lowest: rgba(255, 255, 255, 0.5);
-	--surface-container-low: rgba(255, 255, 255, 0.53);
-	--surface-container: rgba(255, 255, 255, 0.57);
-	--surface-container-high: rgba(255, 255, 255, 0.62);
-	--surface-container-highest: rgba(255, 255, 255, 0.67);
+	--surface-container-lowest: rgba(255, 255, 255, 0.64);
+	--surface-container-low: rgba(255, 255, 255, 0.68);
+	--surface-container: rgba(255, 255, 255, 0.72);
+	--surface-container-high: rgba(255, 255, 255, 0.77);
+	--surface-container-highest: rgba(255, 255, 255, 0.82);
 
 	/* 强调色容器：半透明玻璃（保留色相） */
 	--primary-container: color-mix(in oklab, var(--mc-primary-container, oklch(0.9 0.06 var(--hue))) 60%, transparent);
@@ -32,15 +32,15 @@ html[data-surface-style="glass"] {
 }
 
 html[data-surface-style="glass"].dark {
-	--card-bg: rgba(30, 32, 40, 0.55);
-	--float-panel-bg: rgba(30, 32, 40, 0.62);
-	--glass-soft: rgba(30, 32, 40, 0.5);
+	--card-bg: rgba(30, 32, 40, 0.72);
+	--float-panel-bg: rgba(30, 32, 40, 0.78);
+	--glass-soft: rgba(30, 32, 40, 0.66);
 
-	--surface-container-lowest: rgba(30, 32, 40, 0.5);
-	--surface-container-low: rgba(30, 32, 40, 0.53);
-	--surface-container: rgba(30, 32, 40, 0.57);
-	--surface-container-high: rgba(30, 32, 40, 0.62);
-	--surface-container-highest: rgba(30, 32, 40, 0.67);
+	--surface-container-lowest: rgba(30, 32, 40, 0.64);
+	--surface-container-low: rgba(30, 32, 40, 0.68);
+	--surface-container: rgba(30, 32, 40, 0.72);
+	--surface-container-high: rgba(30, 32, 40, 0.77);
+	--surface-container-highest: rgba(30, 32, 40, 0.82);
 
 	--primary-container: color-mix(in oklab, var(--mc-primary-container, oklch(0.36 0.1 var(--hue))) 60%, transparent);
 	--secondary-container: color-mix(in oklab, var(--mc-secondary-container, oklch(0.37 0.08 calc(var(--hue) + 65))) 60%, transparent);
@@ -110,7 +110,14 @@ html[data-surface-style="glass"] .m3-tooltip__tip {
 	background: color-mix(in oklab, var(--inverse-surface) 85%, transparent);
 }
 
-/* ----------3.7控件补齐：outlined 输入 /卡片、实底强调控件 →玻璃 ---------- */
+/* ---------- 3.7 侧边抽屉（导航侧边栏）：玻璃面板 ---------- */
+html[data-surface-style="glass"] .site-drawer__panel {
+	background: var(--float-panel-bg);
+	-webkit-backdrop-filter: blur(var(--glass-blur)) saturate(160%);
+	backdrop-filter: blur(var(--glass-blur)) saturate(160%);
+}
+
+/* ----------3.8控件补齐：outlined 输入 /卡片、实底强调控件 →玻璃 ---------- */
 html[data-surface-style="glass"] .m3-text-field--outlined {
 	background: var(--glass-soft);
 }

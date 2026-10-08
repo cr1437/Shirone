@@ -270,8 +270,8 @@ const hasMonoFont =
 
 <style lang="stylus" is:global>
 @import "../styles/variables.styl"
-/* 全屏 hero 模式：卡片底色切换为半透明令牌（未分层样式，确保级联层优先） */
-:root[data-card-transparent="true"]
+/* 全屏 hero 模式：卡片底色切换为半透明令牌（未分层样式，确保级联层优先；仅毛玻璃模式生效，经典 MD3 保持实体卡片） */
+:root[data-surface-style="glass"][data-card-transparent="true"]
 	--card-bg: var(--card-bg-transparent)
 </style>
 
