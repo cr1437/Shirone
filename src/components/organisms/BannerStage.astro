@@ -1276,7 +1276,7 @@ const initialMobileBanner = page === "home";
 		display: none
 
 	@media (max-width: 1023.98px)
-		:global(body:not([data-current-page="home"])) .banner-stage
+		:global(html[data-wallpaper-mode="banner"] body:not([data-current-page="home"])) .banner-stage
 			display: none
 
 		.banner-stage
