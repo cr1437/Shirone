@@ -395,9 +395,9 @@ else document.addEventListener("swup:enable", setup);
 </script>
 
 <script>
-// 左下角 Live2D 看板娘（l2d-widget 自托管；模型：大肥鱼 dafeiyu）
+// 左下角 Live2D 看板娘（oh-my-live2d v0.19.3，资源自托管于 /live2d/）
 // 懒加载：仅在桌面宽度、页面加载完成后的空闲时段拉取脚本，避免拖慢首屏。
-const LIVE2D_WIDGET_SRC = "/live2d/l2d-widget.min.js";
+const LIVE2D_WIDGET_SRC = "/live2d/oml2d.min.js";
 const LIVE2D_MODEL_PATH = "/live2d/dafeiyu/c_0120.model3.json";
 const bootLive2D = () => {
 	if (window.__live2dBooted) return;
@@ -407,19 +407,27 @@ const bootLive2D = () => {
 	script.src = LIVE2D_WIDGET_SRC;
 	script.async = true;
 	script.onload = () => {
-		const factory = window.L2D_WIDGET;
-		if (!factory || typeof factory.createWidget !== "function") return;
-		factory.createWidget({
-			model: {
-				path: LIVE2D_MODEL_PATH,
-				tips: {
-					welcomeMessage: ["欢迎来到初然的小站！", "嗨～今天过得怎么样？"],
-					messages: ["累了就休息一下吧～", "记得多喝水哦！", "也要记得好好吃饭！"],
-					duration: 4000,
+		const factory = window.OML2D;
+		if (!factory || typeof factory.loadOml2d !== "function") return;
+		factory.loadOml2d({
+			dockedPosition: "left",
+			mobileDisplay: false,
+			sayHello: false,
+			models: [
+				{
+					name: "dafeiyu",
+					path: LIVE2D_MODEL_PATH,
+				},
+			],
+			tips: {
+				idleTips: {
 					interval: 8000,
+					message: ["累了就休息一下吧～", "记得多喝水哦！", "也要记得好好吃饭！"],
+				},
+				welcomeTips: {
+					duration: 4000,
 				},
 			},
-			position: "bottom-left",
 		});
 	};
 	document.body.appendChild(script);

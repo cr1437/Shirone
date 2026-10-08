@@ -22,8 +22,8 @@ declare global {
 		__shironeNavigationBound?: boolean;
 		__shironeSidebarBound?: boolean;
 		__live2dBooted?: boolean;
-		L2D_WIDGET?: {
-			createWidget: (options: Record<string, unknown>) => unknown;
+		OML2D?: {
+			loadOml2d: (options: Record<string, unknown>) => unknown;
 		};
 		pagefind: {
 			search: (query: string) => Promise<{
