@@ -1,0 +1,24 @@
+/* ============================================================
+   全站页面背景图（固定铺满 + 轻底色滤镜）
+   ------------------------------------------------------------
+   换图：把新图放进 public/images/wallpaper/，改下面 url() 即可。
+   滤镜：color-mix(... var(--page-bg) 25% ...) 是 25% 的底色轻纱，
+   用于保证照片上的文字可读性；想更清晰可调低（甚至删掉渐变层）。
+   ============================================================ */
+
+html::before {
+	content: "";
+	position: fixed;
+	inset: 0;
+	z-index: -30;
+	pointer-events: none;
+	background-image:
+		linear-gradient(
+			color-mix(in oklab, var(--page-bg) 25%, transparent),
+			color-mix(in oklab, var(--page-bg) 25%, transparent)
+		),
+		url("/images/wallpaper/IMG_20261008_152011.jpg");
+	background-size: cover, cover;
+	background-position: center, center;
+	background-repeat: no-repeat, no-repeat;
+}
