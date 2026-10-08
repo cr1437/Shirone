@@ -17,19 +17,24 @@ export const skillsConfig: SkillsConfig = withUserConfig("skills", {
 	description: "$t:skillsBanner",
 	categories: [
 		{
-			key: "frontend",
-			label: "Frontend",
+			key: "app",
+			label: "App 开发",
+			icon: "material-symbols:android-rounded",
+		},
+		{
+			key: "web",
+			label: "Web 开发",
 			icon: "material-symbols:web-rounded",
 		},
 		{
-			key: "backend",
-			label: "Backend",
-			icon: "material-symbols:dns-rounded",
+			key: "system",
+			label: "系统编程",
+			icon: "material-symbols:memory-rounded",
 		},
 		{
-			key: "tooling",
-			label: "Tooling",
-			icon: "material-symbols:construction-rounded",
+			key: "data",
+			label: "数据与脚本",
+			icon: "material-symbols:database-rounded",
 		},
 	],
 	// disabledNames: [],
