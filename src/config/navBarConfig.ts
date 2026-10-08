@@ -18,6 +18,7 @@ import type {
 	NavBarLink,
 	NavBarLinkOverride,
 } from "@/types/navBarConfig";
+import { IS_EN_BUILD } from "../utils/build-locale.ts";
 import { getUserConfig } from "../utils/config-overlay.ts";
 import { pruneUnavailableNavLinks } from "../utils/nav-utils.ts";
 
@@ -128,6 +129,13 @@ export const LinkPresets: Record<string, NavBarLink> = {
 		icon: "material-symbols:info-outline-rounded",
 		pageKey: "about",
 	},
+	Miku: {
+		// 初音未来角色页：名称按构建语言取字面量（站点仅构建 zh / en 两版）
+		name: IS_EN_BUILD ? "Hatsune Miku" : "初音未来",
+		url: "/miku/",
+		icon: "material-symbols:music-note-rounded",
+		pageKey: "miku",
+	},
 	GitHub: {
 		name: "GitHub",
 		url: "https://github.com/LyraVoid/Shirone",
@@ -150,6 +158,7 @@ const defaultNavBarConfig: NavBarConfig = {
 			name: i18n(I18nKey.more),
 			icon: "material-symbols:apps-rounded",
 			children: [
+				LinkPresets.Miku,
 				LinkPresets.Timeline,
 				LinkPresets.Projects,
 				LinkPresets.Devices,
