@@ -12,11 +12,40 @@ html[data-surface-style="glass"] {
 	--card-bg: rgba(255, 255, 255, 0.55);
 	--float-panel-bg: rgba(255, 255, 255, 0.62);
 	--glass-blur: 14px;
+
+	/* surface 容器层级：按钮 / 分段 / 开关 / 输入 / 菜单等控件统一玻璃化 */
+	--surface-container-lowest: rgba(255, 255, 255, 0.5);
+	--surface-container-low: rgba(255, 255, 255, 0.53);
+	--surface-container: rgba(255, 255, 255, 0.57);
+	--surface-container-high: rgba(255, 255, 255, 0.62);
+	--surface-container-highest: rgba(255, 255, 255, 0.67);
+
+	/* 强调色容器：半透明玻璃（保留色相） */
+	--primary-container: color-mix(in oklab, var(--mc-primary-container, oklch(0.9 0.06 var(--hue))) 60%, transparent);
+	--secondary-container: color-mix(in oklab, var(--mc-secondary-container, oklch(0.9 0.05 calc(var(--hue) + 65))) 60%, transparent);
+	--tertiary-container: color-mix(in oklab, var(--mc-tertiary-container, oklch(0.9 0.05 calc(var(--hue) - 100))) 60%, transparent);
+
+	/* 页面基底 / 代码块顶栏保持不透明：玻璃只做表面层 */
+	--page-bg: var(--mc-surface-container-low, oklch(0.965 0.01 var(--hue)));
+	--codeblock-topbar-bg: var(--mc-surface-container, oklch(0.94 0.01 var(--hue)));
 }
 
 html[data-surface-style="glass"].dark {
 	--card-bg: rgba(30, 32, 40, 0.55);
 	--float-panel-bg: rgba(30, 32, 40, 0.62);
+
+	--surface-container-lowest: rgba(30, 32, 40, 0.5);
+	--surface-container-low: rgba(30, 32, 40, 0.53);
+	--surface-container: rgba(30, 32, 40, 0.57);
+	--surface-container-high: rgba(30, 32, 40, 0.62);
+	--surface-container-highest: rgba(30, 32, 40, 0.67);
+
+	--primary-container: color-mix(in oklab, var(--mc-primary-container, oklch(0.36 0.1 var(--hue))) 60%, transparent);
+	--secondary-container: color-mix(in oklab, var(--mc-secondary-container, oklch(0.37 0.08 calc(var(--hue) + 65))) 60%, transparent);
+	--tertiary-container: color-mix(in oklab, var(--mc-tertiary-container, oklch(0.37 0.08 calc(var(--hue) - 100))) 60%, transparent);
+
+	--page-bg: var(--surface);
+	--codeblock-topbar-bg: var(--mc-surface-container-low, oklch(0.19 0.014 var(--hue)));
 }
 
 /* ---------- 2. 主要表面背景模糊 ---------- */
@@ -37,7 +66,16 @@ html[data-surface-style="glass"] :is(
 	.compass-tile,
 	.timeline-card,
 	.float-panel,
-	.context-menu
+	.context-menu,
+	.m3-menu,
+	.m3-dialog,
+	.m3-alert,
+	.m3-sheet,
+	.m3-sheet-side,
+	.m3-floating-toc-panel,
+	.m3-snackbar,
+	.m3-tooltip__tip,
+	.m3-fab
 ) {
 	-webkit-backdrop-filter: blur(var(--glass-blur)) saturate(160%);
 	backdrop-filter: blur(var(--glass-blur)) saturate(160%);
@@ -54,10 +92,20 @@ html[data-surface-style="glass"] .top-app-bar__submenu {
 	backdrop-filter: blur(var(--glass-blur)) saturate(160%);
 }
 
-/* ---------- 3.5 顶栏：加强玻璃质感（底色沿用既有半透明规则） ---------- */
-html[data-surface-style="glass"] .top-app-bar {
+/* ---------- 3.5 顶栏：玻璃条（透明态除外，保持横幅上的全透明效果） ---------- */
+html[data-surface-style="glass"] .top-app-bar:not(.top-app-bar--transparent) {
+	background: color-mix(in oklab, var(--surface) 65%, transparent);
 	-webkit-backdrop-filter: blur(var(--glass-blur)) saturate(160%);
 	backdrop-filter: blur(var(--glass-blur)) saturate(160%);
+}
+
+html[data-surface-style="glass"] .top-app-bar--scrolled:not(.top-app-bar--transparent) {
+	background: color-mix(in oklab, var(--surface) 72%, transparent);
+}
+
+/* ---------- 3.6 提示气泡：暗色玻璃 ---------- */
+html[data-surface-style="glass"] .m3-tooltip__tip {
+	background: color-mix(in oklab, var(--inverse-surface) 85%, transparent);
 }
 
 /* ---------- 4. 注释 ----------
