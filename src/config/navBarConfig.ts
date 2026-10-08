@@ -130,11 +130,11 @@ export const LinkPresets: Record<string, NavBarLink> = {
 		pageKey: "about",
 	},
 	Oshi: {
-		// 「我推」入口：初音未来与帽子米塔的角色页合集（名称按构建语言取字面量）
-		name: IS_EN_BUILD ? "My Oshi" : "我推",
-		url: "/oshi/",
-		icon: "material-symbols:favorite-rounded",
-		pageKey: "oshi",
+		// 「动漫人物」入口：初音未来与井芹仁菜的角色页合集（名称按构建语言取字面量）
+		name: IS_EN_BUILD ? "Characters" : "动漫人物",
+		url: "/characters/",
+		icon: "material-symbols:person-rounded",
+		pageKey: "characters",
 	},
 	GitHub: {
 		name: "GitHub",

@@ -4,7 +4,7 @@ import { url } from "@utils/url-utils";
 
 interface Props {
 	/** 当前所在角色页 */
-	current: "miku" | "mita";
+	current: "miku" | "mita" | "nina";
 }
 const { current } = Astro.props;
 
@@ -16,10 +16,10 @@ const tabs = [
 		accent: "#39C5BB",
 	},
 	{
-		key: "mita",
-		href: url("/mita/"),
-		label: IS_EN_BUILD ? "Cap-Wearing Mita" : "帽子米塔",
-		accent: "#8b5cf6",
+		key: "nina",
+		href: url("/nina/"),
+		label: IS_EN_BUILD ? "Iseri Nina" : "井芹仁菜",
+		accent: "#D90E2C",
 	},
 ] as const;
 ---
