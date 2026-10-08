@@ -26,6 +26,16 @@ html[data-surface-style="glass"] :is(
 	.post-card,
 	.ai-summary-card,
 	.last-updated-notice,
+	.album-card,
+	.anime-card,
+	.skill-card,
+	.project-card,
+	.moment-card,
+	.game-card,
+	.friend-card,
+	.device-card,
+	.compass-tile,
+	.timeline-card,
 	.float-panel,
 	.context-menu
 ) {
@@ -40,6 +50,12 @@ html[data-surface-style="glass"] .context-menu-layer .context-menu {
 
 html[data-surface-style="glass"] .top-app-bar__submenu {
 	background: var(--float-panel-bg);
+	-webkit-backdrop-filter: blur(var(--glass-blur)) saturate(160%);
+	backdrop-filter: blur(var(--glass-blur)) saturate(160%);
+}
+
+/* ---------- 3.5 顶栏：加强玻璃质感（底色沿用既有半透明规则） ---------- */
+html[data-surface-style="glass"] .top-app-bar {
 	-webkit-backdrop-filter: blur(var(--glass-blur)) saturate(160%);
 	backdrop-filter: blur(var(--glass-blur)) saturate(160%);
 }
