@@ -12,4 +12,37 @@ import type { TrackDescriptor } from "@/types/musicConfig";
  * - source: 音频文件地址（相对 /public 或绝对 URL）
  * - duration: 曲目时长（秒，可选）
  */
-export const musicTracks: readonly TrackDescriptor[] = [];
+export const musicTracks: readonly TrackDescriptor[] = [
+	{
+		id: "i-have-no-friends",
+		title: "i have no friends",
+		artist: "s0rrow",
+		cover: "assets/images/music/i-have-no-friends.webp",
+		source: "/assets/music/url/i-have-no-friends.mp3",
+		duration: 99,
+	},
+	{
+		id: "unhappy",
+		title: "unhappy",
+		artist: "s0rrow",
+		cover: "assets/images/music/unhappy.webp",
+		source: "/assets/music/url/unhappy.mp3",
+		duration: 98,
+	},
+	{
+		id: "unknown-mother-goose",
+		title: "アンノウン・マザーグース",
+		artist: "wowaka/初音ミク",
+		cover: "assets/images/music/unknown-mother-goose.webp",
+		source: "/assets/music/url/unknown-mother-goose.mp3",
+		duration: 279,
+	},
+	{
+		id: "rolling-girl",
+		title: "ローリンガール",
+		artist: "wowaka/初音ミク",
+		cover: "assets/images/music/rolling-girl.webp",
+		source: "/assets/music/url/rolling-girl.mp3",
+		duration: 190,
+	},
+];
