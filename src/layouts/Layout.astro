@@ -423,6 +423,15 @@ const bootLive2D = () => {
 				style: {
 					// 提示气泡置于模型上层（默认样式无 z-index，模型较大时会把气泡压住）
 					zIndex: "9999",
+					// 毛玻璃风格（参考 Nebula：半透明底 + backdrop-filter 模糊 + 描边 + 阴影）
+					backgroundColor: "rgba(24, 26, 36, 0.38)",
+					backdropFilter: "blur(12px) saturate(160%)",
+					WebkitBackdropFilter: "blur(12px) saturate(160%)",
+					border: "1px solid rgba(255, 255, 255, 0.35)",
+					borderRadius: "14px",
+					boxShadow: "0 8px 32px rgba(0, 0, 0, 0.22)",
+					filter: "drop-shadow(0 4px 12px rgba(0, 0, 0, 0.18))",
+					color: "#ffffff",
 				},
 				idleTips: {
 					interval: 8000,
@@ -430,6 +439,27 @@ const bootLive2D = () => {
 				},
 				welcomeTips: {
 					duration: 4000,
+				},
+			},
+			statusBar: {
+				style: {
+					// 毛玻璃状态条
+					backgroundColor: "rgba(24, 26, 36, 0.38)",
+					backdropFilter: "blur(12px) saturate(160%)",
+					WebkitBackdropFilter: "blur(12px) saturate(160%)",
+					border: "1px solid rgba(255, 255, 255, 0.3)",
+					boxShadow: "0 6px 24px rgba(0, 0, 0, 0.2)",
+				},
+			},
+			menus: {
+				style: {
+					// 毛玻璃悬停菜单
+					backgroundColor: "rgba(24, 26, 36, 0.42)",
+					backdropFilter: "blur(12px) saturate(160%)",
+					WebkitBackdropFilter: "blur(12px) saturate(160%)",
+					border: "1px solid rgba(255, 255, 255, 0.28)",
+					borderRadius: "12px",
+					boxShadow: "0 8px 32px rgba(0, 0, 0, 0.25)",
 				},
 			},
 		});
