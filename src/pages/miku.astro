@@ -54,7 +54,7 @@ const infoRows: Row[] = IS_EN_BUILD
 			["Height", "158 cm"],
 			["Weight", "42 kg"],
 			["Age", "16（forever）"],
-			["Birthday", "Aug 31（Virgo）"],
+			["Birthday", "Aug 31 · Virgo (we even share the same birthday!)"],
 			["Voice", "Saki Fujita（藤田咲）"],
 			["Designer", "KEI"],
 			["Tags", "Twin-tails · songstress · leek · uniform · thigh-highs"],
@@ -68,7 +68,7 @@ const infoRows: Row[] = IS_EN_BUILD
 			["身高", "158cm"],
 			["体重", "42kg"],
 			["年龄", "16 岁（永远）"],
-			["生日", "8 月 31 日（处女座）"],
+			["生日", "8 月 31 日 · 处女座（居然和我同一天呢）"],
 			["配音", "藤田咲"],
 			["画师", "KEI"],
 			["萌点", "超长双马尾、歌姬、葱、制服、过膝靴、耳麦、绝对领域"],
@@ -144,22 +144,4 @@ const infoRows: Row[] = IS_EN_BUILD
 			</div>
 		</div>
 	</div>
-	<script is:inline>
-		(function () {
-			function updateOshiDays() {
-				try {
-					var start = new Date(2020, 3, 18);
-					var now = new Date();
-					var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-					var days = Math.round((today.getTime() - start.getTime()) / 86400000) + 1;
-					var el = document.getElementById("oshi-days");
-					if (el && days > 0) el.textContent = String(days);
-				} catch (e) {}
-			}
-			updateOshiDays();
-			document.addEventListener("DOMContentLoaded", updateOshiDays);
-			document.addEventListener("swup:content:replace", updateOshiDays);
-			document.addEventListener("swup:page:view", updateOshiDays);
-		})();
-	</script>
 </MainGridLayout>

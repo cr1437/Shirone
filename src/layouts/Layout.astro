@@ -321,6 +321,7 @@ const hasMonoFont =
 
 <script>
 import { initLastUpdatedNotices } from "../utils/last-updated-notice";
+import { initOshiCounter } from "../utils/oshi-counter";
 import {getHue, getStoredTheme, setHue, setTheme} from "../utils/setting-utils";
 import { WALLPAPER_MODE_CHANGE_EVENT, WALLPAPER_FULLSCREEN_LAYOUT_CHANGE_EVENT, BANNER_HEIGHT, BANNER_HEIGHT_EXTEND } from "../constants/constants";
 import { copyPageLink } from "../utils/copy-page-link";
@@ -349,6 +350,7 @@ function init() {
 }
 init();
 initLastUpdatedNotices();
+initOshiCounter();
 
 document.addEventListener("click", async (event) => {
 	const target = event.target;
