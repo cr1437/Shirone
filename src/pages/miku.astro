@@ -1,0 +1,128 @@
+---
+import { getEntry, render } from "astro:content";
+import Card from "@components/atoms/display/Card.svelte";
+import Markdown from "@components/content/Markdown.astro";
+import MainGridLayout from "@layouts/MainGridLayout.astro";
+import { getMarkdownStylesheetAssets } from "@utils/markdown-assets";
+import { IS_EN_BUILD } from "@utils/build-locale";
+import portrait from "../assets/images/music/unknown-mother-goose.webp";
+
+const pageTitle = IS_EN_BUILD ? "Hatsune Miku" : "初音未来";
+const pageDescription = IS_EN_BUILD
+	? "A character introduction of Hatsune Miku — data compiled from Moegirlpedia."
+	: "初音未来的角色介绍——资料整理自萌娘百科。";
+
+const entryId = IS_EN_BUILD ? "miku-en" : "miku";
+const post = await getEntry("spec", entryId);
+if (!post) {
+	throw new Error("Miku page content not found");
+}
+const { Content, remarkPluginFrontmatter } = await render(post);
+const markdownStylesheetAssets = await getMarkdownStylesheetAssets(
+	remarkPluginFrontmatter.markdownSyntaxes,
+);
+
+const labels = IS_EN_BUILD
+	? {
+			badge: "Character Profile",
+			infoTitle: "Basic Info",
+			colorLabel: "Image colour",
+			accentNote: "Art from the cover of「Unknown Mother-Goose」",
+		}
+	: {
+			badge: "角色介绍",
+			infoTitle: "基本资料",
+			colorLabel: "代表色",
+			accentNote: "配图来自歌曲《アンノウン・マザーグース》封面",
+		};
+
+type Row = [string, string];
+const infoRows: Row[] = IS_EN_BUILD
+	? [
+			["Name", "Hatsune Miku（初音ミク）"],
+			["Aliases", "Miku / Leek Girl / the World's #1 Princess / 39"],
+			["Hair · Eyes", "Leek-green"],
+			["Height", "158 cm"],
+			["Weight", "42 kg"],
+			["Age", "16（forever）"],
+			["Birthday", "Aug 31（Virgo）"],
+			["Voice", "Saki Fujita（藤田咲）"],
+			["Designer", "KEI"],
+			["Tags", "Twin-tails · songstress · leek · uniform · thigh-highs"],
+			["Origin", "Japan"],
+			["Group", "VOCALOID (pre-NT) / Piapro Characters"],
+		]
+	: [
+			["本名", "初音ミク（はつねミク / Hatsune Miku）"],
+			["别号", "Miku、葱娘、世界第一的公主殿下、39"],
+			["发色 · 瞳色", "苍绿"],
+			["身高", "158cm"],
+			["体重", "42kg"],
+			["年龄", "16 岁（永远）"],
+			["生日", "8 月 31 日（处女座）"],
+			["配音", "藤田咲"],
+			["画师", "KEI"],
+			["萌点", "超长双马尾、歌姬、葱、制服、过膝靴、耳麦、绝对领域"],
+			["出身地区", "日本"],
+			["所属团体", "VOCALOID（NT 之前）/ Piapro Characters"],
+		];
+---
+
+<MainGridLayout title={pageTitle} description={pageDescription} page="about">
+	{markdownStylesheetAssets.map(({ pack, css }) => <style is:inline slot="head" data-swup-optional={pack} set:html={css}></style>)}
+	<div class="flex flex-col gap-4 w-full">
+		<!-- 顶部横幅 -->
+		<div class="flex w-full rounded-[var(--shape-corner-l)] overflow-hidden relative">
+			<Card color="var(--card-bg)" radius="l" class="z-10 p-6 lg:p-8 relative w-full">
+				<div class="flex flex-col gap-2">
+					<span class="text-xs font-bold tracking-[0.2em] uppercase text-[var(--on-surface-variant)]">{labels.badge}</span>
+					<h1 class="text-3xl lg:text-4xl font-black leading-tight text-[var(--on-surface)]">
+						初音ミク
+						<span class="text-lg lg:text-2xl font-bold text-[var(--on-surface-variant)]">/ Hatsune Miku</span>
+					</h1>
+					<div class="h-1.5 w-28 rounded-full" style="background: #39C5BB"></div>
+				</div>
+			</Card>
+		</div>
+
+		<div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_300px] gap-4 items-start">
+			<!-- 信息框（仿萌娘百科；移动端在上方） -->
+			<div class="lg:order-2 lg:sticky lg:top-24 w-full">
+				<Card color="var(--card-bg)" radius="l" class="w-full overflow-hidden">
+					<div class="px-4 py-3 text-center" style="background: linear-gradient(135deg, rgba(57,197,187,0.22), rgba(57,197,187,0.06));">
+						<div class="text-base font-black text-[var(--on-surface)]">初音未来</div>
+						<div class="text-xs tracking-widest text-[var(--on-surface-variant)]">HATSUNE MIKU</div>
+					</div>
+					<div class="p-3 pb-1">
+						<img src={portrait.src} alt="Hatsune Miku" class="w-full rounded-[var(--shape-corner-m)]" />
+						<div class="pt-1 text-center text-[0.68rem] text-[var(--on-surface-variant)] opacity-80">{labels.accentNote}</div>
+					</div>
+					<dl class="px-4 pb-4 pt-1 text-sm">
+						{infoRows.map(([k, v]) => (
+							<div class="flex gap-3 border-t border-[var(--outline-variant)] py-2 items-baseline">
+								<dt class="w-[5.5rem] shrink-0 font-bold text-[var(--on-surface-variant)]">{k}</dt>
+								<dd class="flex-1 min-w-0 text-[var(--on-surface)]">{v}</dd>
+							</div>
+						))}
+						<div class="flex gap-3 border-t border-[var(--outline-variant)] py-2 items-center">
+							<dt class="w-[5.5rem] shrink-0 font-bold text-[var(--on-surface-variant)]">{labels.colorLabel}</dt>
+							<dd class="flex-1 flex items-center gap-2 text-[var(--on-surface)]">
+								<span class="inline-block h-4 w-4 rounded-full border border-[var(--outline-variant)]" style="background: #39C5BB"></span>
+								<span>#39C5BB</span>
+							</dd>
+						</div>
+					</dl>
+				</Card>
+			</div>
+
+			<!-- 正文 -->
+			<div class="lg:order-1 flex w-full rounded-[var(--shape-corner-l)] overflow-hidden relative">
+				<Card color="var(--card-bg)" radius="l" class="z-10 p-6 lg:p-8 relative w-full">
+					<Markdown class="mt-2">
+						<Content />
+					</Markdown>
+				</Card>
+			</div>
+		</div>
+	</div>
+</MainGridLayout>

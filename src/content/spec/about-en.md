@@ -4,7 +4,7 @@ Hi, I'm **ChuRan** 👋
 
 An Android app developer, currently in high school.
 
-- Long-time ACG fan; my favorites are **Hatsune Miku**, **Anwa Subaru** and **Tangtang**
+- Long-time ACG fan; my oshi is **[Hatsune Miku](../miku/)**
 - Into **Vibe Coding**
 - An audio enthusiast
 
