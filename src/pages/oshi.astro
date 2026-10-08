@@ -1,0 +1,85 @@
+---
+import Card from "@components/atoms/display/Card.svelte";
+import MainGridLayout from "@layouts/MainGridLayout.astro";
+import { IS_EN_BUILD } from "@utils/build-locale";
+import { url } from "@utils/url-utils";
+import mikuImg from "../assets/images/music/unknown-mother-goose.webp";
+import mitaImg from "../assets/images/characters/capmita.webp";
+
+const pageTitle = IS_EN_BUILD ? "My Oshi" : "我推";
+const pageDescription = IS_EN_BUILD
+	? "My oshi characters: Hatsune Miku and Cappie."
+	: "我推的角色们：初音未来与帽子米塔。";
+
+const labels = IS_EN_BUILD
+	? {
+			badge: "MY OSHI",
+			subtitle: "Two oshis. An eternally-sixteen songstress, and the coolest Mita.",
+			cta: "Read more",
+		}
+	: {
+			badge: "我推",
+			subtitle: "两位推し。一位是永远十六岁的歌姬，一位是很酷的米塔。",
+			cta: "查看介绍",
+		};
+
+const cards = [
+	{
+		href: url("/miku/"),
+		img: mikuImg.src,
+		zh: "初音未来",
+		en: "Hatsune Miku",
+		desc: IS_EN_BUILD
+			? "Forever 16 · the World's #1 Princess"
+			: "永远的 16 岁 · 世界第一的公主殿下",
+	},
+	{
+		href: url("/mita/"),
+		img: mitaImg.src,
+		zh: "帽子米塔",
+		en: "Cap-Wearing Mita",
+		desc: IS_EN_BUILD
+			? "The cool Mita (not Cool Mita!)"
+			: "很酷的米塔（不是酷米塔！）",
+	},
+];
+---
+
+<MainGridLayout title={pageTitle} description={pageDescription} page="about">
+	<div class="flex flex-col gap-4 w-full">
+		<!-- 顶部横幅 -->
+		<div class="flex w-full rounded-[var(--shape-corner-l)] overflow-hidden relative">
+			<Card color="var(--card-bg)" radius="l" class="z-10 p-6 lg:p-8 relative w-full">
+				<div class="flex flex-col gap-2">
+					<span class="text-xs font-bold tracking-[0.2em] uppercase text-[var(--on-surface-variant)]">{labels.badge}</span>
+					<h1 class="text-3xl lg:text-4xl font-black leading-tight text-[var(--on-surface)]">
+						{pageTitle}
+					</h1>
+					<div class="h-1.5 w-40 rounded-full" style="background: linear-gradient(90deg, #39C5BB, #8b5cf6)"></div>
+					<p class="text-sm text-[var(--on-surface-variant)]">{labels.subtitle}</p>
+				</div>
+			</Card>
+		</div>
+
+		<!-- 角色卡片 -->
+		<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+			{cards.map((c) => (
+				<a href={c.href} class="block group">
+					<Card color="var(--card-bg)" radius="l" class="w-full overflow-hidden">
+						<div class="aspect-square overflow-hidden">
+							<img src={c.img} alt={c.en} class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]" />
+						</div>
+						<div class="p-5 flex flex-col gap-1">
+							<div class="text-lg font-black text-[var(--on-surface)]">
+								{c.zh}
+								<span class="text-sm font-bold text-[var(--on-surface-variant)]">/ {c.en}</span>
+							</div>
+							<div class="text-sm text-[var(--on-surface-variant)]">{c.desc}</div>
+							<div class="mt-2 text-sm font-bold" style="color: var(--primary)">{labels.cta} →</div>
+						</div>
+					</Card>
+				</a>
+			))}
+		</div>
+	</div>
+</MainGridLayout>

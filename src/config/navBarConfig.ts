@@ -129,12 +129,12 @@ export const LinkPresets: Record<string, NavBarLink> = {
 		icon: "material-symbols:info-outline-rounded",
 		pageKey: "about",
 	},
-	Miku: {
-		// 初音未来角色页：名称按构建语言取字面量（站点仅构建 zh / en 两版）
-		name: IS_EN_BUILD ? "Hatsune Miku" : "初音未来",
-		url: "/miku/",
-		icon: "material-symbols:music-note-rounded",
-		pageKey: "miku",
+	Oshi: {
+		// 「我推」入口：初音未来与帽子米塔的角色页合集（名称按构建语言取字面量）
+		name: IS_EN_BUILD ? "My Oshi" : "我推",
+		url: "/oshi/",
+		icon: "material-symbols:favorite-rounded",
+		pageKey: "oshi",
 	},
 	GitHub: {
 		name: "GitHub",
@@ -158,7 +158,7 @@ const defaultNavBarConfig: NavBarConfig = {
 			name: i18n(I18nKey.more),
 			icon: "material-symbols:apps-rounded",
 			children: [
-				LinkPresets.Miku,
+				LinkPresets.Oshi,
 				LinkPresets.Timeline,
 				LinkPresets.Projects,
 				LinkPresets.Devices,

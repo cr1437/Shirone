@@ -1,0 +1,47 @@
+---
+import { IS_EN_BUILD } from "@utils/build-locale";
+import { url } from "@utils/url-utils";
+
+interface Props {
+	/** 当前所在角色页 */
+	current: "miku" | "mita";
+}
+const { current } = Astro.props;
+
+const tabs = [
+	{
+		key: "miku",
+		href: url("/miku/"),
+		label: IS_EN_BUILD ? "Hatsune Miku" : "初音未来",
+		accent: "#39C5BB",
+	},
+	{
+		key: "mita",
+		href: url("/mita/"),
+		label: IS_EN_BUILD ? "Cap-Wearing Mita" : "帽子米塔",
+		accent: "#8b5cf6",
+	},
+] as const;
+---
+
+<nav class="flex flex-wrap items-center gap-2 w-full" aria-label={IS_EN_BUILD ? "Switch character" : "切换角色"}>
+	{tabs.map((t) => {
+		const active = t.key === current;
+		return (
+			<a
+				href={t.href}
+				aria-current={active ? "page" : undefined}
+				class="inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-bold border transition-colors"
+				style={active
+					? `border-color: ${t.accent}; background: color-mix(in oklab, ${t.accent} 16%, transparent); color: var(--on-surface);`
+					: "border-color: var(--outline-variant); color: var(--on-surface-variant);"}
+			>
+				<span
+					class="inline-block h-2.5 w-2.5 rounded-full"
+					style={`background: ${t.accent}; opacity: ${active ? "1" : "0.45"};`}
+				></span>
+				{t.label}
+			</a>
+		);
+	})}
+</nav>

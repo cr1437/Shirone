@@ -93,6 +93,6 @@ export function resolvePageKey(
 	if (pathname === "/series" || pathname.startsWith("/series/"))
 		return "series";
 	if (pathname === "/about") return "about";
-	if (pathname === "/miku") return "miku";
+	if (pathname === "/oshi" || pathname === "/miku" || pathname === "/mita") return "oshi";
 	return "";
 }

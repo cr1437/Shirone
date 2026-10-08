@@ -2,6 +2,7 @@
 import { getEntry, render } from "astro:content";
 import Card from "@components/atoms/display/Card.svelte";
 import Markdown from "@components/content/Markdown.astro";
+import OshiTabs from "@components/molecules/OshiTabs.astro";
 import MainGridLayout from "@layouts/MainGridLayout.astro";
 import { getMarkdownStylesheetAssets } from "@utils/markdown-assets";
 import { IS_EN_BUILD } from "@utils/build-locale";
@@ -80,6 +81,7 @@ const infoRows: Row[] = IS_EN_BUILD
 <MainGridLayout title={pageTitle} description={pageDescription} page="about">
 	{markdownStylesheetAssets.map(({ pack, css }) => <style is:inline slot="head" data-swup-optional={pack} set:html={css}></style>)}
 	<div class="flex flex-col gap-4 w-full">
+		<OshiTabs current="miku" />
 		<!-- 顶部横幅 -->
 		<div class="flex w-full rounded-[var(--shape-corner-l)] overflow-hidden relative">
 			<Card color="var(--card-bg)" radius="l" class="z-10 p-6 lg:p-8 relative w-full">
