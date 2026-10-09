@@ -504,4 +504,18 @@ export const animeData: AnimeItem[] = [
 		year: "2025",
 		genres: ["运动", "滑冰", "励志"],
 	},
+	{
+		title: "小市民系列",
+		cover: "/assets/anime/covers/bgm-474906.webp",
+		link: "https://bgm.tv/subject/474906",
+		status: "completed",
+		rating: 0,
+		year: "2024",
+		studio: "小市民シリーズ製作委員会【テレビ朝日（八木征志）、NBCユニバーサル・エンターテイメント、网易游戏、東京創元社（森千穂）、名古屋テレビ、ムービック（萩原美香）、テレビ朝日ミュージック、BS朝日、クロックワークス、CyberAgent】",
+		genres: ["推理", "2024年7月", "米泽穗信", "小说改", "TV", "校园"],
+		identity: {
+			provider: "bangumi",
+			subjectId: "474906",
+		},
+	},
 ];
