@@ -111,10 +111,10 @@ const colorRow: Row = [labels.colorLabel, accent];
 						<div class="pt-2 text-center text-[0.68rem] text-[var(--on-surface-variant)] opacity-80">{labels.accentNote}</div>
 					</div>
 
-					<!-- 资料字段：自适应网格，minmax(15rem,1fr) 随屏宽自动增减列数 -->
+					<!-- 资料字段：自适应网格，minmax(min(15rem,100%),1fr) 随屏宽自动增减列数 -->
 					<dl
 						class="flex-1 min-w-0 w-full grid gap-x-8 gap-y-0 content-start"
-						style={`grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));`}
+						style="grid-template-columns: repeat(auto-fit, minmax(min(15rem, 100%), 1fr));"
 					>
 						{infoRows.map(([k, v]) => (
 							<div class="flex gap-3 border-t border-[var(--outline-variant)] py-2.5 items-baseline">
