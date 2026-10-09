@@ -13,8 +13,8 @@ import { BUILD_BASE, BUILD_LANG, IS_EN_BUILD } from "../utils/build-locale.ts";
 export const siteConfig: SiteConfig = withUserConfig("site", {
 	site: "https://www.churan.online/",
 	base: BUILD_BASE,
-	title: IS_EN_BUILD ? "Churan's Blog" : "初然的博客",
-	subtitle: IS_EN_BUILD ? "Welcome to Churan's blog" : "欢迎来到初然的博客",
+	title: IS_EN_BUILD ? "Churan's Blog" : "初然的小站",
+	subtitle: IS_EN_BUILD ? "Welcome to Churan's blog" : "欢迎来到初然的小站",
 	topAppBar: {
 		contentAlign: "center",
 	},
