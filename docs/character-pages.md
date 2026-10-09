@@ -11,7 +11,8 @@
 
 ```
 src/
-├─ pages/                        ← 页面骨架（每个角色一个文件）
+├─ pages/                        ← 页面骨架
+│   ├─ characters.astro           角色合集页（/characters/，三张卡片入口）
 │   ├─ miku.astro                 初音未来
 │   ├─ nina.astro                 井芹仁菜
 │   ├─ subaru.astro               安和昴
@@ -95,6 +96,39 @@ pages/*.astro  ──定义──▶  infoRows[][]  ──▶  信息卡字段�
 > 注意：`OshiTabs` 的 `tabs` 数组**不含 mita**（帽子米塔），所以帽子米塔页上没有高亮项。若要补上，需在数组里新增一项，并同步 `current` 的类型联合（`"miku" | "mita" | "nina" | "subaru"`）。
 
 ---
+
+### 2.5 角色合集页 `src/pages/characters.astro`
+
+**入口页**：导航抽屉 →「更多」→「动漫人物」→ `/characters/`（配置见 `src/lib/.../navBarConfig.ts` 的 `LinkPresets.Oshi`）。
+
+页面结构：
+1. 顶部横幅（badge + 标题 + 双色横条 + 副标题）
+2. **角色卡片网格** —— `grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3`，每张卡片链接到对应角色页
+
+```astro
+<a href={c.href} class="block group">
+    <Card>
+        <div class="aspect-[4/3] sm:aspect-square overflow-hidden">   <!-- 封面 -->
+            <img src={c.img} ... />
+        </div>
+        <div class="p-5 flex flex-col gap-1">   <!-- 中文名 + 英文名 + 描述 + CTA -->
+        </div>
+    </Card>
+</a>
+```
+
+**封面比例是有意设计的**（2026-10 修复）：
+- 移动端 `aspect-[4/3]`：单卡约 400px 高，避免一张卡片占满整屏
+- `sm`（≥640px）起 `aspect-square`：大屏恢复正方形，保持视觉
+
+> ⚠️ 若改回全端 `aspect-square`，在 393×851 的手机上单卡高达 494px，三张卡片总高约 1460px，**第二、三张完全在首屏之外**。用户容易以为「页面没渲染出来」或「点不动」，实际是需要向下滚动约 450px 才能触达。排查问题时注意区分「卡片在屏外」与「链接失效」。
+
+**新增角色时需要同步改三处**：
+| 位置 | 改什么 |
+|---|---|
+| `characters.astro` 的 `cards` 数组 | 加一张卡片（href / img / zh / en / desc） |
+| 新建 `src/pages/<name>.astro` | 角色详情页 |
+| `OshiTabs.astro` 的 `tabs` 数组 | 详情页顶部的切换标签（可选） |
 
 ### 3. 正文内容 `src/content/spec/<角色>.md`
 
@@ -187,6 +221,8 @@ style="grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr))"
 | 标签栏高亮 | 有 | 有 | 有 | 无（未登记） |
 | 正文配图 | 无 | `nina-extra.gif` | 无 | 无 |
 
+> 另有合集页 `characters.astro`（不在上表四个之列），它是三张卡片的入口页，本身不含角色资料。
+
 **只有 miku 页**在顶部横幅右侧有「推し歴」天数显示，计算逻辑在 `miku.astro` 头部：
 
 ```ts
@@ -204,6 +240,7 @@ const oshiDays = ...;                                     // 距今天数，当�
 | `src/pages/nina.astro` | 同上 |
 | `src/pages/subaru.astro` | 同上 |
 | `src/pages/mita.astro` | 同上 |
+| `src/pages/characters.astro` | 移动端封面 `aspect-square` → `aspect-[4/3]`，修复后续卡片难触达 |
 | `docs/character-pages.md` | 新增本文档 |
 
 ### 为什么网格要写成 `minmax(min(15rem, 100%), 1fr)`
