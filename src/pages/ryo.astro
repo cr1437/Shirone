@@ -1,0 +1,150 @@
+---
+import { getEntry, render } from "astro:content";
+import Card from "@components/atoms/display/Card.svelte";
+import Markdown from "@components/content/Markdown.astro";
+import OshiTabs from "@components/molecules/OshiTabs.astro";
+import MainGridLayout from "@layouts/MainGridLayout.astro";
+import { getMarkdownStylesheetAssets } from "@utils/markdown-assets";
+import { IS_EN_BUILD } from "@utils/build-locale";
+import portrait from "../assets/images/characters/ryo-stand.webp";
+
+const pageTitle = IS_EN_BUILD ? "Yamada Ryō" : "山田凉";
+const pageDescription = IS_EN_BUILD
+	? "A character introduction of Yamada Ryō — data compiled from Moegirlpedia."
+	: "山田凉的角色介绍——资料整理自萌娘百科。";
+
+const entryId = IS_EN_BUILD ? "ryo-en" : "ryo";
+const post = await getEntry("spec", entryId);
+if (!post) {
+	throw new Error("Ryō page content not found");
+}
+const { Content, remarkPluginFrontmatter } = await render(post);
+const markdownStylesheetAssets = await getMarkdownStylesheetAssets(
+	remarkPluginFrontmatter.markdownSyntaxes,
+);
+
+const accent = "#2E6FD9";
+
+const labels = IS_EN_BUILD
+	? {
+			badge: "Character Profile",
+			infoTitle: "Basic Info",
+			colorLabel: "Image colour",
+			accentNote: "Art: anime official art（via Moegirlpedia）",
+		}
+	: {
+			badge: "角色介绍",
+			infoTitle: "基本资料",
+			colorLabel: "代表色",
+			accentNote: "配图：动画版立绘（来源：萌娘百科）",
+		};
+
+type Row = [string, string];
+const infoRows: Row[] = IS_EN_BUILD
+	? [
+			["Name", "Yamada Ryō（山田リョウ）"],
+			["Aliases", "The World's Yamada · the quiet senpai · freeloader Ryō"],
+			["Hair · Eyes", "Blue · Yellow"],
+			["Height", "163 cm"],
+			["Weight", "50 kg"],
+			["Age", "16-17-18"],
+			["Birthday", "Sep 18 · Virgo"],
+			["Blood", "AB"],
+			["Voice", "Saku Mizuno（水野朔）"],
+			["Tags", "Deadpan · bassist · black tights · cool beauty · Ojou-sama · teardrop mole · stud earring · bad drinker"],
+			["Band", "Kessoku Band（bass / songwriting）"],
+			["Based in", "Shimokitazawa"],
+			["Status", "Shimokitazawa High 2nd year → 3rd year (graduated) → unemployed"],
+			["Series", "BOCCHI THE ROCK!"],
+		]
+	: [
+			["本名", "山田リョウ（やまだリョウ / Yamada Ryō）"],
+			["别号", "世界的山田、无口前辈、屑凉、凉先辈（仙贝）、凉乞钞"],
+			["发色 · 瞳色", "蓝发 · 黄瞳"],
+			["身高", "163cm"],
+			["体重", "50kg"],
+			["年龄", "16-17-18 岁"],
+			["生日", "9 月 18 日 · 处女座"],
+			["血型", "AB 型"],
+			["声优", "水野朔"],
+			["萌点", "无表情、贝斯、黑色连裤袜、冰美人、大小姐、片假名名字、泪痣、耳钉、遮单眼发、酒品差、残念系、老赖"],
+			["所属乐队", "结束乐队 Kessoku Band（贝斯 / 作曲）"],
+			["活动范围", "下北泽"],
+			["个人状态", "下北泽高中二年生 → 三年级生（已毕业）→ 无业"],
+			["登场作品", "《孤独摇滚！》"],
+		];
+
+// 代表色单独成行，其余资料按字段摊平为自适应网格
+const colorRow: Row = [labels.colorLabel, accent];
+---
+
+<MainGridLayout title={pageTitle} description={pageDescription} page="about">
+	{markdownStylesheetAssets.map(({ pack, css }) => <style is:inline slot="head" data-swup-optional={pack} set:html={css}></style>)}
+	<div class="flex flex-col gap-4 w-full">
+		<OshiTabs current="ryo" />
+
+		<!-- 顶部横幅 -->
+		<div class="flex w-full rounded-[var(--shape-corner-l)] overflow-hidden relative">
+			<Card color="var(--card-bg)" radius="l" class="z-10 p-6 lg:p-8 relative w-full">
+				<div class="flex flex-col gap-2">
+					<span class="text-xs font-bold tracking-[0.2em] uppercase text-[var(--on-surface-variant)]">{labels.badge}</span>
+					<h1 class="text-3xl lg:text-4xl font-black leading-tight text-[var(--on-surface)]">
+						山田凉
+						<span class="text-lg lg:text-2xl font-bold text-[var(--on-surface-variant)]">/ Yamada Ryō</span>
+					</h1>
+					<div class="h-1.5 w-28 rounded-full" style={`background: ${accent}`}></div>
+				</div>
+			</Card>
+		</div>
+
+		<!-- 信息卡：全宽横幅，内部自适应多列。窄屏单列竖排，宽屏字段横向摊开。 -->
+		<div class="w-full rounded-[var(--shape-corner-l)] overflow-hidden relative">
+			<Card color="var(--card-bg)" radius="l" class="z-10 p-5 lg:p-8 relative w-full">
+				<div class="flex flex-col gap-2 mb-5">
+					<span class="text-xs font-bold tracking-[0.2em] uppercase text-[var(--on-surface-variant)]">{labels.infoTitle}</span>
+					<h2 class="text-2xl lg:text-3xl font-black leading-tight text-[var(--on-surface)]">
+						山田凉
+						<span class="text-base lg:text-xl font-bold text-[var(--on-surface-variant)]">/ YAMADA RYŌ</span>
+					</h2>
+				</div>
+
+				<div class="flex flex-col md:flex-row gap-6 items-start">
+					<!-- 头像：窄屏整宽，宽屏固定一栏 -->
+					<div class="w-full md:w-[13rem] lg:w-[15rem] shrink-0">
+						<img src={portrait.src} alt="Yamada Ryō" class="w-full rounded-[var(--shape-corner-m)] cursor-zoom-in oshi-zoom" />
+						<div class="pt-2 text-center text-[0.68rem] text-[var(--on-surface-variant)] opacity-80">{labels.accentNote}</div>
+					</div>
+
+					<!-- 资料字段：自适应网格，minmax(min(15rem,100%),1fr) 随屏宽自动增减列数 -->
+					<dl
+						class="flex-1 min-w-0 w-full grid gap-x-8 gap-y-0 content-start"
+						style="grid-template-columns: repeat(auto-fit, minmax(min(15rem, 100%), 1fr));"
+					>
+						{infoRows.map(([k, v]) => (
+							<div class="flex gap-3 border-t border-[var(--outline-variant)] py-2.5 items-baseline">
+								<dt class="w-[5rem] shrink-0 font-bold text-[var(--on-surface-variant)]">{k}</dt>
+								<dd class="flex-1 min-w-0 text-[var(--on-surface)]">{v}</dd>
+							</div>
+						))}
+						<div class="flex gap-3 border-t border-[var(--outline-variant)] py-2.5 items-center">
+							<dt class="w-[5rem] shrink-0 font-bold text-[var(--on-surface-variant)]">{colorRow[0]}</dt>
+							<dd class="flex-1 flex items-center gap-2 text-[var(--on-surface)]">
+								<span class="inline-block h-4 w-4 rounded-full border border-[var(--outline-variant)]" style={`background: ${accent}`}></span>
+								<span>{accent}</span>
+							</dd>
+						</div>
+					</dl>
+				</div>
+			</Card>
+		</div>
+
+		<!-- 正文：全宽单栏，与文章页一致 -->
+		<div class="flex w-full rounded-[var(--shape-corner-l)] overflow-hidden relative">
+			<Card color="var(--card-bg)" radius="l" class="z-10 p-6 lg:p-8 relative w-full">
+				<Markdown class="mt-2">
+					<Content />
+				</Markdown>
+			</Card>
+		</div>
+	</div>
+</MainGridLayout>

@@ -1,6 +1,6 @@
 # 角色页（Oshi Pages）文件对照与维护指南
 
-> 适用页面：`/miku/`、`/nina/`、`/subaru/`、`/mita/`
+> 适用页面：`/miku/`、`/nina/`、`/subaru/`、`/ryo/`、`/kikuri/`（另有一个未登记的 `/mita/`）
 > 本文说明每个文件负责界面上的哪一部分、字段从哪里来、以及常见改动该动哪个文件。
 
 ---
@@ -12,29 +12,37 @@
 ```
 src/
 ├─ pages/                        ← 页面骨架
-│   ├─ characters.astro           角色合集页（/characters/，三张卡片入口）
+│   ├─ characters.astro           角色合集页（/characters/，卡片入口）
 │   ├─ miku.astro                 初音未来
 │   ├─ nina.astro                 井芹仁菜
 │   ├─ subaru.astro               安和昴
-│   └─ mita.astro                 帽子米塔
+│   ├─ ryo.astro                  山田凉
+│   ├─ kikuri.astro               广井菊里
+│   └─（帽子米塔页面已于 2026-10 删除，spec 下的 mita.md/mita-en.md 成为孤儿条目，可随手清理）
 │
 ├─ content/spec/                 ← 正文文字内容（Markdown，中英各一份）
 │   ├─ miku.md / miku-en.md
 │   ├─ nina.md / nina-en.md
 │   ├─ subaru.md / subaru-en.md
-│   └─ mita.md / mita-en.md
+│   ├─ ryo.md / ryo-en.md
+│   ├─ kikuri.md / kikuri-en.md
+│   └─ mita.md / mita-en.md（已成孤儿条目，无页面渲染）
 │
 ├─ components/molecules/
 │   └─ OshiTabs.astro            ← 顶部「角色切换」标签栏
 │
 ├─ assets/images/
-│   ├─ characters/               ← 角色头像与配图
+│   ├─ characters/               ← 角色头像与立绘（页面 import）
 │   │   ├─ nina.gif
 │   │   ├─ nina-extra.gif
 │   │   ├─ subaru.gif
+│   │   ├─ ryo-stand.webp
+│   │   ├─ kikuri-congrats.webp
 │   │   └─ capmita.webp
 │   └─ music/
 │       └─ unknown-mother-goose.webp   ← 初音页的头像（来自歌曲封面）
+│
+└─ public/images/characters/      ← 正文 Markdown 引用的配图（山田凉/广井菊里/主视觉）
 │
 └─ layouts/
     └─ MainGridLayout.astro      ← 全站页面骨架（侧栏 + Banner + 内容槽）
@@ -62,7 +70,7 @@ pages/*.astro  ──定义──▶  infoRows[][]  ──▶  信息卡字段�
 
 | 界面区域 | 代码位置 | 说明 |
 |---|---|---|
-| **① 角色切换标签** | `<OshiTabs current="nina" />` | 一行胶囊按钮，切换四个角色页 |
+| **① 角色切换标签** | `<OshiTabs current="nina" />` | 一行胶囊按钮，切换五个角色页 |
 | **② 顶部横幅** | 第一个 `<Card>` | 显示「角色介绍」徽标 + 中文名 + 英文名 + 代表色横条 |
 | **③ 信息卡** | 第二个 `<Card>` | 基本资料：头像 + 字段网格 |
 | **④ 正文** | 第三个 `<Card>` | Markdown 渲染的角色介绍文章 |
@@ -83,7 +91,7 @@ pages/*.astro  ──定义──▶  infoRows[][]  ──▶  信息卡字段�
 
 ### 2. 角色切换标签 `src/components/molecules/OshiTabs.astro`
 
-- 是一个 `<nav>`，内部 `tabs` 数组定义四个角色的：路由地址、显示名、代表色。
+- 是一个 `<nav>`，内部 `tabs` 数组定义五个角色的：路由地址、显示名、代表色。
 - `current` 属性由调用方传入（如 `current="nina"`），决定哪个标签高亮。
 - 高亮方式：边框和背景使用该角色的 `accent` 色做 16% 混合。
 
@@ -93,7 +101,7 @@ pages/*.astro  ──定义──▶  infoRows[][]  ──▶  信息卡字段�
 | 改标签上的文字 | 改 `tabs` 里的 `label` |
 | 改标签颜色 | 改 `tabs` 里的 `accent` |
 
-> 注意：`OshiTabs` 的 `tabs` 数组**不含 mita**（帽子米塔），所以帽子米塔页上没有高亮项。若要补上，需在数组里新增一项，并同步 `current` 的类型联合（`"miku" | "mita" | "nina" | "subaru"`）。
+> `OshiTabs` 的 `tabs` 数组目前不含 mita（帽子米塔，已废弃待删），所以帽子米塔页上没有高亮项。其余角色页一一对应，`current` 的类型联合也只包含这些键（`"miku" | "mita" | "nina" | "subaru" | "ryo" | "kikuri"`）。
 
 ---
 
@@ -123,12 +131,13 @@ pages/*.astro  ──定义──▶  infoRows[][]  ──▶  信息卡字段�
 
 > ⚠️ 若改回全端 `aspect-square`，在 393×851 的手机上单卡高达 494px，三张卡片总高约 1460px，**第二、三张完全在首屏之外**。用户容易以为「页面没渲染出来」或「点不动」，实际是需要向下滚动约 450px 才能触达。排查问题时注意区分「卡片在屏外」与「链接失效」。
 
-**新增角色时需要同步改三处**：
+**新增角色时需要同步改四处**：
 | 位置 | 改什么 |
 |---|---|
 | `characters.astro` 的 `cards` 数组 | 加一张卡片（href / img / zh / en / desc） |
 | 新建 `src/pages/<name>.astro` | 角色详情页 |
-| `OshiTabs.astro` 的 `tabs` 数组 | 详情页顶部的切换标签（可选） |
+| `OshiTabs.astro` 的 `tabs` 数组与 `current` 类型联合 | 详情页顶部的切换标签 |
+| `src/utils/nav-utils.ts` 的字符页映射 | 把新路径加入 `"characters"` 判断，侧栏高亮才会命中 |
 
 ### 3. 正文内容 `src/content/spec/<角色>.md`
 
@@ -210,18 +219,19 @@ style="grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr))"
 
 ---
 
-## 五、四个页面的差异对照
+## 五、五个页面的差异对照
 
-| 项目 | 初音未来 | 井芹仁菜 | 安和昴 | 帽子米塔 |
-|---|---|---|---|---|
-| 文件 | `miku.astro` | `nina.astro` | `subaru.astro` | `mita.astro` |
-| 代表色 | `#39C5BB` | `#D90E2C` | `#76BD53` | `#8b5cf6` |
-| 头像 | 歌曲封面 webp | nina.gif | subaru.gif | capmita.webp |
-| 独特区块 | **推し歴天数** | 正文配图 gif | — | — |
-| 标签栏高亮 | 有 | 有 | 有 | 无（未登记） |
-| 正文配图 | 无 | `nina-extra.gif` | 无 | 无 |
+| 项目 | 初音未来 | 井芹仁菜 | 安和昴 | 山田凉 | 广井菊里 |
+|---|---|---|---|---|---|
+| 文件 | `miku.astro` | `nina.astro` | `subaru.astro` | `ryo.astro` | `kikuri.astro` |
+| 代表色 | `#39C5BB` | `#D90E2C` | `#76BD53` | `#2E6FD9` | `#8B5FBF` |
+| 头像 | 歌曲封面 webp | nina.gif | subaru.gif | ryo-stand.webp | kikuri-congrats.webp |
+| 独特区块 | **推し歴天数** | 正文配图 gif | — | 图集（grid + 单图） | 图集（单图） |
+| 标签栏高亮 | 有 | 有 | 有 | 有 | 有 |
+| 正文配图 | 无 | `nina-extra.gif` | 无 | public/images/characters/ryo-*.webp | public/images/characters/kikuri-*.webp |
 
-> 另有合集页 `characters.astro`（不在上表四个之列），它是三张卡片的入口页，本身不含角色资料。
+> 另有合集页 `characters.astro`（不在上表五个之列），它是角色卡片的入口页，本身不含角色资料。
+> 正文配图放在 `public/images/characters/`，Markdown 中以绝对路径引用，避免依赖内容集合的图片优化链路。
 
 **只有 miku 页**在顶部横幅右侧有「推し歴」天数显示，计算逻辑在 `miku.astro` 头部：
 

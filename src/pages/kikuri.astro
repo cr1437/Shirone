@@ -6,69 +6,80 @@ import OshiTabs from "@components/molecules/OshiTabs.astro";
 import MainGridLayout from "@layouts/MainGridLayout.astro";
 import { getMarkdownStylesheetAssets } from "@utils/markdown-assets";
 import { IS_EN_BUILD } from "@utils/build-locale";
-import portrait from "../assets/images/characters/capmita.webp";
+import portrait from "../assets/images/characters/kikuri-congrats.webp";
 
-const pageTitle = IS_EN_BUILD ? "Cap-Wearing Mita" : "帽子米塔";
+const pageTitle = IS_EN_BUILD ? "Hiroi Kikuri" : "广井菊里";
 const pageDescription = IS_EN_BUILD
-	? "A character introduction of Cap-Wearing Mita — data compiled from Moegirlpedia."
-	: "帽子米塔的角色介绍——资料整理自萌娘百科。";
+	? "A character introduction of Hiroi Kikuri — data compiled from Moegirlpedia."
+	: "广井菊里的角色介绍——资料整理自萌娘百科。";
 
-const entryId = IS_EN_BUILD ? "mita-en" : "mita";
+const entryId = IS_EN_BUILD ? "kikuri-en" : "kikuri";
 const post = await getEntry("spec", entryId);
 if (!post) {
-	throw new Error("Mita page content not found");
+	throw new Error("Kikuri page content not found");
 }
 const { Content, remarkPluginFrontmatter } = await render(post);
 const markdownStylesheetAssets = await getMarkdownStylesheetAssets(
 	remarkPluginFrontmatter.markdownSyntaxes,
 );
 
-const accent = "#8b5cf6";
+const accent = "#8B5FBF";
 
 const labels = IS_EN_BUILD
 	? {
 			badge: "Character Profile",
 			infoTitle: "Basic Info",
-			accentNote: "Art: personal collection",
+			colorLabel: "Image colour",
+			accentNote: "Art: animated congratulation illustration（via Moegirlpedia）",
 		}
 	: {
 			badge: "角色介绍",
 			infoTitle: "基本资料",
-			accentNote: "配图：个人收藏",
+			colorLabel: "代表色",
+			accentNote: "配图：动画贺图（来源：萌娘百科）",
 		};
 
 type Row = [string, string];
 const infoRows: Row[] = IS_EN_BUILD
 	? [
-			["Name", "Cap-Wearing Mita（Мита кепочка / Cap Mita）"],
-			["Alias", "Cappie · the cool Mita (not Cool Mita!)"],
-			["Number", "01.75 - unknown"],
-			["Birthday", "Aug 21"],
-			["Hair", "Blue-purple"],
-			["Eyes", "Black (contacts)"],
-			["Voice", "Indominus Rex (RU) / Kana Hanaiwa (JA)"],
-			["Tags", "High ponytail · cat-ear cap · gloves · thigh-highs · pleated skirt · guitar · playful"],
-			["Whereabouts", "Cappie's room"],
-			["From", "MiSide (AIHASTO)"],
+			["Name", "Hiroi Kikuri（廣井きくり）"],
+			["Aliases", "The drunken angel"],
+			["Hair · Eyes", "Purple · Purple"],
+			["Height", "158 cm"],
+			["Weight", "43 kg"],
+			["Age", "25-27"],
+			["Birthday", "Sep 28 · Libra"],
+			["Voice", "Ayaka Senpongi（千本木彩花）"],
+			["Tags", "Sake lover · bassist · jagged teeth · ringed eyes · dress · geta · earring · tattoo · baby face · braid · bad drinker"],
+			["Band", "SICK HACK（vocals / bass / leader）"],
+			["Based in", "Shinjuku"],
+			["Senior", "Ijichi Seika（university senpai）"],
+			["Series", "BOCCHI THE ROCK!"],
 		]
 	: [
-			["本名", "Cap-Wearing Mita（Мита кепочка / Cap Mita）"],
-			["别号", "帽子（Cappie）、很酷的米塔（不是酷米塔！）"],
-			["编号", "01.75 - 未知"],
-			["生日", "8 月 21 日"],
-			["发色", "蓝紫发"],
-			["瞳色", "黑瞳（美瞳）"],
-			["声优", "Indominus Rex（俄语）/ 花岩香奈（日语）"],
-			["萌点", "高马尾、猫耳鸭舌帽、手套、过膝袜、百褶裙、玛丽珍鞋、吉他、元气、调皮"],
-			["活动范围", "帽子米塔的房间"],
-			["登场作品", "《MiSide》（AIHASTO）"],
+			["本名", "廣井きくり（ひろいきくり / Hiroi Kikuri）"],
+			["别号", "醉天使"],
+			["发色 · 瞳色", "紫发 · 紫瞳"],
+			["身高", "158cm"],
+			["体重", "43kg"],
+			["年龄", "25-27 岁"],
+			["生日", "9 月 28 日 · 天秤座"],
+			["声优", "千本木彩花"],
+			["萌点", "酒豪、贝斯、眯眯眼、圈圈眼、锯齿牙、连衣裙、木屐、耳钉、纹身、童颜、麻花辫、酒品差、残念系、赖账"],
+			["所属乐队", "SICK HACK（主唱 / 贝斯 / 领队）"],
+			["活动范围", "新宿"],
+			["大学学姐", "伊地知星歌"],
+			["登场作品", "《孤独摇滚！》"],
 		];
+
+// 代表色单独成行，其余资料按字段摊平为自适应网格
+const colorRow: Row = [labels.colorLabel, accent];
 ---
 
 <MainGridLayout title={pageTitle} description={pageDescription} page="about">
 	{markdownStylesheetAssets.map(({ pack, css }) => <style is:inline slot="head" data-swup-optional={pack} set:html={css}></style>)}
 	<div class="flex flex-col gap-4 w-full">
-		<OshiTabs current="mita" />
+		<OshiTabs current="kikuri" />
 
 		<!-- 顶部横幅 -->
 		<div class="flex w-full rounded-[var(--shape-corner-l)] overflow-hidden relative">
@@ -76,8 +87,8 @@ const infoRows: Row[] = IS_EN_BUILD
 				<div class="flex flex-col gap-2">
 					<span class="text-xs font-bold tracking-[0.2em] uppercase text-[var(--on-surface-variant)]">{labels.badge}</span>
 					<h1 class="text-3xl lg:text-4xl font-black leading-tight text-[var(--on-surface)]">
-						帽子米塔
-						<span class="text-lg lg:text-2xl font-bold text-[var(--on-surface-variant)]">/ Cap-Wearing Mita</span>
+						广井菊里
+						<span class="text-lg lg:text-2xl font-bold text-[var(--on-surface-variant)]">/ Hiroi Kikuri</span>
 					</h1>
 					<div class="h-1.5 w-28 rounded-full" style={`background: ${accent}`}></div>
 				</div>
@@ -90,15 +101,15 @@ const infoRows: Row[] = IS_EN_BUILD
 				<div class="flex flex-col gap-2 mb-5">
 					<span class="text-xs font-bold tracking-[0.2em] uppercase text-[var(--on-surface-variant)]">{labels.infoTitle}</span>
 					<h2 class="text-2xl lg:text-3xl font-black leading-tight text-[var(--on-surface)]">
-						帽子米塔
-						<span class="text-base lg:text-xl font-bold text-[var(--on-surface-variant)]">/ CAP-WEARING MITA</span>
+						广井菊里
+						<span class="text-base lg:text-xl font-bold text-[var(--on-surface-variant)]">/ HIROI KIKURI</span>
 					</h2>
 				</div>
 
 				<div class="flex flex-col md:flex-row gap-6 items-start">
 					<!-- 头像：窄屏整宽，宽屏固定一栏 -->
 					<div class="w-full md:w-[13rem] lg:w-[15rem] shrink-0">
-						<img src={portrait.src} alt="Cap-Wearing Mita" class="w-full rounded-[var(--shape-corner-m)]" />
+						<img src={portrait.src} alt="Hiroi Kikuri" class="w-full rounded-[var(--shape-corner-m)] cursor-zoom-in oshi-zoom" />
 						<div class="pt-2 text-center text-[0.68rem] text-[var(--on-surface-variant)] opacity-80">{labels.accentNote}</div>
 					</div>
 
@@ -113,6 +124,13 @@ const infoRows: Row[] = IS_EN_BUILD
 								<dd class="flex-1 min-w-0 text-[var(--on-surface)]">{v}</dd>
 							</div>
 						))}
+						<div class="flex gap-3 border-t border-[var(--outline-variant)] py-2.5 items-center">
+							<dt class="w-[5rem] shrink-0 font-bold text-[var(--on-surface-variant)]">{colorRow[0]}</dt>
+							<dd class="flex-1 flex items-center gap-2 text-[var(--on-surface)]">
+								<span class="inline-block h-4 w-4 rounded-full border border-[var(--outline-variant)]" style={`background: ${accent}`}></span>
+								<span>{accent}</span>
+							</dd>
+						</div>
 					</dl>
 				</div>
 			</Card>

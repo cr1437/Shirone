@@ -5,22 +5,25 @@ import { IS_EN_BUILD } from "@utils/build-locale";
 import { url } from "@utils/url-utils";
 import mikuImg from "../assets/images/music/unknown-mother-goose.webp";
 import ninaImg from "../assets/images/characters/nina.gif";
+import ryoImg from "../assets/images/characters/ryo-stand.webp";
 import subaruImg from "../assets/images/characters/subaru.gif";
+import kikuriImg from "../assets/images/characters/kikuri-congrats.webp";
 
 const pageTitle = IS_EN_BUILD ? "Characters" : "动漫人物";
 const pageDescription = IS_EN_BUILD
-	? "Character profiles: Hatsune Miku, Iseri Nina and Awa Subaru."
-	: "动漫人物档案：初音未来、井芹仁菜与安和昴。";
+	? "Character profiles: Hatsune Miku, Iseri Nina, Awa Subaru, Yamada Ryō and Hiroi Kikuri."
+	: "动漫人物档案：初音未来、井芹仁菜、安和昴、山田凉与广井菊里。";
 
 const labels = IS_EN_BUILD
 	? {
 			badge: "CHARACTERS",
-			subtitle: "Three character profiles: an eternally-sixteen songstress, and Togenashi Togeari's vocalist and drummer.",
+			subtitle:
+				"Five character profiles: an eternally-sixteen songstress, Togenashi Togeari's vocalist and drummer, and two bassists from BOCCHI THE ROCK!.",
 			cta: "Read more",
 		}
 	: {
 			badge: "动漫人物",
-			subtitle: "三位角色档案：一位是永远十六岁的歌姬，两位是刺刺的主唱和鼓手。",
+			subtitle: "五位角色档案：一位是永远十六岁的歌姬，两位是刺刺的主唱和鼓手，两位是孤独摇滚的贝斯手。",
 			cta: "查看介绍",
 		};
 
@@ -51,6 +54,24 @@ const cards = [
 		desc: IS_EN_BUILD
 			? "Drummer of Togenashi Togeari · competitive gamer"
 			: "刺刺的鼓手 · 好胜的游戏宅大小姐",
+	},
+	{
+		href: url("/ryo/"),
+		img: ryoImg.src,
+		zh: "山田凉",
+		en: "Yamada Ryō",
+		desc: IS_EN_BUILD
+			? "Bassist & songwriter of Kessoku Band · the quiet senpai"
+			: "结束乐队的贝斯兼作曲 · 无口前辈",
+	},
+	{
+		href: url("/kikuri/"),
+		img: kikuriImg.src,
+		zh: "广井菊里",
+		en: "Hiroi Kikuri",
+		desc: IS_EN_BUILD
+			? "Vocalist & bassist of SICK HACK · the drunken angel"
+			: "SICK HACK 的主唱兼贝斯手 · 醉天使",
 	},
 ];
 ---
