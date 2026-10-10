@@ -6,8 +6,6 @@
 
 山田凉（山田リョウ / やまだリョウ / Yamada Ryō）是はまじあき创作的漫画《**孤独摇滚！**》及其衍生作品的登场角色，乐队「**结束乐队**」（Kessoku Band）的贝斯手兼作曲担当，演奏时还负责和声。她是伊地知虹夏的挚友。代表色是蓝色 <span style="color:#2E6FD9;font-weight:700">#2E6FD9</span>。
 
-![山田凉·动画版立绘 w-40%](/images/characters/ryo-stand.webp "动画版立绘")
-
 ## ✦ 她的样子
 
 蓝发、黄瞳。遮单眼的不对称鬓发，发间别着发夹，眼角有一颗泪痣，耳上打着耳钉——配上黑色连裤袜，是标准的「冰美人」配置。
@@ -24,7 +22,7 @@
 
 讨厌一切有生命危险的东西：过山车不敢坐，驾校练车时后轮一出界就再也不敢碰车。
 
-![孤独摇滚·总集篇人设 山田凉 w-50%](/images/characters/ryo-design-theatrical.webp "剧场总集篇人设")
+![孤独摇滚·总集篇人设 山田凉 w-50%](/images/characters/ryo-design-theatrical.png "剧场总集篇人设")
 
 ## ✦ 她的故事
 
@@ -36,7 +34,7 @@
 
 毕业后的凉没有升学，成了无业游民，白天被父母催着独立、只能在日出前出门、等爸妈睡了才回家——最后一个人搬去了埼玉。
 
-![孤独摇滚·贺图 第4话 山田凉 w-60%](/images/characters/ryo-illust-ep4.webp "漫画作者はまじあき绘制的贺图")
+![孤独摇滚·贺图 第4话 山田凉 w-60%](/images/characters/ryo-illust-ep4.jpeg "漫画作者はまじあき绘制的贺图")
 
 ## ✦ 贝斯手的含金量
 
@@ -69,23 +67,23 @@
 ## ✦ 图集
 
 :::grid{columns="3" aspect="2/3" fit="contain"}
-![服装图集·其一](/images/characters/ryo-costume-1.webp)
-![服装图集·其二](/images/characters/ryo-costume-2.webp)
-![服装图集·其三](/images/characters/ryo-costume-3.webp)
+![服装图集·其一](/images/characters/ryo-costume-1.jpg)
+![服装图集·其二](/images/characters/ryo-costume-2.jpg)
+![服装图集·其三](/images/characters/ryo-costume-3.jpg)
 :::
 
 :::grid{columns="2" aspect="5/6" fit="contain"}
-![はまじあき绘制的 2023 生日贺图](/images/characters/ryo-birthday-hamaji.webp)
-![けろりら绘制的 2023 生日贺图](/images/characters/ryo-birthday-kerorira.webp)
+![はまじあき绘制的 2023 生日贺图](/images/characters/ryo-birthday-hamaji.jpeg)
+![けろりら绘制的 2023 生日贺图](/images/characters/ryo-birthday-kerorira.jpg)
 :::
 
-![动画预告视觉图 w-40%](/images/characters/ryo-teaser.webp)
+![动画预告视觉图 w-40%](/images/characters/ryo-teaser.jpg)
 
-![漫画第 1 话早期形象](/images/characters/ryo-manga-early.webp "漫画第 1 话登场的凉")
+![漫画第 1 话早期形象](/images/characters/ryo-manga-early.png "漫画第 1 话登场的凉")
 
-![漫画 49 话 P3](/images/characters/ryo-manga-49.webp)
+![漫画 49 话 P3](/images/characters/ryo-manga-49.png)
 
-![孤独摇滚 主视觉 w-60%](/images/characters/bocchi-kv.webp)
+![孤独摇滚 主视觉 w-60%](/images/characters/bocchi-kv.jpg)
 
 ---
 

@@ -6,8 +6,6 @@
 
 Yamada Ryō (山田リョウ / やまだリョウ) is a character from **BOCCHI THE ROCK!**, the manga by Aki Hamaji and its adaptations — bassist and songwriter of the band **Kessoku Band**, who also sings backing parts during performances. She is Nijika Ijichi's best friend. Her image colour is blue, <span style="color:#2E6FD9;font-weight:700">#2E6FD9</span>.
 
-![Yamada Ryō, anime official art w-40%](/images/characters/ryo-stand.webp "Anime official art")
-
 ## ✦ Her look
 
 Blue hair, yellow eyes, a short cut with an asymmetric sidelock covering one eye, a hair clip, a teardrop mole, and stud earrings — finished with black tights. Textbook "cool beauty".
@@ -24,7 +22,7 @@ Usually silent, but talks nonstop the moment rock comes up — and once she is d
 
 She hates anything life-threatening. Roller coasters are out; in driving school she touched the rear wheel over the line once and never drove again.
 
-![Kessoku Band compilation film design, Yamada Ryō w-50%](/images/characters/ryo-design-theatrical.webp "Theatrical compilation character design")
+![Kessoku Band compilation film design, Yamada Ryō w-50%](/images/characters/ryo-design-theatrical.png "Theatrical compilation character design")
 
 ## ✦ Her story
 
@@ -36,7 +34,7 @@ Then comes the ending you know: guitarist **Hitori Goto**, singer **Kita Ryo**, 
 
 After graduation she did not go on to university. An unemployed shut-in whose parents nagged her to move out, she left home before sunrise and returned after they slept — and eventually moved to Saitama.
 
-![BOCCHI THE ROCK! illustration, episode 4, Yamada Ryō w-60%](/images/characters/ryo-illust-ep4.webp "Illustration by Aki Hamaji")
+![BOCCHI THE ROCK! illustration, episode 4, Yamada Ryō w-60%](/images/characters/ryo-illust-ep4.jpeg "Illustration by Aki Hamaji")
 
 ## ✦ Bass-player credentials
 
@@ -69,23 +67,23 @@ After graduation she did not go on to university. An unemployed shut-in whose pa
 ## ✦ Gallery
 
 :::grid{columns="3" aspect="2/3" fit="contain"}
-![Costume set 1](/images/characters/ryo-costume-1.webp)
-![Costume set 2](/images/characters/ryo-costume-2.webp)
-![Costume set 3](/images/characters/ryo-costume-3.webp)
+![Costume set 1](/images/characters/ryo-costume-1.jpg)
+![Costume set 2](/images/characters/ryo-costume-2.jpg)
+![Costume set 3](/images/characters/ryo-costume-3.jpg)
 :::
 
 :::grid{columns="2" aspect="5/6" fit="contain"}
-![2023 birthday illustration by Aki Hamaji](/images/characters/ryo-birthday-hamaji.webp)
-![2023 birthday illustration by Kerorira](/images/characters/ryo-birthday-kerorira.webp)
+![2023 birthday illustration by Aki Hamaji](/images/characters/ryo-birthday-hamaji.jpeg)
+![2023 birthday illustration by Kerorira](/images/characters/ryo-birthday-kerorira.jpg)
 :::
 
-![Anime teaser visual w-40%](/images/characters/ryo-teaser.webp)
+![Anime teaser visual w-40%](/images/characters/ryo-teaser.jpg)
 
-![Early manga appearance, chapter 1](/images/characters/ryo-manga-early.webp "Ryō's first manga appearance")
+![Early manga appearance, chapter 1](/images/characters/ryo-manga-early.png "Ryō's first manga appearance")
 
-![Manga chapter 49, P3](/images/characters/ryo-manga-49.webp)
+![Manga chapter 49, P3](/images/characters/ryo-manga-49.png)
 
-![BOCCHI THE ROCK! key visual w-60%](/images/characters/bocchi-kv.webp)
+![BOCCHI THE ROCK! key visual w-60%](/images/characters/bocchi-kv.jpg)
 
 ---
 

@@ -8,7 +8,7 @@ Hiroi Kikuri (廣井きくり / ひろいきくり) is a character from **BOCCHI
 
 Her real-life prototype is Margaret Hiroi, vocalist and bassist of the band 88kasyo Junrei.
 
-![Hiroi Kikuri, anime design](/images/characters/kikuri-anime.webp "Anime design")
+![Hiroi Kikuri, anime design](/images/characters/kikuri-anime.jpg "Anime design")
 
 ## ✦ Her look
 
@@ -24,7 +24,7 @@ Easygoing and loud; her live style is chaotic: drinking on stage and spraying it
 
 Drinking is her personality switch: once sober, her temperament is exactly like Bocchi's — timid, bad with people, cautious, terrified of the future.
 
-![The Happiness Spiral](/images/characters/kikuri-spiral.webp)
+![The Happiness Spiral](/images/characters/kikuri-spiral.png)
 
 ## ✦ Her story
 
@@ -34,11 +34,11 @@ She attended the same school as Shima Iwasaki without knowing her; in university
 
 After that, she is simply the woman you know: turning up at STARRY in a permanent haze, guaranteeing that the front row of every Kessoku Band gig is occupied by a heavily boozy woman.
 
-![Illustration, cat-ear Kikuri w-40%](/images/characters/kikuri-cat-ears.webp)
+![Illustration, cat-ear Kikuri w-40%](/images/characters/kikuri-cat-ears.jpg)
 
-![Illustration, Kikuri and Seika w-50%](/images/characters/kikuri-with-seika.webp)
+![Illustration, Kikuri and Seika w-50%](/images/characters/kikuri-with-seika.jpg)
 
-![Animated congratulation illustration w-50%](/images/characters/kikuri-congrats.webp "Kikuri animated congratulation illustration")
+![Animated congratulation illustration w-50%](/images/characters/kikuri-congrats.jpg "Kikuri animated congratulation illustration")
 
 ## ✦ Memes & trivia
 

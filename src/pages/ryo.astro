@@ -6,7 +6,7 @@ import OshiTabs from "@components/molecules/OshiTabs.astro";
 import MainGridLayout from "@layouts/MainGridLayout.astro";
 import { getMarkdownStylesheetAssets } from "@utils/markdown-assets";
 import { IS_EN_BUILD } from "@utils/build-locale";
-import portrait from "../assets/images/characters/ryo-stand.webp";
+import portrait from "../assets/images/characters/ryo-cover.jpg";
 
 const pageTitle = IS_EN_BUILD ? "Yamada Ryō" : "山田凉";
 const pageDescription = IS_EN_BUILD
@@ -30,13 +30,13 @@ const labels = IS_EN_BUILD
 			badge: "Character Profile",
 			infoTitle: "Basic Info",
 			colorLabel: "Image colour",
-			accentNote: "Art: anime official art（via Moegirlpedia）",
+			accentNote: "Art: personal collection",
 		}
 	: {
 			badge: "角色介绍",
 			infoTitle: "基本资料",
 			colorLabel: "代表色",
-			accentNote: "配图：动画版立绘（来源：萌娘百科）",
+			accentNote: "配图：个人收藏",
 		};
 
 type Row = [string, string];

@@ -36,8 +36,8 @@ src/
 │   │   ├─ nina.gif
 │   │   ├─ nina-extra.gif
 │   │   ├─ subaru.gif
-│   │   ├─ ryo-stand.webp
-│   │   ├─ kikuri-congrats.webp
+│   │   ├─ ryo-cover.jpg
+│   │   ├─ kikuri-cover.jpg
 │   │   └─ capmita.webp
 │   └─ music/
 │       └─ unknown-mother-goose.webp   ← 初音页的头像（来自歌曲封面）
@@ -225,10 +225,10 @@ style="grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr))"
 |---|---|---|---|---|---|
 | 文件 | `miku.astro` | `nina.astro` | `subaru.astro` | `ryo.astro` | `kikuri.astro` |
 | 代表色 | `#39C5BB` | `#D90E2C` | `#76BD53` | `#2E6FD9` | `#8B5FBF` |
-| 头像 | 歌曲封面 webp | nina.gif | subaru.gif | ryo-stand.webp | kikuri-congrats.webp |
+| 头像 | 歌曲封面 webp | nina.gif | subaru.gif | ryo-cover.jpg | kikuri-cover.jpg |
 | 独特区块 | **推し歴天数** | 正文配图 gif | — | 图集（grid + 单图） | 图集（单图） |
 | 标签栏高亮 | 有 | 有 | 有 | 有 | 有 |
-| 正文配图 | 无 | `nina-extra.gif` | 无 | public/images/characters/ryo-*.webp | public/images/characters/kikuri-*.webp |
+| 正文配图 | 无 | `nina-extra.gif` | 无 | public/images/characters/ryo-*（原图） | public/images/characters/kikuri-*（原图） |
 
 > 另有合集页 `characters.astro`（不在上表五个之列），它是角色卡片的入口页，本身不含角色资料。
 > 正文配图放在 `public/images/characters/`，Markdown 中以绝对路径引用，避免依赖内容集合的图片优化链路。

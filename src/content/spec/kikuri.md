@@ -8,7 +8,7 @@
 
 她的原型，是乐队「八十八ヶ所巡礼」的主唱兼贝斯手玛格丽特广井（マーガレット廣井）。
 
-![广井菊里·动画版形象](/images/characters/kikuri-anime.webp "动画版形象")
+![广井菊里·动画版形象](/images/characters/kikuri-anime.jpg "动画版形象")
 
 ## ✦ 她的样子
 
@@ -24,7 +24,7 @@
 
 喝酒对她来说像人格开关：一旦清醒，性格就和一里如出一辙——胆怯、不善交流、谨小慎微、对未来充满畏惧。
 
-![菊里的幸福螺旋](/images/characters/kikuri-spiral.webp)
+![菊里的幸福螺旋](/images/characters/kikuri-spiral.png)
 
 ## ✦ 她的故事
 
@@ -34,11 +34,11 @@
 
 后来，就是大家熟悉的那个人了：醉醺醺地出现在 STARFY，陪结束乐队的前排永远坐着一个浑身酒气的女人。
 
-![作者绘图·广井菊里猫耳 w-40%](/images/characters/kikuri-cat-ears.webp)
+![作者绘图·广井菊里猫耳 w-40%](/images/characters/kikuri-cat-ears.jpg)
 
-![作者绘图·广井与星歌 w-50%](/images/characters/kikuri-with-seika.webp)
+![作者绘图·广井与星歌 w-50%](/images/characters/kikuri-with-seika.jpg)
 
-![动画贺图 w-50%](/images/characters/kikuri-congrats.webp "广井菊里·动画贺图")
+![动画贺图 w-50%](/images/characters/kikuri-congrats.jpg "广井菊里·动画贺图")
 
 ## ✦ 名场面与小趣闻
 
