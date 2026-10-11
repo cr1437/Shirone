@@ -6,6 +6,8 @@ import Avatar from "@components/atoms/display/Avatar.svelte";
 import Card from "@components/atoms/display/Card.svelte";
 import Tooltip from "@components/atoms/overlay/Tooltip.svelte";
 import UmamiStats from "@components/organisms/UmamiStats.astro";
+import I18nKey from "@i18n/i18nKey";
+import { i18n } from "@i18n/translation";
 import { resolveImageAsset } from "@utils/asset-utils";
 import { url } from "@utils/url-utils";
 import { Icon } from "astro-icon/components";
@@ -24,6 +26,9 @@ const style = Astro.props.style;
 const priority = Astro.props.priority ?? false;
 
 const config = profileConfig;
+const visitorCountEnabled = config.visitorCount?.enable === true;
+const visitorsLabel = i18n(I18nKey.profileStatsVisitors);
+const pageViewsLabel = i18n(I18nKey.profileStatsPageViews);
 const avatarAsset = await resolveImageAsset(config.avatar ?? "");
 let avatarUrl = typeof avatarAsset === "string" ? avatarAsset : avatarAsset.src;
 let avatarSrcset: string | undefined;
@@ -95,9 +100,38 @@ if (typeof avatarAsset !== "string") {
                 {config.links[0].name}
             </Button>}
         </div>
+        {visitorCountEnabled && (
+            <div class="m3-profile__visitor-count">
+                <span class="m3-profile__visitor-count-item" id="busuanzi_container_site_uv">
+                    <Icon name="material-symbols:person-rounded" aria-hidden="true" is:inline />
+                    {visitorsLabel}
+                    <span id="busuanzi_value_site_uv" data-busuanzi-value>--</span>
+                </span>
+                <span class="m3-profile__visitor-count-sep" aria-hidden="true">·</span>
+                <span class="m3-profile__visitor-count-item" id="busuanzi_container_site_pv">
+                    <Icon name="material-symbols:visibility-outline-rounded" aria-hidden="true" is:inline />
+                    {pageViewsLabel}
+                    <span id="busuanzi_value_site_pv" data-busuanzi-value>--</span>
+                </span>
+            </div>
+        )}
         <UmamiStats variant="profile" />
     </div>
 	</Card>
+
+<!-- 访客统计脚本：仅在资料卡渲染了统计占位时才加载（关闭配置时零请求、零 DOM）。
+     侧栏位于 #swup-container 之外，持久壳不随导航重渲染，加载一次即可。 -->
+<script is:inline>
+    (function () {
+        if (!document.getElementById("busuanzi_container_site_uv")) return;
+        if (document.getElementById("busuanzi-pure-mini")) return;
+        var s = document.createElement("script");
+        s.id = "busuanzi-pure-mini";
+        s.async = true;
+        s.src = "https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js";
+        document.head.appendChild(s);
+    })();
+</script>
 </div>
 
 <style lang="stylus">
@@ -168,4 +202,30 @@ if (typeof avatarAsset !== "string") {
 		margin: 0 0 var(--m3e-space-3)
 		line-height: 1.5
 		transition: color var(--m3e-duration-short) var(--m3e-easing-standard)
+
+	&__visitor-count
+		display: flex
+		align-items: center
+		justify-content: center
+		flex-wrap: wrap
+		gap: 0.35rem
+		margin: 0 0 var(--m3e-space-1)
+		font-size: 0.72rem
+		line-height: 1.4
+		color: var(--on-surface-variant)
+		opacity: 0.85
+		text-align: center
+		transition: color var(--m3e-duration-short) var(--m3e-easing-standard)
+
+		&-item
+			display: inline-flex
+			align-items: center
+			gap: 0.25rem
+
+			:global(svg)
+				font-size: 0.9rem
+
+		[data-busuanzi-value]
+			font-weight: 700
+			font-variant-numeric: tabular-nums
 </style>

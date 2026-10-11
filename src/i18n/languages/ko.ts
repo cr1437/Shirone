@@ -204,6 +204,7 @@ export const ko: Translation = {
 	[Key.statsDaysAgo]: "{days}일 전",
 	[Key.profileStatsPageViews]: "페이지 조회",
 	[Key.profileStatsVisits]: "방문",
+	[Key.profileStatsVisitors]: "방문자",
 
 	[Key.calendar]: "캘린더",
 	[Key.calendarBackToday]: "오늘로 돌아가기",

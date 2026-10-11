@@ -29,4 +29,8 @@ export const profileConfig: ProfileConfig = withUserConfig("profile", {
 			url: "mailto:churan1437@outlook.com",
 		},
 	],
+	/** 资料卡访客统计（不蒜子）：关闭时零 DOM、零脚本请求 */
+	visitorCount: {
+		enable: true,
+	},
 });

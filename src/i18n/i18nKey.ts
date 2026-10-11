@@ -196,6 +196,7 @@ enum I18nKey {
 	statsDaysAgo = "statsDaysAgo",
 	profileStatsPageViews = "profileStatsPageViews",
 	profileStatsVisits = "profileStatsVisits",
+	profileStatsVisitors = "profileStatsVisitors",
 
 	calendar = "calendar",
 	calendarBackToday = "calendarBackToday",

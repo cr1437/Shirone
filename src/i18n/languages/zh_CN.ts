@@ -197,6 +197,7 @@ export const zh_CN: Translation = {
 	[Key.statsDaysAgo]: "{days} 天前",
 	[Key.profileStatsPageViews]: "页面浏览",
 	[Key.profileStatsVisits]: "访问次数",
+	[Key.profileStatsVisitors]: "访客",
 
 	[Key.calendar]: "日历",
 	[Key.calendarBackToday]: "回到今天",

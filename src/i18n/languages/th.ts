@@ -196,6 +196,7 @@ export const th: Translation = {
 	[Key.statsDaysAgo]: "{days} วันที่แล้ว",
 	[Key.profileStatsPageViews]: "การเปิดดูหน้า",
 	[Key.profileStatsVisits]: "การเข้าชม",
+	[Key.profileStatsVisitors]: "ผู้เข้าชม",
 
 	[Key.calendar]: "ปฏิทิน",
 	[Key.calendarBackToday]: "กลับไปวันนี้",

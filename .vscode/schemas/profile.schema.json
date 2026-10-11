@@ -40,6 +40,15 @@
         },
         "additionalProperties": false
       }
+    },
+    "visitorCount": {
+      "type": "object",
+      "properties": {
+        "enable": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
     }
   },
   "additionalProperties": false

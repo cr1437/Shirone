@@ -163,6 +163,10 @@ export type ProfileConfig = {
 		url: string;
 		icon: string;
 	}[];
+	/** 资料卡访客统计（不蒜子）：关闭时零 DOM、零脚本请求 */
+	visitorCount?: {
+		enable: boolean;
+	};
 };
 
 export type LicenseConfig = {

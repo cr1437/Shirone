@@ -112,7 +112,7 @@ export const siteConfig: SiteConfig = withUserConfig("site", {
 |---|---|
 | `footerConfig.ts` | 页脚自定义 HTML 注入开关（控制是否读取并注入 `src/config/FooterConfig.html`，关闭时零开销） |
 | `siteConfig.ts` | 站点部署 URL / base 路径 / 标题标识 / 语言 / IANA 时区 / HCT 主题色 / 背景纹理系统 / 显示设置浮层开关 / 横幅 / TOC 深度 / 进度条 / favicon（含 `getDefaultStyle` / `getDefaultSpec` / `resolveDisplaySettings` 回退值） |
-| `profileConfig.ts` | 博主资料：头像 / 名称 / 简介 / 社交链接 |
+| `profileConfig.ts` | 博主资料：头像 / 名称 / 简介 / 社交链接 / 访客统计开关（`visitorCount.enable`，默认开启，资料卡联系方式下方以不蒜子显示访客与浏览量；关闭时零 DOM、零脚本请求） |
 | `licenseConfig.ts` | 文章版权声明 |
 | `expressiveCodeConfig.ts` | 代码块明暗主题 |
 | `navBarConfig.ts` | 导航栏链接（`LinkPresets` 预设表 + 组装） |
