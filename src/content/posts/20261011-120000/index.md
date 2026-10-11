@@ -1,16 +1,13 @@
 ---
-title: "Shizako zako3.13 技术复盘：两个授权 Bug 的根因，与一次 F-Droid 上架"
+title: "zako3.13更新说明"
 published: 2026-10-11
-description: "从一份混淆崩溃日志还原出 nav 调用点，追出 shizuku.json 里一条没有包名的授权记录，顺带把 F-Droid 变体、CI 和官网数据链路一起收干净。"
 tags: ["开源项目", "项目更新", "Shizako"]
 category: "开源项目"
 draft: false
 pinned: true
+aiSummary: 从一份混淆崩溃日志还原出 nav 调用点，追出 shizuku.json 里一条没有包名的授权记录，顺带把 F-Droid 变体、CI 和官网数据链路一起收干净。
 ---
 
-> 本文对应 `zako3.13`（versionCode 313）。从 `zako3.12`（2026-10-01）到这一版共 93 个提交，剔除徽章刷新机器人后是 49 个。下面按「用户报了什么 → 怎么定位 → 根因是什么 → 改了什么」的次序展开，都是可以复现的工程细节。
-
----
 
 ## 0. 这一版到底改了什么
 
