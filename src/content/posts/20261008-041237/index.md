@@ -5,6 +5,8 @@ tags: ["日常", "随笔"]
 category: "日常"
 draft: false
 aiSummary: "深夜碎碎念：明明困到极点却睡不着，一闭上眼就会想到很多事情，只好刷着视频等睡意降临。"
+encrypted: true
+password: Xm100830
 ---
 
 # 睡不着
