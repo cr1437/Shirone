@@ -102,13 +102,13 @@ if (typeof avatarAsset !== "string") {
         </div>
         {visitorCountEnabled && (
             <div class="m3-profile__visitor-count">
-                <span class="m3-profile__visitor-count-item" id="busuanzi_container_site_uv">
+                <span class="m3-profile__visitor-count-item">
                     <Icon name="material-symbols:person-rounded" aria-hidden="true" is:inline />
                     {visitorsLabel}
                     <span id="busuanzi_value_site_uv" data-busuanzi-value>--</span>
                 </span>
                 <span class="m3-profile__visitor-count-sep" aria-hidden="true">·</span>
-                <span class="m3-profile__visitor-count-item" id="busuanzi_container_site_pv">
+                <span class="m3-profile__visitor-count-item">
                     <Icon name="material-symbols:visibility-outline-rounded" aria-hidden="true" is:inline />
                     {pageViewsLabel}
                     <span id="busuanzi_value_site_pv" data-busuanzi-value>--</span>
@@ -119,17 +119,41 @@ if (typeof avatarAsset !== "string") {
     </div>
 	</Card>
 
-<!-- 访客统计脚本：仅在资料卡渲染了统计占位时才加载（关闭配置时零请求、零 DOM）。
-     侧栏位于 #swup-container 之外，持久壳不随导航重渲染，加载一次即可。 -->
+<!-- 访客统计：仅在资料卡渲染了统计占位时运行（关闭配置时零请求、零 DOM）。
+     计数规则——只有本次会话的第一次真实页面加载才向计数服务发一次请求；
+     F5 刷新与 Swup 站内导航（侧栏在 #swup-container 之外，本就持久存活）
+     都直接复用 sessionStorage 里缓存的结果，不会被重复计为浏览。 -->
 <script is:inline>
     (function () {
-        if (!document.getElementById("busuanzi_container_site_uv")) return;
-        if (document.getElementById("busuanzi-pure-mini")) return;
-        var s = document.createElement("script");
-        s.id = "busuanzi-pure-mini";
-        s.async = true;
-        s.src = "https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js";
-        document.head.appendChild(s);
+        var uv = document.getElementById("busuanzi_value_site_uv");
+        var pv = document.getElementById("busuanzi_value_site_pv");
+        if (!uv || !pv) return;
+        var STORAGE_KEY = "shirone-busuanzi-stats";
+        var render = function (data) {
+            var uvValue = Number(data && data.site_uv);
+            var pvValue = Number(data && data.site_pv);
+            if (Number.isFinite(uvValue)) uv.textContent = uvValue.toLocaleString();
+            if (Number.isFinite(pvValue)) pv.textContent = pvValue.toLocaleString();
+        };
+        try {
+            var cached = sessionStorage.getItem(STORAGE_KEY);
+            if (cached) {
+                render(JSON.parse(cached));
+                return;
+            }
+        } catch (error) {}
+        var callback = "BusuanziStatsCallback_" + Math.floor(Math.random() * 1e12);
+        window[callback] = function (data) {
+            try {
+                sessionStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+            } catch (error) {}
+            render(data);
+        };
+        var script = document.createElement("script");
+        script.src = "https://busuanzi.ibruce.info/busuanzi?jsonpCallback=" + callback;
+        script.async = true;
+        script.referrerPolicy = "no-referrer-when-downgrade";
+        document.head.appendChild(script);
     })();
 </script>
 </div>
