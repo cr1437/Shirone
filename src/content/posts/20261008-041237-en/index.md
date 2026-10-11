@@ -7,6 +7,8 @@ tags: ["Daily", "Essay"]
 category: "Daily"
 draft: false
 aiSummary: "A late-night ramble: dead tired but unable to sleep; closing my eyes only brings a flood of thoughts, so I just watch videos until sleepiness arrives."
+encrypted: true
+password: Xm100830
 ---
 
 # Can't Sleep
