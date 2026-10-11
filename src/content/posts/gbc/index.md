@@ -4,6 +4,8 @@ published: 2026-10-09
 tags: ["日常", "动漫", "分享"]
 category: "日常"
 draft: false
+encrypted: true
+password: Xm100830
 ---
 
 # 回看gbc，还是太带感了
