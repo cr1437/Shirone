@@ -4,7 +4,7 @@ published: 2026-10-16
 tags: ["开源项目", "项目更新", "Shizako"]
 category: "开源项目"
 draft: false
-pinned: true
+pinned: false
 aiSummary: "一句「配不上对，却显示已配对」让我把配对链路整个翻了一遍：密钥在对象构造时就落盘、界面拿「密钥库非空」当配对成功、客户端用九个静默的 return false 吞掉失败原因。这一版把密钥改成配对成功才写，把失败改成会说话的异常。"
 ---
 
