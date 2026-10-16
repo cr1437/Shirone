@@ -4,7 +4,7 @@ published: 2026-10-11
 tags: ["开源项目", "项目更新", "Shizako"]
 category: "开源项目"
 draft: false
-pinned: true
+pinned: false
 aiSummary: 从一份混淆崩溃日志还原出 nav 调用点，追出 shizuku.json 里一条没有包名的授权记录，顺带把 F-Droid 变体、CI 和官网数据链路一起收干净。
 ---
 
