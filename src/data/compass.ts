@@ -83,4 +83,18 @@ export const compassData: CompassShelf[] = [
 			},
 		],
 	},
+	{
+		key: "anime",
+		name: "动漫资源",
+		icon: "material-symbols:live-tv-outline-rounded",
+		blurb: "追番、交流与资源分享站点",
+		entries: [
+			{
+				label: "動漫花園資源網",
+				href: "https://dmhy.org/",
+				note: "动漫爱好者的资源交流平台",
+				image: "https://dmhy.org/images/sitelogo.gif",
+			},
+		],
+	},
 ];
