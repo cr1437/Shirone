@@ -7,7 +7,7 @@ import { IS_EN_BUILD } from "../utils/build-locale.ts";
  * 类型见 src/types/config.ts。
  */
 export const profileConfig: ProfileConfig = withUserConfig("profile", {
-	avatar: "/images/churan-avatar.gif",
+	avatar: "/images/churan-avatar.webp",
 	name: IS_EN_BUILD ? "Churan" : "初然",
 	bio: IS_EN_BUILD
 		? "The pessimist is always right; the optimist keeps moving forward."
