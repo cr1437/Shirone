@@ -107,7 +107,7 @@ export const siteConfig: SiteConfig = withUserConfig("site", {
 		style: "dual",
 	},
 	favicon: [
-		{ src: "/logo/churan-icon.png" },
+		{ src: "/logo/churan-favicon-64.png", sizes: "64x64" },
 	],
 });
 
