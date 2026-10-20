@@ -93,6 +93,16 @@ export function resolvePageKey(
 	if (pathname === "/series" || pathname.startsWith("/series/"))
 		return "series";
 	if (pathname === "/about") return "about";
-	if (pathname === "/characters" || pathname === "/miku" || pathname === "/nina" || pathname === "/subaru" || pathname === "/mita" || pathname === "/ryo" || pathname === "/kikuri") return "characters";
+	if (
+		pathname === "/characters" ||
+		pathname === "/miku" ||
+		pathname === "/nina" ||
+		pathname === "/subaru" ||
+		pathname === "/mita" ||
+		pathname === "/ryo" ||
+		pathname === "/kikuri" ||
+		pathname === "/nao"
+	)
+		return "characters";
 	return "";
 }

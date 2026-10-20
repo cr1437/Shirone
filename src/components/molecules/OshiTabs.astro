@@ -4,7 +4,7 @@ import { url } from "@utils/url-utils";
 
 interface Props {
 	/** 当前所在角色页 */
-	current: "miku" | "mita" | "nina" | "subaru" | "ryo" | "kikuri";
+	current: "miku" | "mita" | "nina" | "subaru" | "ryo" | "kikuri" | "nao";
 }
 const { current } = Astro.props;
 
@@ -38,6 +38,12 @@ const tabs = [
 		href: url("/kikuri/"),
 		label: IS_EN_BUILD ? "Hiroi Kikuri" : "广井菊里",
 		accent: "#8B5FBF",
+	},
+	{
+		key: "nao",
+		href: url("/nao/"),
+		label: IS_EN_BUILD ? "Nao Tomori" : "友利奈绪",
+		accent: "#4E739C",
 	},
 ] as const;
 ---

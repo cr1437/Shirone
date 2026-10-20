@@ -8,22 +8,24 @@ import ninaImg from "../assets/images/characters/nina.gif";
 import ryoImg from "../assets/images/characters/ryo-cover.jpg";
 import subaruImg from "../assets/images/characters/subaru.gif";
 import kikuriImg from "../assets/images/characters/kikuri-cover.jpg";
+import naoImg from "../assets/images/characters/nao-cover.jpg";
 
 const pageTitle = IS_EN_BUILD ? "Characters" : "动漫人物";
 const pageDescription = IS_EN_BUILD
-	? "Character profiles: Hatsune Miku, Iseri Nina, Awa Subaru, Yamada Ryō and Hiroi Kikuri."
-	: "动漫人物档案：初音未来、井芹仁菜、安和昴、山田凉与广井菊里。";
+	? "Character profiles: Hatsune Miku, Iseri Nina, Awa Subaru, Yamada Ryō, Hiroi Kikuri and Nao Tomori."
+	: "动漫人物档案：初音未来、井芹仁菜、安和昴、山田凉、广井菊里与友利奈绪。";
 
 const labels = IS_EN_BUILD
 	? {
 			badge: "CHARACTERS",
 			subtitle:
-				"Five character profiles: an eternally-sixteen songstress, Togenashi Togeari's vocalist and drummer, and two bassists from BOCCHI THE ROCK!.",
+				"Six character profiles: an eternally-sixteen songstress, Togenashi Togeari's vocalist and drummer, two bassists from BOCCHI THE ROCK!, and a student council president with a camcorder.",
 			cta: "Read more",
 		}
 	: {
 			badge: "动漫人物",
-			subtitle: "五位角色档案：一位是永远十六岁的歌姬，两位是刺刺的主唱和鼓手，两位是孤独摇滚的贝斯手。",
+			subtitle:
+				"六位角色档案：一位是永远十六岁的歌姬，两位是刺刺的主唱和鼓手，两位是孤独摇滚的贝斯手，还有一位扛着摄像机的学生会长。",
 			cta: "查看介绍",
 		};
 
@@ -72,6 +74,15 @@ const cards = [
 		desc: IS_EN_BUILD
 			? "Vocalist & bassist of SICK HACK · the drunken angel"
 			: "SICK HACK 的主唱兼贝斯手 · 醉天使",
+	},
+	{
+		href: url("/nao/"),
+		img: naoImg.src,
+		zh: "友利奈绪",
+		en: "Nao Tomori",
+		desc: IS_EN_BUILD
+			? "Student council president of Hoshinoumi Academy · her figure erased from sight"
+			: "星之海学园学生会长 · 把自己从别人视野里抹掉的人",
 	},
 ];
 ---

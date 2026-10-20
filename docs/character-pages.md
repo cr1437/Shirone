@@ -1,6 +1,6 @@
 # 角色页（Oshi Pages）文件对照与维护指南
 
-> 适用页面：`/miku/`、`/nina/`、`/subaru/`、`/ryo/`、`/kikuri/`（另有一个未登记的 `/mita/`）
+> 适用页面：`/miku/`、`/nina/`、`/subaru/`、`/ryo/`、`/kikuri/`、`/nao/`（另有一个未登记的 `/mita/`）
 > 本文说明每个文件负责界面上的哪一部分、字段从哪里来、以及常见改动该动哪个文件。
 
 ---
@@ -18,6 +18,7 @@ src/
 │   ├─ subaru.astro               安和昴
 │   ├─ ryo.astro                  山田凉
 │   ├─ kikuri.astro               广井菊里
+│   ├─ nao.astro                  友利奈绪
 │   └─（帽子米塔页面已于 2026-10 删除，spec 下的 mita.md/mita-en.md 成为孤儿条目，可随手清理）
 │
 ├─ content/spec/                 ← 正文文字内容（Markdown，中英各一份）
@@ -26,6 +27,7 @@ src/
 │   ├─ subaru.md / subaru-en.md
 │   ├─ ryo.md / ryo-en.md
 │   ├─ kikuri.md / kikuri-en.md
+│   ├─ nao.md / nao-en.md
 │   └─ mita.md / mita-en.md（已成孤儿条目，无页面渲染）
 │
 ├─ components/molecules/
@@ -38,6 +40,7 @@ src/
 │   │   ├─ subaru.gif
 │   │   ├─ ryo-cover.jpg
 │   │   ├─ kikuri-cover.jpg
+│   │   ├─ nao-cover.jpg
 │   │   └─ capmita.webp
 │   └─ music/
 │       └─ unknown-mother-goose.webp   ← 初音页的头像（来自歌曲封面）
@@ -91,7 +94,7 @@ pages/*.astro  ──定义──▶  infoRows[][]  ──▶  信息卡字段�
 
 ### 2. 角色切换标签 `src/components/molecules/OshiTabs.astro`
 
-- 是一个 `<nav>`，内部 `tabs` 数组定义五个角色的：路由地址、显示名、代表色。
+- 是一个 `<nav>`，内部 `tabs` 数组定义六个角色的：路由地址、显示名、代表色。
 - `current` 属性由调用方传入（如 `current="nina"`），决定哪个标签高亮。
 - 高亮方式：边框和背景使用该角色的 `accent` 色做 16% 混合。
 
@@ -101,7 +104,7 @@ pages/*.astro  ──定义──▶  infoRows[][]  ──▶  信息卡字段�
 | 改标签上的文字 | 改 `tabs` 里的 `label` |
 | 改标签颜色 | 改 `tabs` 里的 `accent` |
 
-> `OshiTabs` 的 `tabs` 数组目前不含 mita（帽子米塔，已废弃待删），所以帽子米塔页上没有高亮项。其余角色页一一对应，`current` 的类型联合也只包含这些键（`"miku" | "mita" | "nina" | "subaru" | "ryo" | "kikuri"`）。
+> `OshiTabs` 的 `tabs` 数组目前不含 mita（帽子米塔，已废弃待删），所以帽子米塔页上没有高亮项。其余角色页一一对应，`current` 的类型联合也只包含这些键（`"miku" | "mita" | "nina" | "subaru" | "ryo" | "kikuri" | "nao"`）。
 
 ---
 
@@ -219,18 +222,18 @@ style="grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr))"
 
 ---
 
-## 五、五个页面的差异对照
+## 五、六个页面的差异对照
 
-| 项目 | 初音未来 | 井芹仁菜 | 安和昴 | 山田凉 | 广井菊里 |
-|---|---|---|---|---|---|
-| 文件 | `miku.astro` | `nina.astro` | `subaru.astro` | `ryo.astro` | `kikuri.astro` |
-| 代表色 | `#39C5BB` | `#D90E2C` | `#76BD53` | `#2E6FD9` | `#8B5FBF` |
-| 头像 | 歌曲封面 webp | nina.gif | subaru.gif | ryo-cover.jpg | kikuri-cover.jpg |
-| 独特区块 | **推し歴天数** | 正文配图 gif | — | 图集（grid + 单图） | 图集（单图） |
-| 标签栏高亮 | 有 | 有 | 有 | 有 | 有 |
-| 正文配图 | 无 | `nina-extra.gif` | 无 | public/images/characters/ryo-*（原图） | public/images/characters/kikuri-*（原图） |
+| 项目 | 初音未来 | 井芹仁菜 | 安和昴 | 山田凉 | 广井菊里 | 友利奈绪 |
+|---|---|---|---|---|---|---|
+| 文件 | `miku.astro` | `nina.astro` | `subaru.astro` | `ryo.astro` | `kikuri.astro` | `nao.astro` |
+| 代表色 | `#39C5BB` | `#D90E2C` | `#76BD53` | `#2E6FD9` | `#8B5FBF` | `#4E739C` |
+| 头像 | 歌曲封面 webp | nina.gif | subaru.gif | ryo-cover.jpg | kikuri-cover.jpg | nao-cover.jpg |
+| 独特区块 | **推し歴天数** | 正文配图 gif | — | 图集（grid + 单图） | 图集（单图） | — |
+| 标签栏高亮 | 有 | 有 | 有 | 有 | 有 | 有 |
+| 正文配图 | 无 | `nina-extra.gif` | 无 | public/images/characters/ryo-*（原图） | public/images/characters/kikuri-*（原图） | public/images/characters/nao-starry.webp |
 
-> 另有合集页 `characters.astro`（不在上表五个之列），它是角色卡片的入口页，本身不含角色资料。
+> 另有合集页 `characters.astro`（不在上表六个之列），它是角色卡片的入口页，本身不含角色资料。
 > 正文配图放在 `public/images/characters/`，Markdown 中以绝对路径引用，避免依赖内容集合的图片优化链路。
 
 **只有 miku 页**在顶部横幅右侧有「推し歴」天数显示，计算逻辑在 `miku.astro` 头部：

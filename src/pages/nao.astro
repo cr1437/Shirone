@@ -1,0 +1,154 @@
+---
+import { getEntry, render } from "astro:content";
+import Card from "@components/atoms/display/Card.svelte";
+import Markdown from "@components/content/Markdown.astro";
+import OshiTabs from "@components/molecules/OshiTabs.astro";
+import MainGridLayout from "@layouts/MainGridLayout.astro";
+import { IS_EN_BUILD } from "@utils/build-locale";
+import { getMarkdownStylesheetAssets } from "@utils/markdown-assets";
+import portrait from "../assets/images/characters/nao-cover.jpg";
+
+const pageTitle = IS_EN_BUILD ? "Nao Tomori" : "友利奈绪";
+const pageDescription = IS_EN_BUILD
+	? "A character introduction of Nao Tomori — data compiled from Moegirlpedia."
+	: "友利奈绪的角色介绍——资料整理自萌娘百科。";
+
+const entryId = IS_EN_BUILD ? "nao-en" : "nao";
+const post = await getEntry("spec", entryId);
+if (!post) {
+	throw new Error("Nao page content not found");
+}
+const { Content, remarkPluginFrontmatter } = await render(post);
+const markdownStylesheetAssets = await getMarkdownStylesheetAssets(
+	remarkPluginFrontmatter.markdownSyntaxes,
+);
+
+const accent = "#4E739C";
+
+const labels = IS_EN_BUILD
+	? {
+			badge: "Character Profile",
+			infoTitle: "Basic Info",
+			colorLabel: "Image colour",
+			accentNote: "Art: Pixiv #52510696",
+		}
+	: {
+			badge: "角色介绍",
+			infoTitle: "基本资料",
+			colorLabel: "代表色",
+			accentNote: "配图：Pixiv #52510696",
+		};
+
+type Row = [string, string];
+const infoRows: Row[] = IS_EN_BUILD
+	? [
+			["Name", "Nao Tomori（友利奈緒）"],
+			["Aliases", "ZHIEND idiot · Kashima"],
+			["Hair · Eyes", "Silver · Blue"],
+			["Height", "154.5 cm"],
+			["Sizes", "80 / 57 / 82"],
+			["Age", "15"],
+			["Voice", "Ayane Sakura（佐倉綾音）"],
+			[
+				"Tags",
+				"Twin tails · student council president · ability user · glutton · devious · face faults · camcorder · earphones · anti-gravity skirt",
+			],
+			["Group", "Hoshinoumi Academy student council（president）"],
+			["Lover", "Yuu Otosaka"],
+			["Brother", "Kazuki Tomori"],
+			["Confidant", "Shunsuke Otosaka"],
+			["Series", "Charlotte（2015）"],
+		]
+	: [
+			["本名", "友利奈緒（ともり なお / Tomori Nao）"],
+			["别号", "ZHIEND笨蛋、鹿岛"],
+			["发色 · 瞳色", "银发 · 蓝瞳"],
+			["身高", "154.5cm"],
+			["三围", "80 / 57 / 82"],
+			["年龄", "15 岁"],
+			["声优", "佐仓绫音"],
+			[
+				"萌点",
+				"披肩双马尾、学生会长、超能力者、吃货、腹黑、颜艺、摄像机、耳机、反重力裙、水手服、黑色及膝袜、短靴",
+			],
+			["所属团体", "星之海学园学生会（会长）"],
+			["恋人", "乙坂有宇"],
+			["哥哥", "友利一希"],
+			["信赖的人", "乙坂隼翼"],
+			["登场作品", "《Charlotte》（2015）"],
+		];
+
+// 代表色单独成行，其余资料按字段摊平为自适应网格
+const colorRow: Row = [labels.colorLabel, accent];
+---
+
+<MainGridLayout title={pageTitle} description={pageDescription} page="about">
+	{markdownStylesheetAssets.map(({ pack, css }) => <style is:inline slot="head" data-swup-optional={pack} set:html={css}></style>)}
+	<div class="flex flex-col gap-4 w-full">
+		<OshiTabs current="nao" />
+
+		<!-- 顶部横幅 -->
+		<div class="flex w-full rounded-[var(--shape-corner-l)] overflow-hidden relative">
+			<Card color="var(--card-bg)" radius="l" class="z-10 p-6 lg:p-8 relative w-full">
+				<div class="flex flex-col gap-2">
+					<span class="text-xs font-bold tracking-[0.2em] uppercase text-[var(--on-surface-variant)]">{labels.badge}</span>
+					<h1 class="text-3xl lg:text-4xl font-black leading-tight text-[var(--on-surface)]">
+						{IS_EN_BUILD ? "Nao Tomori" : "友利奈绪"}
+						<span class="text-lg lg:text-2xl font-bold text-[var(--on-surface-variant)]">/ Tomori Nao</span>
+					</h1>
+					<div class="h-1.5 w-28 rounded-full" style={`background: ${accent}`}></div>
+				</div>
+			</Card>
+		</div>
+
+		<!-- 信息卡：全宽横幅，内部自适应多列。窄屏单列竖排，宽屏字段横向摊开。 -->
+		<div class="w-full rounded-[var(--shape-corner-l)] overflow-hidden relative">
+			<Card color="var(--card-bg)" radius="l" class="z-10 p-5 lg:p-8 relative w-full">
+				<div class="flex flex-col gap-2 mb-5">
+					<span class="text-xs font-bold tracking-[0.2em] uppercase text-[var(--on-surface-variant)]">{labels.infoTitle}</span>
+					<h2 class="text-2xl lg:text-3xl font-black leading-tight text-[var(--on-surface)]">
+						{IS_EN_BUILD ? "Nao Tomori" : "友利奈绪"}
+						<span class="text-base lg:text-xl font-bold text-[var(--on-surface-variant)]">/ TOMORI NAO</span>
+					</h2>
+				</div>
+
+				<div class="flex flex-col md:flex-row gap-6 items-start">
+					<!-- 头像：窄屏整宽，宽屏固定一栏 -->
+					<div class="w-full md:w-[13rem] lg:w-[15rem] shrink-0">
+						<img src={portrait.src} alt="Nao Tomori" class="w-full rounded-[var(--shape-corner-m)] cursor-zoom-in oshi-zoom" />
+						<div class="pt-2 text-center text-[0.68rem] text-[var(--on-surface-variant)] opacity-80">{labels.accentNote}</div>
+					</div>
+
+					<!-- 资料字段：自适应网格，minmax(min(15rem,100%),1fr) 随屏宽自动增减列数 -->
+					<dl
+						class="flex-1 min-w-0 w-full grid gap-x-8 gap-y-0 content-start"
+						style="grid-template-columns: repeat(auto-fit, minmax(min(15rem, 100%), 1fr));"
+					>
+						{infoRows.map(([k, v]) => (
+							<div class="flex gap-3 border-t border-[var(--outline-variant)] py-2.5 items-baseline">
+								<dt class="w-[5rem] shrink-0 font-bold text-[var(--on-surface-variant)]">{k}</dt>
+								<dd class="flex-1 min-w-0 text-[var(--on-surface)]">{v}</dd>
+							</div>
+						))}
+						<div class="flex gap-3 border-t border-[var(--outline-variant)] py-2.5 items-center">
+							<dt class="w-[5rem] shrink-0 font-bold text-[var(--on-surface-variant)]">{colorRow[0]}</dt>
+							<dd class="flex-1 flex items-center gap-2 text-[var(--on-surface)]">
+								<span class="inline-block h-4 w-4 rounded-full border border-[var(--outline-variant)]" style={`background: ${accent}`}></span>
+								<span>{accent}</span>
+							</dd>
+						</div>
+					</dl>
+				</div>
+			</Card>
+		</div>
+
+		<!-- 正文：全宽单栏，与文章页一致 -->
+		<div class="flex w-full rounded-[var(--shape-corner-l)] overflow-hidden relative">
+			<Card color="var(--card-bg)" radius="l" class="z-10 p-6 lg:p-8 relative w-full">
+				<Markdown class="mt-2">
+					<Content />
+				</Markdown>
+			</Card>
+		</div>
+	</div>
+</MainGridLayout>
