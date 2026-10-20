@@ -533,4 +533,19 @@ export const animeData: AnimeItem[] = [
 			subjectId: "120925",
 		},
 	},
+	{
+		title: "月色真美",
+		cover: "/assets/anime/covers/bgm-207573.webp",
+		link: "https://bgm.tv/subject/207573",
+		status: "completed",
+		rating: 0,
+		description: "看到中间段有点想骂编剧，但后面结局写得很好，只能说是神番",
+		year: "2017",
+		studio: "「月がきれい」製作委員会（フライングドッグ、毎日放送、創通）",
+		genres: ["恋爱", "校园", "原创", "青春", "纯爱", "2017年4月"],
+		identity: {
+			provider: "bangumi",
+			subjectId: "207573",
+		},
+	},
 ];
