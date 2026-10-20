@@ -518,4 +518,19 @@ export const animeData: AnimeItem[] = [
 			subjectId: "474906",
 		},
 	},
+	{
+		title: "夏洛特",
+		cover: "/assets/anime/covers/charlotte.webp",
+		link: "https://bgm.tv/subject/120925",
+		status: "completed",
+		rating: 0,
+		description: "回味感很强",
+		year: "2015",
+		studio: "Aniplex、KADOKAWA/アスキー・メディアワークス、TOKYO MX、VISUAL ARTS、P.A.WORKS、ムービック、日本BS放送、毎日放送",
+		genres: ["麻枝准", "P.A.WORKS", "原创", "校园", "key", "2015年7月"],
+		identity: {
+			provider: "bangumi",
+			subjectId: "120925",
+		},
+	},
 ];
