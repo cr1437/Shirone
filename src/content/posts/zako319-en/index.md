@@ -1,5 +1,5 @@
 ---
-title: "Zako3.19 update instructions: two real root causes of wireless debugging pairing/activation"
+title: "zako3.19 update instructions: two real root causes of wireless debugging pairing/activation"
 published: 2026-11-14
 lang: en
 permalink: posts/zako319

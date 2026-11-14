@@ -1,5 +1,5 @@
 ---
-title: Zako3.13 update instructions
+title: zako3.13 update instructions
 published: 2026-10-11
 lang: en
 permalink: posts/20261011-120000

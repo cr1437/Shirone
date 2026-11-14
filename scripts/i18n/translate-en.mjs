@@ -148,10 +148,14 @@ async function translate(text) {
 	const fn = provider();
 	const input = String(text ?? "");
 	if (!input.trim()) return "";
+	// 品牌词（zako3.19 / zako3.16hp 等）不要被翻译器改大小写
+	const brandStash = [];
+	const protectedInput = input.replace(/\bzako\d+(?:\.\d+)?[a-z]*\b/gi, (m) => TOKEN(brandStash.push(m) - 1));
 	let lastErr = null;
 	for (let attempt = 1; attempt <= RETRIES; attempt += 1) {
 		try {
-			return await fn(input);
+			const out = await fn(protectedInput);
+			return restore(out, brandStash);
 		} catch (err) {
 			lastErr = err;
 			if (attempt < RETRIES) await sleep(RETRY_DELAY_MS * attempt);
