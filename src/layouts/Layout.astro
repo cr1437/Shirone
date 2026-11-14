@@ -556,8 +556,136 @@ const bootLive2D = () => {
 				},
 			},
 		});
+		setupLive2DDrag();
 	};
 	document.body.appendChild(script);
+};
+
+const LIVE2D_POS_KEY = "shirone:live2d:pos";
+
+// 看板娘拖动：长按 420ms 进入拖动（虚线框提示），松手记住位置；
+// 双击复位到 stageStyle 里配置的默认左下角位置。仅桌面端加载，故不处理触摸滚动冲突以外的场景。
+const setupLive2DDrag = () => {
+	const stage = document.getElementById("oml2d-stage");
+	if (!stage) {
+		window.setTimeout(setupLive2DDrag, 400);
+		return;
+	}
+	if (stage.dataset.dragReady === "1") return;
+	stage.dataset.dragReady = "1";
+
+	const style = document.createElement("style");
+	style.textContent = [
+		"#oml2d-stage { touch-action: none; }",
+		"#oml2d-stage.oml2d-dragging { outline: 2px dashed rgba(255,255,255,0.65); outline-offset: 6px; border-radius: 12px; cursor: grabbing; }",
+	].join("");
+	document.head.appendChild(style);
+
+	// 恢复上次拖到的位置
+	try {
+		const saved = JSON.parse(localStorage.getItem(LIVE2D_POS_KEY) || "null");
+		if (saved && Number.isFinite(saved.left) && Number.isFinite(saved.bottom)) {
+			stage.style.setProperty("left", `${saved.left}px`, "important");
+			stage.style.setProperty("bottom", `${saved.bottom}px`, "important");
+		}
+	} catch {}
+
+	const save = () => {
+		const rect = stage.getBoundingClientRect();
+		try {
+			localStorage.setItem(
+				LIVE2D_POS_KEY,
+				JSON.stringify({
+					left: Math.round(rect.left),
+					bottom: Math.round(window.innerHeight - rect.bottom),
+				}),
+			);
+		} catch {}
+	};
+
+	let timer = 0;
+	let dragging = false;
+	let pressed = null;
+	let justDragged = false;
+
+	const onPointerDown = (event) => {
+		if (event.button !== undefined && event.button !== 0) return;
+		const rect = stage.getBoundingClientRect();
+		pressed = {
+			x: event.clientX,
+			y: event.clientY,
+			left: rect.left,
+			bottom: window.innerHeight - rect.bottom,
+		};
+		timer = window.setTimeout(() => {
+			if (!pressed) return;
+			dragging = true;
+			stage.classList.add("oml2d-dragging");
+		}, 420);
+	};
+
+	const onPointerMove = (event) => {
+		if (!pressed) return;
+		if (!dragging) {
+			// 长按还没成立就动鼠标 → 当作普通点击，不劫持
+			if (Math.abs(event.clientX - pressed.x) > 6 || Math.abs(event.clientY - pressed.y) > 6) {
+				window.clearTimeout(timer);
+				pressed = null;
+			}
+			return;
+		}
+		event.preventDefault();
+		event.stopPropagation();
+		const left = pressed.left + (event.clientX - pressed.x);
+		const bottom = pressed.bottom - (event.clientY - pressed.y);
+		stage.style.setProperty("left", `${left}px`, "important");
+		stage.style.setProperty("bottom", `${bottom}px`, "important");
+	};
+
+	const onPointerUp = () => {
+		window.clearTimeout(timer);
+		if (dragging) {
+			dragging = false;
+			stage.classList.remove("oml2d-dragging");
+			save();
+			justDragged = true;
+			window.setTimeout(() => {
+				justDragged = false;
+			}, 300);
+		}
+		pressed = null;
+	};
+
+	stage.addEventListener("pointerdown", onPointerDown, true);
+	window.addEventListener("pointermove", onPointerMove, true);
+	window.addEventListener("pointerup", onPointerUp, true);
+	window.addEventListener("pointercancel", onPointerUp, true);
+
+	// 拖动松手后的那次 click 吞掉，避免误触看板娘自己的点击气泡
+	stage.addEventListener(
+		"click",
+		(event) => {
+			if (!justDragged) return;
+			event.preventDefault();
+			event.stopPropagation();
+		},
+		true,
+	);
+
+	// 双击复位到 stageStyle 里写死的默认位置
+	stage.addEventListener(
+		"dblclick",
+		(event) => {
+			event.preventDefault();
+			event.stopPropagation();
+			try {
+				localStorage.removeItem(LIVE2D_POS_KEY);
+			} catch {}
+			stage.style.removeProperty("left");
+			stage.style.removeProperty("bottom");
+		},
+		true,
+	);
 };
 const scheduleLive2D = () => {
 	if (typeof window.requestIdleCallback === "function") {
