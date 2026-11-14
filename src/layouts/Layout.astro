@@ -507,6 +507,38 @@ const bootLive2D = () => {
 				},
 			},
 			menus: {
+				// 默认菜单里的「关于」一项会 window.open("https://oml2d.com")。
+				// 该域名已不再受控（点击会跳到无关站点），这里显式列出安全项、
+				// 去掉「关于」（也就是界面上那个「详细」入口）。
+				items: [
+					{
+						id: "Rest",
+						icon: "icon-rest",
+						title: "休息",
+						onClick: (oml2d) => {
+							oml2d.statusBarOpen(oml2d.options.statusBar?.restMessage);
+							oml2d.clearTips();
+							oml2d.setStatusBarClickEvent(() => {
+								oml2d.statusBarClose();
+								oml2d.stageSlideIn();
+								oml2d.statusBarClearEvents();
+							});
+							oml2d.stageSlideOut();
+						},
+					},
+					{
+						id: "SwitchModelClothes",
+						icon: "icon-skin",
+						title: "切换衣服",
+						onClick: (oml2d) => oml2d.loadNextModelClothes(),
+					},
+					{
+						id: "SwitchModel",
+						icon: "icon-switch",
+						title: "切换模型",
+						onClick: (oml2d) => oml2d.loadNextModel(),
+					},
+				],
 				style: {
 					// 毛玻璃悬停菜单
 					backgroundColor: "rgba(24, 26, 36, 0.42)",
