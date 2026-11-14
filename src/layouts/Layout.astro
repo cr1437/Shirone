@@ -454,6 +454,27 @@ else document.addEventListener("swup:enable", setup);
 // 懒加载：仅在桌面宽度、页面加载完成后的空闲时段拉取脚本，避免拖慢首屏。
 const LIVE2D_WIDGET_SRC = "/live2d/oml2d.min.js";
 const LIVE2D_MODEL_PATH = "/live2d/dafeiyu/c_0120.model3.json";
+// 拖动图标：Ant Design Icons「drag」（MIT）
+// https://github.com/ant-design/ant-design-icons/blob/master/packages/icons-svg/svg/outlined/drag.svg
+const LIVE2D_DRAG_ICON_PATH =
+	"M909.3 506.3L781.7 405.6a7.23 7.23 0 00-11.7 5.7V476H548V254h64.8c6 0 9.4-7 5.7-11.7L517.7 114.7a7.14 7.14 0 00-11.3 0L405.6 242.3a7.23 7.23 0 005.7 11.7H476v222H254v-64.8c0-6-7-9.4-11.7-5.7L114.7 506.3a7.14 7.14 0 000 11.3l127.5 100.8c4.7 3.7 11.7.4 11.7-5.7V548h222v222h-64.8c-6 0-9.4 7-5.7 11.7l100.8 127.5c2.9 3.7 8.5 3.7 11.3 0l100.8-127.5c3.7-4.7.4-11.7-5.7-11.7H548V548h222v64.8c0 6 7 9.4 11.7 5.7l127.5-100.8a7.3 7.3 0 00.1-11.4z";
+
+// oml2d 自带的图标 sprite 里没有「拖动」，在加载它之前先往文档里补一个 symbol，
+// 菜单项用 icon="icon-drag" 即可引用。
+const injectLive2DIconSprite = () => {
+	if (document.getElementById("shirone-live2d-icons")) return;
+	const sprite = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+	sprite.id = "shirone-live2d-icons";
+	sprite.setAttribute("aria-hidden", "true");
+	sprite.setAttribute("focusable", "false");
+	sprite.style.position = "absolute";
+	sprite.style.width = "0";
+	sprite.style.height = "0";
+	sprite.style.overflow = "hidden";
+	sprite.innerHTML = `<symbol id="icon-drag" viewBox="64 64 896 896"><path d="${LIVE2D_DRAG_ICON_PATH}"></path></symbol>`;
+	document.body.appendChild(sprite);
+};
+
 type Live2DWidget = {
 	options: { statusBar?: { restMessage?: string } };
 	loadNextModel: () => void;
@@ -470,6 +491,7 @@ const bootLive2D = () => {
 	if (window.__live2dBooted) return;
 	window.__live2dBooted = true;
 	if (window.matchMedia("(max-width: 767px)").matches) return;
+	injectLive2DIconSprite();
 	const script = document.createElement("script");
 	script.src = LIVE2D_WIDGET_SRC;
 	script.async = true;
@@ -557,9 +579,9 @@ const bootLive2D = () => {
 						onClick: (oml2d: Live2DWidget) => oml2d.loadNextModel(),
 					},
 					{
-						// 原来「关于」的位置，换成拖动开关
+						// 原来「关于」的位置，换成拖动开关；图标用注入的 icon-drag
 						id: "DragToggle",
-						icon: "icon-about",
+						icon: "icon-drag",
 						title: "拖动",
 						onClick: () => window.__live2dDragToggle?.(),
 					},
