@@ -1,0 +1,68 @@
+name: Auto English translation
+
+# 每篇中文文章都应有 lang="en" 的英文版本，否则 /en 子站和语言切换按钮会缺内容。
+# 这里在 main 上检测缺失的英文文章并自动生成、提交（生成逻辑见 scripts/i18n/translate-en.mjs）。
+#
+# - 只在 src/content/posts/** 变化时触发，或手动 workflow_dispatch；
+# - 提交信息带 [skip i18n]，且 GITHUB_TOKEN 推送不会再次触发工作流，不会死循环；
+# - 想跳过某次自动翻译：在提交信息里写 [skip i18n]（脚本自己也会因“已有英文版”而跳过）。
+on:
+  push:
+    branches: [main]
+    paths:
+      - "src/content/posts/**"
+      - "scripts/i18n/**"
+      - ".github/workflows/i18n.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: i18n-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  translate:
+    name: Generate missing English posts
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 11.28.2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+
+      - name: Install dependencies
+        # 脚本用到 yaml；复用仓库锁文件，保证与构建环境一致
+        run: pnpm install --frozen-lockfile
+
+      - name: Translate missing posts
+        env:
+          TRANSLATE_PROVIDER: google
+        run: node scripts/i18n/translate-en.mjs
+
+      - name: Commit generated posts
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- src/content/posts; then
+            echo "no new translations"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/content/posts
+          git commit -m "chore(i18n): 自动生成缺失的英文文章 [skip i18n]"
+          git push

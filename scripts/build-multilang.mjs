@@ -20,8 +20,25 @@ function run(cmd, args, env = {}) {
 	}
 }
 
+/** 可选步骤：失败只告警，不阻断构建（比如在没有外网的机器上自动翻译）。 */
+function runOptional(cmd, args, env = {}) {
+	const res = spawnSync(cmd, args, {
+		cwd: root,
+		stdio: "inherit",
+		env: { ...process.env, ...env },
+	});
+	if (res.status !== 0) {
+		console.warn(`[build-multilang] 可选项失败（继续）：${cmd} ${args.join(" ")}`);
+	}
+}
+
 // 1) 内容同步（沿用原构建链第一步）
 run("node", ["scripts/content/sync.mjs"]);
+
+// 1.5) 自动补齐缺失的英文文章（已有 *-en 的跳过；SKIP_I18N=1 可关闭）
+if (process.env.SKIP_I18N !== "1") {
+	runOptional("node", ["scripts/i18n/translate-en.mjs", "--quiet"]);
+}
 
 // 2) 中文站（根路径）
 run("npx", ["astro", "build"]);
