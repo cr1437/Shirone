@@ -472,6 +472,12 @@ const bootLive2D = () => {
 				{
 					name: "dafeiyu",
 					path: LIVE2D_MODEL_PATH,
+					// 再往左下角靠一点：负值 = 更贴边（左移 / 下移）。
+					// 想微调直接改这两个数即可，单位 px。
+					stageStyle: {
+						left: "-32px",
+						bottom: "-20px",
+					},
 				},
 			],
 			tips: {
