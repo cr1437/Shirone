@@ -27,6 +27,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
+import { execFile } from "node:child_process";
 import YAML from "yaml";
 
 const ROOT = process.cwd();
@@ -65,12 +66,38 @@ async function throttle() {
 
 /* ---------------- 翻译后端 ---------------- */
 
+function curlJson(url, proxy) {
+	return new Promise((resolve, reject) => {
+		const args = ["-sS", "--max-time", "45"];
+		if (proxy) args.push("-x", proxy);
+		args.push(url);
+		execFile("curl", args, { maxBuffer: 16 * 1024 * 1024 }, (err, stdout, stderr) => {
+			if (err) {
+				reject(new Error(`curl 失败：${String(stderr || err.message).slice(0, 200)}`));
+				return;
+			}
+			try {
+				resolve(JSON.parse(stdout));
+			} catch {
+				reject(new Error("curl 返回的不是 JSON"));
+			}
+		});
+	});
+}
+
 async function googleTranslate(text) {
 	await throttle();
 	const url = `${GOOGLE_URL}?client=gtx&sl=auto&tl=en&dt=t&q=${encodeURIComponent(text)}`;
-	const res = await fetch(url, { headers: { "user-agent": "Mozilla/5.0 (Shirone i18n)" } });
-	if (!res.ok) throw new Error(`Google 翻译 HTTP ${res.status}`);
-	const data = await res.json();
+	// 本机/内网环境通常需要走代理才能访问 Google；CI 上不需要。
+	const proxy = process.env.TRANSLATE_PROXY;
+	let data;
+	if (proxy) {
+		data = await curlJson(url, proxy);
+	} else {
+		const res = await fetch(url, { headers: { "user-agent": "Mozilla/5.0 (Shirone i18n)" } });
+		if (!res.ok) throw new Error(`Google 翻译 HTTP ${res.status}`);
+		data = await res.json();
+	}
 	if (!Array.isArray(data?.[0])) throw new Error("Google 翻译返回格式异常");
 	return data[0].map((part) => part?.[0] ?? "").join("");
 }
