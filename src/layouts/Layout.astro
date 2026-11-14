@@ -454,6 +454,18 @@ else document.addEventListener("swup:enable", setup);
 // 懒加载：仅在桌面宽度、页面加载完成后的空闲时段拉取脚本，避免拖慢首屏。
 const LIVE2D_WIDGET_SRC = "/live2d/oml2d.min.js";
 const LIVE2D_MODEL_PATH = "/live2d/dafeiyu/c_0120.model3.json";
+type Live2DWidget = {
+	options: { statusBar?: { restMessage?: string } };
+	loadNextModel: () => void;
+	loadNextModelClothes: () => void;
+	clearTips: () => void;
+	statusBarOpen: (message?: string) => void;
+	statusBarClose: () => void;
+	setStatusBarClickEvent: (handler: () => void) => void;
+	statusBarClearEvents: () => void;
+	stageSlideIn: () => void;
+	stageSlideOut: () => void;
+};
 const bootLive2D = () => {
 	if (window.__live2dBooted) return;
 	window.__live2dBooted = true;
@@ -514,14 +526,14 @@ const bootLive2D = () => {
 			},
 			menus: {
 				// 默认菜单里的「关于」一项会 window.open("https://oml2d.com")。
-				// 该域名已不再受控（点击会跳到无关站点），这里显式列出安全项、
-				// 去掉「关于」（也就是界面上那个「详细」入口）。
+				// 该域名已不再受控（点击会跳到无关站点），所以把「关于」换成「拖动」：
+				// 点击切换拖动模式，位置保存到 localStorage，双击看板娘复位。
 				items: [
 					{
 						id: "Rest",
 						icon: "icon-rest",
 						title: "休息",
-						onClick: (oml2d) => {
+						onClick: (oml2d: Live2DWidget) => {
 							oml2d.statusBarOpen(oml2d.options.statusBar?.restMessage);
 							oml2d.clearTips();
 							oml2d.setStatusBarClickEvent(() => {
@@ -536,13 +548,20 @@ const bootLive2D = () => {
 						id: "SwitchModelClothes",
 						icon: "icon-skin",
 						title: "切换衣服",
-						onClick: (oml2d) => oml2d.loadNextModelClothes(),
+						onClick: (oml2d: Live2DWidget) => oml2d.loadNextModelClothes(),
 					},
 					{
 						id: "SwitchModel",
 						icon: "icon-switch",
 						title: "切换模型",
-						onClick: (oml2d) => oml2d.loadNextModel(),
+						onClick: (oml2d: Live2DWidget) => oml2d.loadNextModel(),
+					},
+					{
+						// 原来「关于」的位置，换成拖动开关
+						id: "DragToggle",
+						icon: "icon-about",
+						title: "拖动",
+						onClick: () => window.__live2dDragToggle?.(),
 					},
 				],
 				style: {
@@ -578,6 +597,10 @@ const setupLive2DDrag = () => {
 	style.textContent = [
 		"#oml2d-stage { touch-action: none; }",
 		"#oml2d-stage.oml2d-dragging { outline: 2px dashed rgba(255,255,255,0.65); outline-offset: 6px; border-radius: 12px; cursor: grabbing; }",
+		"#oml2d-stage.oml2d-drag-mode { outline: 2px dashed rgba(56,176,222,0.9); outline-offset: 6px; border-radius: 12px; cursor: grab; }",
+		"#oml2d-stage.oml2d-drag-mode.oml2d-dragging { cursor: grabbing; }",
+		".oml2d-drag-hint { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); padding: 8px 14px; border-radius: 999px; background: rgba(24,26,36,0.72); color: #fff; font-size: 13px; z-index: 100000; opacity: 0; pointer-events: none; transition: opacity .2s; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }",
+		".oml2d-drag-hint.is-on { opacity: 1; }",
 	].join("");
 	document.head.appendChild(style);
 
@@ -604,12 +627,47 @@ const setupLive2DDrag = () => {
 	};
 
 	let timer = 0;
+	let hintTimer = 0;
 	let dragging = false;
-	let pressed = null;
+	let dragMode = false;
+	let pressed: { x: number; y: number; left: number; bottom: number } | null = null;
 	let justDragged = false;
 
-	const onPointerDown = (event) => {
+	const beginDrag = () => {
+		if (!pressed) return;
+		dragging = true;
+		stage.classList.add("oml2d-dragging");
+	};
+
+	const showDragHint = (text: string) => {
+		let hint = document.getElementById("oml2d-drag-hint");
+		if (!hint) {
+			hint = document.createElement("div");
+			hint.id = "oml2d-drag-hint";
+			hint.className = "oml2d-drag-hint";
+			document.body.appendChild(hint);
+		}
+		hint.textContent = text;
+		hint.classList.add("is-on");
+		window.clearTimeout(hintTimer);
+		hintTimer = window.setTimeout(() => hint.classList.remove("is-on"), 2400);
+	};
+
+	const setDragMode = (on: boolean) => {
+		dragMode = on;
+		stage.classList.toggle("oml2d-drag-mode", on);
+		showDragHint(
+			on ? "拖动模式：按住看板娘拖到想要的位置，再点菜单里的「拖动」退出" : "已退出拖动模式，位置已保存",
+		);
+	};
+	window.__live2dDragToggle = () => setDragMode(!dragMode);
+
+	const onPointerDown = (event: PointerEvent) => {
 		if (event.button !== undefined && event.button !== 0) return;
+		// 菜单/状态栏/提示是 stage 的子元素，点它们不是拖看板娘
+		if (event.target instanceof Element && event.target.closest("#oml2d-menus, #oml2d-statusBar, #oml2d-tips")) {
+			return;
+		}
 		const rect = stage.getBoundingClientRect();
 		pressed = {
 			x: event.clientX,
@@ -617,14 +675,14 @@ const setupLive2DDrag = () => {
 			left: rect.left,
 			bottom: window.innerHeight - rect.bottom,
 		};
-		timer = window.setTimeout(() => {
-			if (!pressed) return;
-			dragging = true;
-			stage.classList.add("oml2d-dragging");
-		}, 420);
+		if (dragMode) {
+			beginDrag();
+			return;
+		}
+		timer = window.setTimeout(beginDrag, 420);
 	};
 
-	const onPointerMove = (event) => {
+	const onPointerMove = (event: PointerEvent) => {
 		if (!pressed) return;
 		if (!dragging) {
 			// 长按还没成立就动鼠标 → 当作普通点击，不劫持

@@ -22,6 +22,7 @@ declare global {
 		__shironeNavigationBound?: boolean;
 		__shironeSidebarBound?: boolean;
 		__live2dBooted?: boolean;
+		__live2dDragToggle?: () => void;
 		OML2D?: {
 			loadOml2d: (options: Record<string, unknown>) => unknown;
 		};
